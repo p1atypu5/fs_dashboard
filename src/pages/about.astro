@@ -1,35 +1,27 @@
 ---
-// Достаем префикс из конфига автоматически
-const base = import.meta.env.BASE_URL;
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <link rel="icon" type="image/svg+xml" href=`${base}/favicon.svg` />
-        <link rel="icon" href=`${base}/favicon.ico` />
-        <meta name="viewport" content="width=device-width" />
-        <meta name="generator" content={Astro.generator} />
-        <title>About Astro</title>
-    </head>
-    <body>
-        <body>
-            <a href=`${base}/`>Home</a>
-            <a href=`${base}/about/`>About</a>
+<BaseLayout title="О проекте">
+  <article class="article">
+    <h1>О проекте</h1>
+    <p class="lead">
+      Это статичный readonly-дашборд для работы с материалами сайта “Последнее слово”.
+      Редактирование остается в WordPress, а зеркало на GitHub Pages дает быстрый доступ к
+      текстам и инструментам анализа.
+    </p>
 
-            <h1>About Me</h1>
-            <h2>... and my new Astro site!</h2>
-
-            <p>
-                I am working through Astro's introductory tutorial. This is the
-                second page on my website, and it's the first one I built
-                myself!
-            </p>
-
-            <p>
-                This site will update as I complete more of the tutorial, so
-                keep checking back and see how my journey is going!
-            </p>
-        </body>
-    </body>
-</html>
+    <section class="section">
+      <h2>Ближайшая архитектура</h2>
+      <p>
+        Данные хранятся как Markdown-файлы с frontmatter и валидируются через Astro Content
+        Collections. Импорт разделен на два шага: сначала сохраняется JSON из WordPress, затем
+        из него генерируются локальные content-файлы для статичной сборки.
+      </p>
+      <p>
+        После этого можно добавлять клиентские инструменты: поиск, фильтры, статистику,
+        словари орфографии, списки подозрительных опечаток и отчеты по неполным карточкам.
+      </p>
+    </section>
+  </article>
+</BaseLayout>

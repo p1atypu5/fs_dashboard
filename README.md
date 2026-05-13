@@ -1,43 +1,48 @@
-# Astro Starter Kit: Minimal
+# Последнее слово: dashboard
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Readonly-зеркало материалов сайта “Последнее слово” для GitHub Pages.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Сайт собирается Astro в полностью статичный HTML. Редактирование остается в WordPress,
+а этот репозиторий нужен для быстрого просмотра текстов и будущих инструментов анализа.
 
-## 🚀 Project Structure
+## Что уже есть
 
-Inside of your Astro project, you'll see the following folders and files:
+- Главная страница со сводкой.
+- Страница `/words/` со списком, поиском, фильтром по городу и сортировкой.
+- Динамические страницы отдельных последних слов.
+- Контент в `src/content/last-words/`, валидируемый Astro Content Collections.
+- Два шага импорта: сначала сохранить JSON из WordPress, затем сгенерировать Markdown-файлы.
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Ближайшие шаги
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+1. Довести импорт-скрипт до полного набора записей.
+2. Добавить извлечение суда, города и даты произнесения из текста или ручных полей.
+3. Добавить страницы статистики, проверки орфографии и отчетов по качеству данных.
+4. Описать модель переводов и связанных слов.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Команды
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
+Все команды запускаются из корня проекта:
 
 | Command                   | Action                                           |
 | :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+| `npm install`             | Установить зависимости                           |
+| `npm run dev`             | Запустить локальный dev server                   |
+| `npm run build`           | Собрать статичный сайт в `./dist/`               |
+| `npm run preview`         | Проверить production-сборку локально             |
+| `npm run fetch:wp`        | Сохранить JSON из WordPress REST API             |
+| `npm run import:wp`       | Сгенерировать Markdown из локального JSON        |
 
-## 👀 Want to learn more?
+В GitHub Pages проект ожидает base path `/final-statement`, он задан в `astro.config.mjs`.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Примеры импорта:
+
+```sh
+npm run fetch:wp -- --limit 20 --output data/wp-export/posts.latest.raw.json
+npm run import:wp -- --input data/wp-export/posts.latest.raw.json --limit 20
+npm run import:wp -- --input data/wp-samples/posts.latest-20.raw.json --limit 20
+npm run import:wp -- --input data/wp-samples/posts.latest-20.raw.json --limit 2 --dry-run
+```
+
+Обычная разработка должна использовать `import:wp` с локальным JSON, чтобы не дергать WordPress
+и Deflect при каждом тесте.

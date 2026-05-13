@@ -1,0 +1,38 @@
+---
+import type { DisplayWord } from "../lib/lastWords";
+
+type Props = {
+  word: DisplayWord;
+};
+
+const { word } = Astro.props;
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+const place = word.city ?? word.country ?? "Место не заполнено";
+const countryPeriod = word.country && word.period ? `${word.country}: ${word.period}` : word.country ?? word.period;
+---
+
+<a
+  class="word-card"
+  href={`${base}words/${word.slug}/`}
+  data-word-card
+  data-person={word.person.toLowerCase()}
+  data-case={word.caseName.toLowerCase()}
+  data-city={place}
+  data-date={word.date}
+  data-title={word.title.toLowerCase()}
+  data-text={word.text.toLowerCase()}
+>
+  <div>
+    <h3>{word.title}</h3>
+    <p>{word.caseName}</p>
+    <div class="tag-row">
+      {word.tags.map((tag) => <span class="tag">{tag}</span>)}
+    </div>
+  </div>
+  <p class="meta">
+    {countryPeriod}
+    {word.readingTime && <><br />Время чтения: {word.readingTime}</>}
+  </p>
+</a>
