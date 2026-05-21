@@ -3,73 +3,86 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout title="О проекте">
-  <article class="article">
-    <h1>О проекте</h1>
-    <p class="lead">
-      Это рабочее зеркало сайта “Последнее слово”: здесь можно быстро искать,
-      читать и проверять опубликованные последние слова.
-    </p>
+    <article class="article">
+        <h1>О проекте</h1>
+        <p class="lead">
+            Это рабочее зеркало сайта “Последнее слово”: здесь можно быстро
+            искать, читать и проверять опубликованные последние слова.
+        </p>
 
-    <section class="section">
-      <h2>Что здесь есть</h2>
-      <p>
-        В базе собраны тексты, имена, теги, страны, эпохи, фотографии и базовые
-        данные по материалам. Отдельные страницы помогают увидеть весь список
-        имён, библиотеку тегов и записи с неполными полями.
-      </p>
-      <p>
-        Это только readonly-версия. Исправления и новые публикации по-прежнему
-        вносятся через основную админку сайта.
-      </p>
-    </section>
+        <section class="section">
+            <h2>Что здесь есть</h2>
+            <p>
+                В базе собраны тексты, имена, теги, страны, эпохи, фотографии и
+                базовые данные по материалам. Отдельные страницы помогают
+                увидеть весь список имён, библиотеку тегов и записи с неполными
+                полями.
+            </p>
+            <p>
+                Это только readonly-версия. Исправления и новые публикации
+                по-прежнему вносятся через основную админку сайта.
+            </p>
+        </section>
 
-    <section class="section">
-      <h2>Карта сайта</h2>
-      <ul class="site-map">
-        <li>
-          <a href={`${import.meta.env.BASE_URL}`}>Главная</a>
-          <span>сводка по базе и последние добавления.</span>
-        </li>
-        <li>
-          <a href={`${import.meta.env.BASE_URL}words/`}>База слов</a>
-          <span>таблица всех записей с поиском и сортировкой.</span>
-        </li>
-        <li>
-          <a href={`${import.meta.env.BASE_URL}reports/names/`}>Имена</a>
-          <span>плотный список всех имён со ссылками на тексты.</span>
-        </li>
-        <li>
-          <a href={`${import.meta.env.BASE_URL}reports/tags/`}>Теги</a>
-          <span>библиотека тегов с поиском и количеством записей.</span>
-        </li>
-        <li>
-          <a href={`${import.meta.env.BASE_URL}reports/missing-fields/`}>Неполные поля</a>
-          <span>отчёт по записям, где не хватает фото, описания, тегов или эпохи.</span>
-        </li>
-      </ul>
-    </section>
-  </article>
+        <section class="section">
+            <h2>Карта сайта</h2>
+            <ul class="site-map">
+                <li>
+                    <a href={`${import.meta.env.BASE_URL}`}>Главная</a>
+                    <span>сводка по базе и последние добавления.</span>
+                </li>
+                <li>
+                    <a href={`${import.meta.env.BASE_URL}/words/`}>База слов</a>
+                    <span>таблица всех записей с поиском и сортировкой.</span>
+                </li>
+                <li>
+                    <a href={`${import.meta.env.BASE_URL}/reports/names/`}
+                        >Имена</a
+                    >
+                    <span>плотный список всех имён со ссылками на тексты.</span>
+                </li>
+                <li>
+                    <a href={`${import.meta.env.BASE_URL}/reports/tags/`}
+                        >Теги</a
+                    >
+                    <span
+                        >библиотека тегов с поиском и количеством записей.</span
+                    >
+                </li>
+                <li>
+                    <a
+                        href={`${import.meta.env.BASE_URL}/reports/missing-fields/`}
+                        >Неполные поля</a
+                    >
+                    <span
+                        >отчёт по записям, где не хватает фото, описания, тегов
+                        или эпохи.</span
+                    >
+                </li>
+            </ul>
+        </section>
+    </article>
 </BaseLayout>
 
 <style>
-  .site-map {
-    display: grid;
-    gap: 10px;
-    max-width: 760px;
-    padding-left: 20px;
-  }
+    .site-map {
+        display: grid;
+        gap: 10px;
+        max-width: 760px;
+        padding-left: 20px;
+    }
 
-  .site-map li {
-    padding-left: 4px;
-  }
+    .site-map li {
+        padding-left: 4px;
+    }
 
-  .site-map a {
-    font-weight: 700;
-    text-decoration-color: var(--line);
-    text-underline-offset: 3px;
-  }
+    .site-map a {
+        font-weight: 700;
+        text-decoration-color: var(--line);
+        text-underline-offset: 3px;
+    }
 
-  .site-map span {
-    color: var(--muted);
-  }
+    .site-map span {
+        color: var(--muted);
+    }
 </style>
