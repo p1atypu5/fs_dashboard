@@ -1,4 +1,4 @@
-import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
@@ -9,6 +9,7 @@ const inputFile = args.input;
 const limit = Number(args.limit ?? 20);
 const all = Boolean(args.all);
 const dryRun = Boolean(args["dry-run"]);
+const prune = Boolean(args.prune);
 
 if (!inputFile) {
   throw new Error("Missing --input. First save WordPress JSON with npm run fetch:wp.");
@@ -23,6 +24,7 @@ const posts = all ? inputPosts : inputPosts.slice(0, limit);
 await mkdir(CONTENT_DIR, { recursive: true });
 
 const existingByWordPressId = await readExistingEntries(CONTENT_DIR);
+const importedWordPressIds = new Set(posts.map((post) => String(post.id)));
 const results = [];
 
 for (const post of posts) {
@@ -41,6 +43,26 @@ for (const post of posts) {
 
   if (!dryRun) {
     await writeFile(filePath, content, "utf8");
+  }
+}
+
+if (prune) {
+  for (const [wordpressId, existing] of existingByWordPressId) {
+    if (importedWordPressIds.has(wordpressId)) {
+      continue;
+    }
+
+    const filePath = path.join(CONTENT_DIR, existing.file);
+    results.push({
+      id: wordpressId,
+      title: existing.frontmatter.title ?? existing.frontmatter.person ?? "",
+      file: path.relative(process.cwd(), filePath),
+      action: "delete",
+    });
+
+    if (!dryRun) {
+      await unlink(filePath);
+    }
   }
 }
 

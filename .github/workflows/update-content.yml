@@ -3,7 +3,17 @@ name: Update WordPress content
 on:
   schedule:
     - cron: "23 2 * * *"
+    - cron: "23 3 * * 0"
   workflow_dispatch:
+    inputs:
+      sync_mode:
+        description: "Content sync mode"
+        required: true
+        default: incremental
+        type: choice
+        options:
+          - incremental
+          - full
 
 permissions:
   contents: write
@@ -22,6 +32,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     env:
       TZ: Europe/Istanbul
+      SYNC_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.sync_mode || (github.event.schedule == '23 3 * * 0' && 'full' || 'incremental') }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -36,16 +47,32 @@ jobs:
         run: npm ci
 
       - name: Fetch WordPress JSON
-        run: >
-          npm run fetch:wp --
-          --all
-          --limit 100
-          --delay 2000
-          --output data/wp-export/posts.all.raw.json
-          --meta-output src/data/wpExportMeta.json
+        run: |
+          if [ "$SYNC_MODE" = "full" ]; then
+            npm run fetch:wp -- \
+              --all \
+              --limit 100 \
+              --delay 2000 \
+              --output data/wp-export/posts.raw.json \
+              --meta-output src/data/wpExportMeta.json
+          else
+            AFTER="$(node -e "const meta = require('./src/data/wpExportMeta.json'); console.log(meta.fetchedAt)")"
+            npm run fetch:wp -- \
+              --all \
+              --limit 100 \
+              --delay 2000 \
+              --after "$AFTER" \
+              --output data/wp-export/posts.raw.json \
+              --meta-output src/data/wpExportMeta.json
+          fi
 
       - name: Generate content
-        run: npm run import:wp -- --input data/wp-export/posts.all.raw.json --all
+        run: |
+          if [ "$SYNC_MODE" = "full" ]; then
+            npm run import:wp -- --input data/wp-export/posts.raw.json --all --prune
+          else
+            npm run import:wp -- --input data/wp-export/posts.raw.json --all
+          fi
 
       - name: Build site
         run: npm run build
