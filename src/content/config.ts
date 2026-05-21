@@ -25,6 +25,10 @@ const lastWords = defineCollection({
       .object({
         url: z.string().url(),
         alt: z.string().optional(),
+        mimeType: z.string().optional(),
+        width: z.number().optional(),
+        height: z.number().optional(),
+        sizeBytes: z.number().optional(),
       })
       .optional(),
     court: z.string().optional(),

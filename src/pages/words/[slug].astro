@@ -4,103 +4,153 @@ import { toDisplayWord, type LastWordEntry } from "../../lib/lastWords";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
-  const entries = await getCollection("last-words");
+    const entries = await getCollection("last-words");
 
-  return entries.map((entry) => ({
-    params: { slug: entry.data.localSlug },
-    props: { entry },
-  }));
+    return entries.map((entry) => ({
+        params: { slug: entry.data.localSlug },
+        props: { entry },
+    }));
 }
 
 const { entry } = Astro.props as { entry: LastWordEntry };
 const word = toDisplayWord(entry);
 const { Content } = await render(entry);
 const countryPeriodLine =
-  word.country && word.period ? `${word.country}: ${word.period}` : word.country ?? word.period;
+    word.country && word.period
+        ? `${word.country}: ${word.period}`
+        : (word.country ?? word.period);
+const imageFormat = word.featuredImage?.mimeType
+    ?.replace("image/", "")
+    .toUpperCase();
+const imageResolution =
+    word.featuredImage?.width && word.featuredImage?.height
+        ? `${word.featuredImage.width} x ${word.featuredImage.height}`
+        : undefined;
+const imageSize = word.featuredImage?.sizeBytes
+    ? new Intl.NumberFormat("ru-RU", {
+          maximumFractionDigits: 1,
+      }).format(word.featuredImage.sizeBytes / 1024)
+    : undefined;
 const base = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
 ---
 
 <BaseLayout title={word.title} description={`${word.person}: ${word.caseName}`}>
-  <div class="word-layout">
-    <article class="article">
-      <h1>{word.title}</h1>
-      {word.personDescription && <p>{word.personDescription}</p>}
-      {word.caseDescription && <p>{word.caseDescription}</p>}
+    <div class="word-layout">
+        <article class="article">
+            <h1>{word.title}</h1>
+            {word.personDescription && <p>{word.personDescription}</p>}
+            {word.caseDescription && <p>{word.caseDescription}</p>}
 
-      <div class="button-row">
-        <a class="button secondary" href={`${base}words/`}>Назад к базе</a>
-        <a class="button" href={word.sourceUrl}>Открыть источник</a>
-      </div>
+            <div class="button-row">
+                <a class="button secondary" href={`${base}words/`}
+                    >Ко всем словам</a
+                >
+                <a class="button" href={word.sourceUrl}>Открыть источник</a>
+            </div>
 
-      <div class="article-text">
-        <Content />
-      </div>
-    </article>
+            <div class="article-text">
+                <Content />
+            </div>
+        </article>
 
-    <aside class="word-aside" aria-label="Метаданные">
-      {word.featuredImage && (
-        <figure class="word-photo">
-          <img src={word.featuredImage.url} alt={word.featuredImage.alt ?? word.title} loading="lazy" />
-        </figure>
-      )}
-      <div class="word-meta">
-        {countryPeriodLine && <p class="meta">{countryPeriodLine}</p>}
-        {word.readingTime && <p class="meta">Время чтения: {word.readingTime}</p>}
-        <div class="tag-row">
-          {word.tags.map((tag: string) => <span class="tag">{tag}</span>)}
-        </div>
-      </div>
-    </aside>
-  </div>
+        <aside class="word-aside" aria-label="Метаданные">
+            {
+                word.featuredImage && (
+                    <figure class="word-photo">
+                        <img
+                            src={word.featuredImage.url}
+                            alt={word.featuredImage.alt ?? word.title}
+                            loading="lazy"
+                        />
+                        {(imageFormat || imageResolution || imageSize) && (
+                            <figcaption class="photo-meta">
+                                {imageFormat && (
+                                    <span>Формат: {imageFormat}</span>
+                                )}
+                                {imageResolution && (
+                                    <span>Разрешение: {imageResolution}</span>
+                                )}
+                                {imageSize && <span>Вес: {imageSize} КБ</span>}
+                            </figcaption>
+                        )}
+                    </figure>
+                )
+            }
+            <div class="word-meta">
+                {countryPeriodLine && <p class="meta">{countryPeriodLine}</p>}
+                {
+                    word.readingTime && (
+                        <p class="meta">Время чтения: {word.readingTime}</p>
+                    )
+                }
+                <div class="tag-row">
+                    {
+                        word.tags.map((tag: string) => (
+                            <span class="tag">{tag}</span>
+                        ))
+                    }
+                </div>
+            </div>
+        </aside>
+    </div>
 </BaseLayout>
 
 <style>
-  .word-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 820px) minmax(260px, 320px);
-    gap: 36px;
-    align-items: start;
-  }
-
-  .word-aside {
-    position: sticky;
-    top: 24px;
-  }
-
-  .word-photo {
-    margin: 0;
-  }
-
-  .word-meta {
-    margin-top: 18px;
-  }
-
-  .word-meta .meta {
-    margin-bottom: 8px;
-  }
-
-  .word-photo img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    border: 1px solid var(--line);
-  }
-
-  @media (max-width: 900px) {
     .word-layout {
-      grid-template-columns: 1fr;
+        display: grid;
+        grid-template-columns: minmax(0, 820px) minmax(260px, 320px);
+        gap: 36px;
+        align-items: start;
     }
 
     .word-aside {
-      order: -1;
-      position: static;
+        position: sticky;
+        top: 24px;
+    }
+
+    .word-photo {
+        margin: 0;
+    }
+
+    .photo-meta {
+        display: grid;
+        gap: 4px;
+        margin-top: 10px;
+        color: color-mix(in srgb, var(--muted) 72%, var(--surface));
+        font-size: 11px;
+        line-height: 1.35;
+    }
+
+    .word-meta {
+        margin-top: 18px;
+    }
+
+    .word-meta .meta {
+        margin-bottom: 8px;
     }
 
     .word-photo img {
-      max-width: 420px;
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        border: 1px solid var(--line);
     }
-  }
+
+    @media (max-width: 900px) {
+        .word-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .word-aside {
+            order: -1;
+            position: static;
+        }
+
+        .word-photo img {
+            max-width: 420px;
+        }
+    }
 </style>

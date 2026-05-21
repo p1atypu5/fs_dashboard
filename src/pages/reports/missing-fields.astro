@@ -1,104 +1,122 @@
 ---
 import { getCollection } from "astro:content";
+import ReferencePageLayout from "../../components/ReferencePageLayout.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const entries = await getCollection("last-words");
 
 const checks = [
-  {
-    label: "Без фото",
-    entries: entries.filter((entry) => !entry.data.featuredImage),
-  },
-  {
-    label: "Без описания человека",
-    entries: entries.filter((entry) => !entry.data.personDescription),
-  },
-  {
-    label: "Без тегов",
-    entries: entries.filter((entry) => entry.data.tags.length === 0),
-  },
-  {
-    label: "Без эпохи",
-    entries: entries.filter((entry) => !entry.data.period),
-  },
+    {
+        label: "Без фото",
+        entries: entries.filter((entry) => !entry.data.featuredImage),
+    },
+    {
+        label: "Без описания человека",
+        entries: entries.filter((entry) => !entry.data.personDescription),
+    },
+    {
+        label: "Без тегов",
+        entries: entries.filter((entry) => entry.data.tags.length === 0),
+    },
+    {
+        label: "Без эпохи",
+        entries: entries.filter((entry) => !entry.data.period),
+    },
 ];
 const visibleChecks = checks.filter((check) => check.entries.length > 0);
 
 const base = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
 ---
 
 <BaseLayout title="Неполные поля">
-  <section>
-    <h1>Неполные поля</h1>
-    <p class="lead">
-      Первый build-time отчет по качеству данных. Он строится из Astro Content Collection и
-      показывает, какие записи требуют ручной проверки или доимпорта.
-    </p>
-  </section>
+    <ReferencePageLayout current="missing-fields">
+            <section class="report-header">
+                <h1>Неполные поля</h1>
+            </section>
 
-  <section class="section">
-    <div class="stats-grid">
-      {visibleChecks.map((check) => (
-        <div class="stat">
-          <strong>{check.entries.length}</strong>
-          <span>{check.label.toLowerCase()}</span>
-        </div>
-      ))}
-    </div>
-  </section>
+            <section class="section">
+                <div class="stats-grid">
+                    {
+                        visibleChecks.map((check) => (
+                            <div class="stat">
+                                <strong>{check.entries.length}</strong>
+                                <span>{check.label.toLowerCase()}</span>
+                            </div>
+                        ))
+                    }
+                </div>
+            </section>
 
-  {visibleChecks.length === 0 && (
-    <section class="section">
-      <p class="empty-state" style="display: block;">Проблем не найдено.</p>
-    </section>
-  )}
+            {
+                visibleChecks.length === 0 && (
+                    <section class="section">
+                        <p class="empty-state" style="display: block;">
+                            Проблем не найдено.
+                        </p>
+                    </section>
+                )
+            }
 
-  {visibleChecks.map((check) => (
-    <section class="section">
-      <h2>{check.label}</h2>
-      <div class="word-list">
-        {check.entries.map((entry) => (
-          <div class="word-card report-card">
-            <div>
-              <h3>
-                <a href={`${base}words/${entry.data.localSlug}/`}>{entry.data.title}</a>
-              </h3>
-              <p>{entry.data.sourceUrl}</p>
-            </div>
-            <div class="report-actions">
-              <p class="meta">WP #{entry.data.wordpressId}</p>
-              <a class="button secondary" href={entry.data.sourceUrl}>Посмотреть источник</a>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  ))}
+            {
+                visibleChecks.map((check) => (
+                    <section class="section">
+                        <h2>{check.label}</h2>
+                        <div class="word-list">
+                            {check.entries.map((entry) => (
+                                <div class="word-card report-card">
+                                    <div>
+                                        <h3>
+                                            <a
+                                                href={`${base}words/${entry.data.localSlug}/`}
+                                            >
+                                                {entry.data.title}
+                                            </a>
+                                        </h3>
+                                        <p>{entry.data.sourceUrl}</p>
+                                    </div>
+                                    <div class="report-actions">
+                                        <p class="meta">
+                                            WP #{entry.data.wordpressId}
+                                        </p>
+                                        <a
+                                            class="button secondary"
+                                            href={entry.data.sourceUrl}
+                                        >
+                                            Посмотреть источник
+                                        </a>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                ))
+            }
+    </ReferencePageLayout>
 </BaseLayout>
 
 <style>
-  .report-card {
-    color: inherit;
-  }
-
-  .report-card h3 a {
-    color: var(--text);
-    text-decoration-color: var(--line);
-    text-underline-offset: 3px;
-  }
-
-  .report-actions {
-    display: flex;
-    align-items: flex-end;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  @media (max-width: 860px) {
-    .report-actions {
-      align-items: flex-start;
+    .report-card {
+        color: inherit;
     }
-  }
+
+    .report-card h3 a {
+        color: var(--text);
+        text-decoration-color: var(--line);
+        text-underline-offset: 3px;
+    }
+
+    .report-actions {
+        display: flex;
+        align-items: flex-end;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    @media (max-width: 860px) {
+        .report-actions {
+            align-items: flex-start;
+        }
+    }
 </style>

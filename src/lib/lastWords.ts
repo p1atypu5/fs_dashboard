@@ -19,6 +19,10 @@ export type DisplayWord = {
   featuredImage?: {
     url: string;
     alt?: string;
+    mimeType?: string;
+    width?: number;
+    height?: number;
+    sizeBytes?: number;
   };
   language: string;
   originalLanguage: string;
@@ -40,7 +44,7 @@ export function toDisplayWord(entry: LastWordEntry): DisplayWord {
     city: entry.data.city,
     country: entry.data.country,
     period: entry.data.period,
-    date: entry.data.statementDate ?? entry.data.publishedAt,
+    date: entry.data.publishedAt,
     sourceUrl: entry.data.sourceUrl,
     tags: entry.data.tags,
     text: entry.body,

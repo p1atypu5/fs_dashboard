@@ -10,25 +10,55 @@ const peopleCount = new Set(finalWords.map((word) => word.person)).size;
 const countriesCount = new Set(
     finalWords.map((word) => word.country).filter(Boolean),
 ).size;
-const latestTimestamp = wordsByDate[0] ? new Date(wordsByDate[0].date).getTime() : 0;
+const latestTimestamp = wordsByDate[0]
+    ? new Date(wordsByDate[0].date).getTime()
+    : 0;
 const weekMs = 7 * 24 * 60 * 60 * 1000;
 const latestWords = wordsByDate.filter((word) => {
     const timestamp = new Date(word.date).getTime();
     return latestTimestamp - timestamp <= weekMs;
 });
+const periodStart = latestTimestamp
+    ? new Date(latestTimestamp - weekMs)
+    : undefined;
+const periodEnd = latestTimestamp ? new Date(latestTimestamp) : undefined;
 const base = import.meta.env.BASE_URL.endsWith("/")
     ? import.meta.env.BASE_URL
     : `${import.meta.env.BASE_URL}/`;
+
+const dateFormatter = new Intl.DateTimeFormat("ru-RU", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+});
+
+function formatCountLabel(count: number, forms: [string, string, string]) {
+    const mod10 = count % 10;
+    const mod100 = count % 100;
+
+    if (mod10 === 1 && mod100 !== 11) {
+        return forms[0];
+    }
+
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) {
+        return forms[1];
+    }
+
+    return forms[2];
+}
+
+function formatDateRange(start?: Date, end?: Date) {
+    if (!start || !end) {
+        return "";
+    }
+
+    return `${dateFormatter.format(start)} - ${dateFormatter.format(end)}`;
+}
 ---
 
 <BaseLayout title="Последнее слово">
     <section>
         <h1>Readonly-зеркало последних слов</h1>
-        <p class="lead">
-            Простая статичная база для команды: тексты, источники, базовая
-            навигация и задел под поиск, статистику, проверку орфографии и
-            другие инструменты анализа.
-        </p>
         <div class="button-row">
             <a class="button" href={`${base}words/`}>Открыть базу слов</a>
             <a class="button secondary" href={`${base}about/`}
@@ -40,22 +70,60 @@ const base = import.meta.env.BASE_URL.endsWith("/")
     <section class="stats-grid" aria-label="Сводка по базе">
         <div class="stat">
             <strong>{finalWords.length}</strong>
-            <span>слов</span>
+            <span
+                >{
+                    formatCountLabel(finalWords.length, [
+                        "слово",
+                        "слова",
+                        "слов",
+                    ])
+                }</span
+            >
         </div>
         <div class="stat">
             <strong>{peopleCount}</strong>
-            <span>человек</span>
+            <span
+                >{
+                    formatCountLabel(peopleCount, [
+                        "человек",
+                        "человека",
+                        "человек",
+                    ])
+                }</span
+            >
         </div>
         <div class="stat">
             <strong>{countriesCount}</strong>
-            <span>стран</span>
+            <span
+                >{
+                    formatCountLabel(countriesCount, [
+                        "страна",
+                        "страны",
+                        "стран",
+                    ])
+                }</span
+            >
         </div>
     </section>
 
     <section class="section">
-        <h2>Последние добавления за неделю</h2>
+        <h2>
+            Последние добавления за неделю
+            <span class="heading-period"
+                >({formatDateRange(periodStart, periodEnd)})</span
+            >
+        </h2>
         <div class="word-list">
             {latestWords.map((word) => <WordCard word={word} />)}
         </div>
     </section>
 </BaseLayout>
+
+<style>
+    .heading-period {
+        color: var(--muted);
+        font-size: 0.55em;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+</style>

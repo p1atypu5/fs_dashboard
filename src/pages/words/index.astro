@@ -1,119 +1,449 @@
 ---
 import { getCollection } from "astro:content";
-import WordCard from "../../components/WordCard.astro";
-import { sortWordsByDate, toDisplayWord } from "../../lib/lastWords";
+import { toDisplayWord } from "../../lib/lastWords";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const finalWords = (await getCollection("last-words")).map(toDisplayWord);
-const wordsByDate = sortWordsByDate(finalWords);
-const places = [...new Set(finalWords.map((word) => word.city ?? word.country).filter(Boolean))].sort((a, b) =>
-  a.localeCompare(b, "ru"),
-);
+const finalWords = (await getCollection("last-words"))
+    .map(toDisplayWord)
+    .sort((a, b) => a.person.localeCompare(b.person, "ru"));
+
+const base = import.meta.env.BASE_URL.endsWith("/")
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
 ---
 
 <BaseLayout title="База слов">
-  <section>
-    <h1>База слов</h1>
-    <p class="lead">
-      Все записи из зеркала в одном месте. Поиск и фильтры работают в браузере, без правки данных
-      и без доступа к админке WordPress.
-    </p>
-  </section>
+    <section>
+        <h1>База слов</h1>
+    </section>
 
-  <section class="section" aria-label="Фильтры базы слов">
-    <div class="toolbar">
-      <input id="word-search" type="search" placeholder="Поиск по имени, делу или тексту" />
-      <select id="city-filter" aria-label="Фильтр по городу">
-        <option value="">Все места</option>
-        {places.map((place) => <option value={place}>{place}</option>)}
-      </select>
-      <select id="sort-order" aria-label="Сортировка">
-        <option value="date-desc">Сначала новые</option>
-        <option value="date-asc">Сначала старые</option>
-        <option value="person-asc">По имени А-Я</option>
-      </select>
-    </div>
-    <p class="meta">Поиск, фильтры и сортировка пока не работают стабильно.</p>
+    <section class="section" aria-label="Все последние слова">
+        <div class="table-tools">
+            <input
+                id="words-search"
+                type="search"
+                placeholder="Поиск по имени, стране, эпохе или тегам"
+            />
+            <div class="table-tools-meta">
+                <p class="meta">
+                    <span id="words-count">{finalWords.length}</span> из {
+                        finalWords.length
+                    } записей
+                </p>
+                <button class="reset-table" id="words-reset" type="button"
+                    >Сбросить</button
+                >
+            </div>
+        </div>
+        <div class="words-table-wrap">
+            <table class="words-table" id="words-table">
+                <thead>
+                    <tr>
+                        <th
+                            class="is-sorted"
+                            data-sort-header="0"
+                            aria-sort="ascending"
+                        >
+                            <button type="button" data-sort-column="0"
+                                >Имя</button
+                            >
+                        </th>
+                        <th data-sort-header="1" aria-sort="none">
+                            <button type="button" data-sort-column="1"
+                                >Страна</button
+                            >
+                        </th>
+                        <th data-sort-header="2" aria-sort="none">
+                            <button type="button" data-sort-column="2"
+                                >Эпоха</button
+                            >
+                        </th>
+                        <th data-sort-header="3" aria-sort="none">
+                            <button type="button" data-sort-column="3"
+                                >Теги</button
+                            >
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        finalWords.map((word) => (
+                            <tr>
+                                <td class="word-name-cell">
+                                    <a href={`${base}words/${word.slug}/`}>
+                                        {word.title}
+                                    </a>
+                                </td>
+                                <td class="word-country-cell">
+                                    {word.country ?? ""}
+                                </td>
+                                <td class="word-period-cell">
+                                    {word.period ?? ""}
+                                </td>
+                                <td>
+                                    {[...word.tags]
+                                        .sort((a, b) =>
+                                            a.localeCompare(b, "ru"),
+                                        )
+                                        .join(", ")}
+                                </td>
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-    <p class="meta"><span id="visible-count">{finalWords.length}</span> из {finalWords.length} записей</p>
-    <div id="word-list" class="word-list">
-      {wordsByDate.map((word) => <WordCard word={word} />)}
-    </div>
-    <p id="empty-state" class="empty-state">Ничего не найдено. Попробуйте изменить запрос или фильтр.</p>
-  </section>
+    <script>
+        const searchInput = document.querySelector("#words-search");
+        const resetButton = document.querySelector("#words-reset");
+        const countNode = document.querySelector("#words-count");
+        const table = document.querySelector("#words-table");
+        const tbody = table?.querySelector("tbody");
+        const rows = tbody ? Array.from(tbody.querySelectorAll("tr")) : [];
+        const storageKey = "final-statement.words-table";
+        const sortState = {
+            column: 0,
+            direction: "asc",
+        };
 
-  <script>
-    const searchInput = document.querySelector("#word-search");
-    const cityFilter = document.querySelector("#city-filter");
-    const sortOrder = document.querySelector("#sort-order");
-    const list = document.querySelector("#word-list");
-    const visibleCount = document.querySelector("#visible-count");
-    const emptyState = document.querySelector("#empty-state");
-    const cards = Array.from(document.querySelectorAll("[data-word-card]"));
-
-    function applyFilters() {
-      if (!(searchInput instanceof HTMLInputElement) || !(cityFilter instanceof HTMLSelectElement)) {
-        return;
-      }
-
-      const query = searchInput.value.trim().toLowerCase();
-      const city = cityFilter.value;
-      let shown = 0;
-
-      for (const card of cards) {
-        if (!(card instanceof HTMLElement)) {
-          continue;
+        function getCellText(row, columnIndex) {
+            return row.children[columnIndex]?.textContent?.trim() ?? "";
         }
 
-        const haystack = [
-          card.dataset.person,
-          card.dataset.case,
-          card.dataset.title,
-          card.dataset.text,
-        ].join(" ");
-        const matchesQuery = query.length === 0 || haystack.includes(query);
-        const matchesCity = city.length === 0 || card.dataset.city === city;
-        const isVisible = matchesQuery && matchesCity;
+        function applySearch() {
+            if (!(searchInput instanceof HTMLInputElement)) {
+                return;
+            }
 
-        card.hidden = !isVisible;
-        shown += isVisible ? 1 : 0;
-      }
+            const query = searchInput.value.trim().toLowerCase();
+            let visibleCount = 0;
 
-      if (visibleCount) {
-        visibleCount.textContent = String(shown);
-      }
-      if (emptyState instanceof HTMLElement) {
-        emptyState.style.display = shown === 0 ? "block" : "none";
-      }
-    }
+            for (const row of rows) {
+                const text = row.textContent?.toLowerCase() ?? "";
+                const isVisible = query.length === 0 || text.includes(query);
+                row.hidden = !isVisible;
+                visibleCount += isVisible ? 1 : 0;
+            }
 
-    function applySort() {
-      if (!(sortOrder instanceof HTMLSelectElement) || !(list instanceof HTMLElement)) {
-        return;
-      }
-
-      const sorted = [...cards].sort((a, b) => {
-        if (!(a instanceof HTMLElement) || !(b instanceof HTMLElement)) {
-          return 0;
+            if (countNode) {
+                countNode.textContent = String(visibleCount);
+            }
         }
 
-        if (sortOrder.value === "date-asc") {
-          return String(a.dataset.date).localeCompare(String(b.dataset.date));
-        }
-        if (sortOrder.value === "person-asc") {
-          return String(a.dataset.person).localeCompare(String(b.dataset.person), "ru");
-        }
-        return String(b.dataset.date).localeCompare(String(a.dataset.date));
-      });
+        function saveState() {
+            if (!(searchInput instanceof HTMLInputElement)) {
+                return;
+            }
 
-      list.replaceChildren(...sorted);
-    }
+            window.localStorage.setItem(
+                storageKey,
+                JSON.stringify({
+                    search: searchInput.value,
+                    sortColumn: sortState.column,
+                    sortDirection: sortState.direction,
+                }),
+            );
+        }
 
-    searchInput?.addEventListener("input", applyFilters);
-    cityFilter?.addEventListener("change", applyFilters);
-    sortOrder?.addEventListener("change", () => {
-      applySort();
-      applyFilters();
-    });
-  </script>
+        function readState() {
+            const rawState = window.localStorage.getItem(storageKey);
+
+            if (!rawState) {
+                return;
+            }
+
+            try {
+                const savedState = JSON.parse(rawState);
+                const savedColumn = Number(savedState.sortColumn);
+                const savedDirection =
+                    savedState.sortDirection === "desc" ? "desc" : "asc";
+
+                if (
+                    Number.isInteger(savedColumn) &&
+                    savedColumn >= 0 &&
+                    savedColumn <= 3
+                ) {
+                    sortState.column = savedColumn;
+                    sortState.direction = savedDirection;
+                }
+
+                if (
+                    searchInput instanceof HTMLInputElement &&
+                    typeof savedState.search === "string"
+                ) {
+                    searchInput.value = savedState.search;
+                }
+            } catch {
+                window.localStorage.removeItem(storageKey);
+            }
+        }
+
+        function updateSortIndicators() {
+            table?.querySelectorAll("[data-sort-header]").forEach((header) => {
+                if (!(header instanceof HTMLTableCellElement)) {
+                    return;
+                }
+
+                const isActive =
+                    Number(header.dataset.sortHeader) === sortState.column;
+                header.classList.toggle("is-sorted", isActive);
+                header.dataset.sortDirection = isActive
+                    ? sortState.direction
+                    : "";
+                header.setAttribute(
+                    "aria-sort",
+                    isActive
+                        ? sortState.direction === "asc"
+                            ? "ascending"
+                            : "descending"
+                        : "none",
+                );
+            });
+        }
+
+        function applySort() {
+            if (!tbody) {
+                return;
+            }
+
+            const direction = sortState.direction === "asc" ? 1 : -1;
+            const sortedRows = [...rows].sort((a, b) => {
+                return (
+                    getCellText(a, sortState.column).localeCompare(
+                        getCellText(b, sortState.column),
+                        "ru",
+                        {
+                            numeric: true,
+                            sensitivity: "base",
+                        },
+                    ) * direction
+                );
+            });
+
+            tbody.replaceChildren(...sortedRows);
+            updateSortIndicators();
+        }
+
+        function sortRows(columnIndex) {
+            if (sortState.column === columnIndex) {
+                sortState.direction =
+                    sortState.direction === "asc" ? "desc" : "asc";
+            } else {
+                sortState.column = columnIndex;
+                sortState.direction = "asc";
+            }
+
+            applySort();
+            saveState();
+            applySearch();
+        }
+
+        function resetTable() {
+            if (searchInput instanceof HTMLInputElement) {
+                searchInput.value = "";
+            }
+
+            sortState.column = 0;
+            sortState.direction = "asc";
+            window.localStorage.removeItem(storageKey);
+            applySort();
+            applySearch();
+        }
+
+        readState();
+        applySort();
+        applySearch();
+
+        searchInput?.addEventListener("input", () => {
+            applySearch();
+            saveState();
+        });
+        resetButton?.addEventListener("click", resetTable);
+        table?.querySelectorAll("[data-sort-column]").forEach((button) => {
+            button.addEventListener("click", () => {
+                if (!(button instanceof HTMLElement)) {
+                    return;
+                }
+
+                sortRows(Number(button.dataset.sortColumn));
+            });
+        });
+    </script>
 </BaseLayout>
+
+<style>
+    .table-tools {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-top: 24px;
+    }
+
+    .table-tools input {
+        max-width: 460px;
+    }
+
+    .table-tools-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        white-space: nowrap;
+    }
+
+    .reset-table {
+        padding: 7px 10px;
+        color: var(--text);
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        font: inherit;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    .reset-table:hover,
+    .reset-table:focus-visible {
+        color: var(--accent-strong);
+        border-color: var(--accent);
+    }
+
+    .reset-table:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+
+    .words-table-wrap {
+        margin-top: 18px;
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+    }
+
+    .words-table {
+        width: 100%;
+        min-width: 860px;
+        border-collapse: collapse;
+        table-layout: auto;
+    }
+
+    .words-table th,
+    .words-table td {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .words-table th {
+        padding: 0;
+        color: var(--muted);
+        background: var(--surface-muted);
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .words-table th button {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        width: 100%;
+        padding: 12px 14px;
+        color: inherit;
+        background: transparent;
+        border: 0;
+        font: inherit;
+        font-weight: 700;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .words-table th button::after {
+        content: "↕";
+        color: var(--muted);
+        font-size: 12px;
+        opacity: 0.65;
+    }
+
+    .words-table th button:hover,
+    .words-table th button:focus-visible {
+        color: var(--accent-strong);
+    }
+
+    .words-table th button:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: -2px;
+    }
+
+    .words-table th.is-sorted {
+        color: var(--accent-strong);
+        background: color-mix(in srgb, var(--accent) 12%, var(--surface-muted));
+    }
+
+    .words-table th.is-sorted button::after {
+        content: "↑";
+        color: var(--accent-strong);
+        opacity: 1;
+    }
+
+    .words-table th.is-sorted[data-sort-direction="desc"] button::after {
+        content: "↓";
+    }
+
+    .words-table tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .words-table td {
+        color: var(--text);
+        font-size: 14px;
+    }
+
+    .words-table a {
+        color: var(--text);
+        font-weight: 700;
+        text-decoration-color: var(--line);
+        text-underline-offset: 3px;
+    }
+
+    .words-table a:hover {
+        color: var(--accent-strong);
+        text-decoration-color: var(--accent-strong);
+    }
+
+    .word-name-cell,
+    .word-country-cell,
+    .word-period-cell {
+        white-space: nowrap;
+    }
+
+    .word-name-cell {
+        width: 360px;
+    }
+
+    .word-country-cell {
+        width: 110px;
+    }
+
+    .word-period-cell {
+        width: 92px;
+    }
+
+    @media (max-width: 720px) {
+        .table-tools {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .table-tools input {
+            max-width: none;
+        }
+
+        .table-tools-meta {
+            white-space: normal;
+        }
+    }
+</style>

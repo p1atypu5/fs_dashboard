@@ -11,6 +11,11 @@ const base = import.meta.env.BASE_URL.endsWith("/")
   : `${import.meta.env.BASE_URL}/`;
 const place = word.city ?? word.country ?? "Место не заполнено";
 const countryPeriod = word.country && word.period ? `${word.country}: ${word.period}` : word.country ?? word.period;
+const publishedDate = new Intl.DateTimeFormat("ru-RU", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+}).format(new Date(word.date));
 ---
 
 <a
@@ -31,8 +36,42 @@ const countryPeriod = word.country && word.period ? `${word.country}: ${word.per
       {word.tags.map((tag) => <span class="tag">{tag}</span>)}
     </div>
   </div>
-  <p class="meta">
-    {countryPeriod}
-    {word.readingTime && <><br />Время чтения: {word.readingTime}</>}
-  </p>
+  <div class="word-card-side">
+    <time class="published-date" datetime={word.date}>Опубликовано {publishedDate}</time>
+    <p class="meta">
+      {countryPeriod}
+      {word.readingTime && <><br />Время чтения: {word.readingTime}</>}
+    </p>
+  </div>
 </a>
+
+<style>
+  .word-card-side {
+    display: grid;
+    gap: 14px;
+    align-self: stretch;
+    justify-items: end;
+  }
+
+  .published-date {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .word-card-side .meta {
+    align-self: end;
+    text-align: right;
+  }
+
+  @media (max-width: 860px) {
+    .word-card-side {
+      justify-items: start;
+    }
+
+    .word-card-side .meta {
+      text-align: left;
+    }
+  }
+</style>

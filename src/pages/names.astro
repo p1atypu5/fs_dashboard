@@ -1,72 +1,116 @@
 ---
 import { getCollection } from "astro:content";
+import ReferencePageLayout from "../components/ReferencePageLayout.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const entries = await getCollection("last-words");
 const names = entries
-  .map((entry) => ({
-    name: entry.data.person,
-    slug: entry.data.localSlug,
-  }))
-  .sort((a, b) => a.name.localeCompare(b.name, "ru"));
+    .map((entry) => ({
+        name: entry.data.person,
+        slug: entry.data.localSlug,
+        statementDate: entry.data.statementDate,
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name, "ru"));
 
 const base = import.meta.env.BASE_URL.endsWith("/")
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+
+const dateFormatter = new Intl.DateTimeFormat("ru-RU", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+});
+
+function formatStatementDate(date?: string) {
+    if (!date) {
+        return undefined;
+    }
+
+    return dateFormatter.format(new Date(`${date}T00:00:00`));
+}
 ---
 
 <BaseLayout title="Все имена">
-  <section>
-    <h1>Все имена</h1>
-    <p class="lead">
-      Экспериментальная страница для ощущения масштаба базы: все имена одним плотным списком.
-    </p>
-  </section>
+    <ReferencePageLayout current="names">
+        <section>
+            <h1>Все имена</h1>
+        </section>
 
-  <section class="section names-section">
-    <p class="meta">{names.length} записей</p>
-    <div class="names-list">
-      {names.map((item) => <a href={`${base}words/${item.slug}/`}>{item.name}</a>)}
-    </div>
-  </section>
+        <section class="section names-section">
+            <p class="meta">{names.length} записей</p>
+            <div class="names-list">
+                {
+                    names.map((item) => (
+                        <span class="name-item">
+                            <a href={`${base}words/${item.slug}/`}>
+                                {item.name}
+                            </a>
+                            {item.statementDate && (
+                                <time
+                                    class="name-date"
+                                    datetime={item.statementDate}
+                                >
+                                    {formatStatementDate(item.statementDate)}
+                                </time>
+                            )}
+                        </span>
+                    ))
+                }
+            </div>
+        </section>
+    </ReferencePageLayout>
 </BaseLayout>
 
 <style>
-  .names-section {
-    max-width: none;
-  }
-
-  .names-list {
-    column-count: 3;
-    column-gap: 30px;
-    margin-top: 18px;
-  }
-
-  .names-list a {
-    display: block;
-    break-inside: avoid;
-    padding: 4px 0;
-    color: var(--text);
-    font-size: 14px;
-    line-height: 1.35;
-    text-decoration-color: var(--line);
-    text-underline-offset: 3px;
-  }
-
-  .names-list a:hover {
-    color: var(--accent-strong);
-    text-decoration-color: var(--accent-strong);
-  }
-
-  @media (max-width: 900px) {
-    .names-list {
-      column-count: 2;
+    .names-section {
+        max-width: none;
     }
-  }
 
-  @media (max-width: 640px) {
     .names-list {
-      column-count: 1;
+        column-count: 3;
+        column-gap: 30px;
+        margin-top: 18px;
     }
-  }
+
+    .name-item {
+        display: block;
+        break-inside: avoid;
+        padding: 4px 0;
+        line-height: 1.35;
+    }
+
+    .name-item a {
+        color: var(--text);
+        font-size: 14px;
+        text-decoration-color: var(--line);
+        text-underline-offset: 3px;
+    }
+
+    :global(.name-item .name-date) {
+        display: inline-block;
+        margin-left: 5px;
+        color: color-mix(in srgb, var(--muted) 70%, var(--background));
+        font-size: 10px;
+        font-weight: 400;
+        line-height: 1;
+        vertical-align: baseline;
+    }
+
+    .name-item a:hover {
+        color: var(--accent-strong);
+        text-decoration-color: var(--accent-strong);
+    }
+
+    @media (max-width: 900px) {
+        .names-list {
+            column-count: 2;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .names-list {
+            column-count: 1;
+        }
+    }
 </style>

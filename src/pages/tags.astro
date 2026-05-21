@@ -1,0 +1,140 @@
+---
+import { getCollection } from "astro:content";
+import ReferencePageLayout from "../components/ReferencePageLayout.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const entries = await getCollection("last-words");
+const tagsByName = new Map<string, number>();
+
+for (const entry of entries) {
+    for (const tag of entry.data.tags) {
+        tagsByName.set(tag, (tagsByName.get(tag) ?? 0) + 1);
+    }
+}
+
+const tags = [...tagsByName.entries()]
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => a.name.localeCompare(b.name, "ru"));
+---
+
+<BaseLayout title="Библиотека тегов">
+    <ReferencePageLayout current="tags">
+        <section>
+            <h1>Библиотека тегов</h1>
+        </section>
+        <section class="section tags-section">
+            <div class="tags-tools">
+                <input id="tags-search" type="search" placeholder="Найти тег" />
+                <p class="meta">
+                    <span id="tags-count">{tags.length}</span> из {tags.length} тегов
+                </p>
+            </div>
+
+            <div class="tags-list" id="tags-list">
+                {
+                    tags.map((tag) => (
+                        <div class="tag-item">
+                            <span>{tag.name}</span>
+                            <small>{tag.count}</small>
+                        </div>
+                    ))
+                }
+            </div>
+        </section>
+
+        <script>
+            const searchInput = document.querySelector("#tags-search");
+            const countNode = document.querySelector("#tags-count");
+            const tagItems = Array.from(document.querySelectorAll(".tag-item"));
+
+            function applySearch() {
+                if (!(searchInput instanceof HTMLInputElement)) {
+                    return;
+                }
+
+                const query = searchInput.value.trim().toLowerCase();
+                let visibleCount = 0;
+
+                for (const item of tagItems) {
+                    const text = item.textContent?.toLowerCase() ?? "";
+                    const isVisible = query.length === 0 || text.includes(query);
+                    item.toggleAttribute("hidden", !isVisible);
+                    visibleCount += isVisible ? 1 : 0;
+                }
+
+                if (countNode) {
+                    countNode.textContent = String(visibleCount);
+                }
+            }
+
+            searchInput?.addEventListener("input", applySearch);
+        </script>
+    </ReferencePageLayout>
+</BaseLayout>
+
+<style>
+    .tags-section {
+        max-width: none;
+    }
+
+    .tags-tools {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-top: 24px;
+    }
+
+    .tags-tools input {
+        max-width: 420px;
+    }
+
+    .tags-list {
+        column-count: 3;
+        column-gap: 30px;
+        margin-top: 18px;
+    }
+
+    .tag-item {
+        display: flex;
+        break-inside: avoid;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 4px 0;
+        color: var(--text);
+        font-size: 14px;
+        line-height: 1.35;
+    }
+
+    .tag-item small {
+        flex: 0 0 auto;
+        color: var(--muted);
+        font-size: 12px;
+    }
+
+    .tag-item[hidden] {
+        display: none;
+    }
+
+    @media (max-width: 900px) {
+        .tags-list {
+            column-count: 2;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .tags-tools {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .tags-tools input {
+            max-width: none;
+        }
+
+        .tags-list {
+            column-count: 1;
+        }
+    }
+</style>
