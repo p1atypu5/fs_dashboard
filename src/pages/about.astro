@@ -1,5 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const base = import.meta.env.BASE_URL.endsWith("/")
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
 ---
 
 <BaseLayout title="О проекте">
@@ -28,31 +32,25 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <h2>Карта сайта</h2>
             <ul class="site-map">
                 <li>
-                    <a href={`${import.meta.env.BASE_URL}`}>Главная</a>
+                    <a href={`${base}`}>Главная</a>
                     <span>сводка по базе и последние добавления.</span>
                 </li>
                 <li>
-                    <a href={`${import.meta.env.BASE_URL}/words/`}>База слов</a>
+                    <a href={`${base}/words/`}>База слов</a>
                     <span>таблица всех записей с поиском и сортировкой.</span>
                 </li>
                 <li>
-                    <a href={`${import.meta.env.BASE_URL}/reports/names/`}
-                        >Имена</a
-                    >
+                    <a href={`${base}/reports/names/`}>Имена</a>
                     <span>плотный список всех имён со ссылками на тексты.</span>
                 </li>
                 <li>
-                    <a href={`${import.meta.env.BASE_URL}/reports/tags/`}
-                        >Теги</a
-                    >
+                    <a href={`${base}/reports/tags/`}>Теги</a>
                     <span
                         >библиотека тегов с поиском и количеством записей.</span
                     >
                 </li>
                 <li>
-                    <a
-                        href={`${import.meta.env.BASE_URL}/reports/missing-fields/`}
-                        >Неполные поля</a
+                    <a href={`${base}/reports/missing-fields/`}>Неполные поля</a
                     >
                     <span
                         >отчёт по записям, где не хватает фото, описания, тегов
