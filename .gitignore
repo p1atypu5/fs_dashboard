@@ -21,8 +21,8 @@ pnpm-debug.log*
 .DS_Store
 
 # local import inputs and working notes
-data/
-faq/
+/data/
+/faq/
 
 # jetbrains setting folder
 .idea/

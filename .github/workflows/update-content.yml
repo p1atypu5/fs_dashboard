@@ -56,14 +56,24 @@ jobs:
               --output data/wp-export/posts.raw.json \
               --meta-output src/data/wpExportMeta.json
           else
-            AFTER="$(node -e "const meta = require('./src/data/wpExportMeta.json'); console.log(meta.fetchedAt)")"
-            npm run fetch:wp -- \
-              --all \
-              --limit 100 \
-              --delay 2000 \
-              --after "$AFTER" \
-              --output data/wp-export/posts.raw.json \
-              --meta-output src/data/wpExportMeta.json
+            if [ -f src/data/wpExportMeta.json ]; then
+              AFTER="$(node -e "const meta = require('./src/data/wpExportMeta.json'); console.log(meta.fetchedAt)")"
+              npm run fetch:wp -- \
+                --all \
+                --limit 100 \
+                --delay 2000 \
+                --after "$AFTER" \
+                --output data/wp-export/posts.raw.json \
+                --meta-output src/data/wpExportMeta.json
+            else
+              echo "No previous fetch metadata found. Running initial full fetch without prune."
+              npm run fetch:wp -- \
+                --all \
+                --limit 100 \
+                --delay 2000 \
+                --output data/wp-export/posts.raw.json \
+                --meta-output src/data/wpExportMeta.json
+            fi
           fi
 
       - name: Generate content
