@@ -7,12 +7,85 @@ const base = import.meta.env.BASE_URL.endsWith("/")
 ---
 
 <BaseLayout title="Страница не найдена">
-    <section class="article">
+    <section class="not-found">
+        <p class="eyebrow">404</p>
         <h1>Страница не найдена</h1>
-        <p class="lead">Такого адреса здесь нет.</p>
+        <p class="lead">
+            Возможно, ссылка устарела или страница была перенесена в другой
+            раздел.
+        </p>
         <div class="button-row">
             <a class="button" href={base}>На главную</a>
             <a class="button secondary" href={`${base}words/`}>В базу слов</a>
         </div>
     </section>
+
+    <section class="section quick-links" aria-label="Основные разделы">
+        <a href={`${base}reports/missing-fields/`}>
+            <strong>Отчёты</strong>
+            <span>проверка неполных данных, имена и теги</span>
+        </a>
+        <a href={`${base}about/`}>
+            <strong>О проекте</strong>
+            <span>краткое описание и карта сайта</span>
+        </a>
+    </section>
 </BaseLayout>
+
+<style>
+    .not-found {
+        max-width: 780px;
+    }
+
+    .eyebrow {
+        margin-bottom: 12px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0;
+    }
+
+    .quick-links {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        max-width: 760px;
+    }
+
+    .quick-links a {
+        display: block;
+        min-height: 110px;
+        padding: 18px;
+        color: var(--text);
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        text-decoration: none;
+    }
+
+    .quick-links a:hover {
+        border-color: var(--accent);
+    }
+
+    .quick-links strong,
+    .quick-links span {
+        display: block;
+    }
+
+    .quick-links strong {
+        margin-bottom: 8px;
+        font-size: 18px;
+    }
+
+    .quick-links span {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.35;
+    }
+
+    @media (max-width: 680px) {
+        .quick-links {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

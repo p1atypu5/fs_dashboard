@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
-import ReferencePageLayout from "../components/ReferencePageLayout.astro";
-import BaseLayout from "../layouts/BaseLayout.astro";
+import ReferencePageLayout from "../../components/ReferencePageLayout.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const entries = await getCollection("last-words");
 const tagsByName = new Map<string, number>();
