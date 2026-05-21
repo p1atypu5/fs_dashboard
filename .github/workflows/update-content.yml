@@ -1,0 +1,72 @@
+name: Update WordPress content
+
+on:
+  schedule:
+    - cron: "23 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: update-content
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      TZ: Europe/Istanbul
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch WordPress JSON
+        run: >
+          npm run fetch:wp --
+          --all
+          --limit 100
+          --delay 2000
+          --output data/wp-export/posts.all.raw.json
+          --meta-output src/data/wpExportMeta.json
+
+      - name: Generate content
+        run: npm run import:wp -- --input data/wp-export/posts.all.raw.json --all
+
+      - name: Build site
+        run: npm run build
+
+      - name: Commit content changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/content/last-words src/data/wpExportMeta.json
+          if git diff --cached --quiet; then
+            echo "No content changes to commit."
+          else
+            git commit -m "Update WordPress content"
+            git push
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

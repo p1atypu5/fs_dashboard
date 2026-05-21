@@ -6,7 +6,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "fetch:wp": "node scripts/fetch-wordpress.mjs",
+    "import:wp": "node scripts/import-wordpress.mjs"
   },
   "dependencies": {
     "astro": "^5.17.1"
