@@ -32,4 +32,4 @@ GitHub Actions обновляет контент автоматически:
 
 Сырые WordPress JSON сохраняются только во временный ignored-каталог `data/` и не коммитятся.
 
-Для GitHub Pages используется base path `/final-statement`, он задан в `astro.config.mjs`.
+Для GitHub Pages используется base path `/fs_dashboard`, он задан в `astro.config.mjs`.
