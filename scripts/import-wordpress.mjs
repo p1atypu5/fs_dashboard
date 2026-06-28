@@ -94,12 +94,14 @@ const posts = all ? inputPosts : inputPosts.slice(0, limit);
 assertUniqueWordPressPosts(posts);
 await mkdir(CONTENT_DIR, { recursive: true });
 
-const existingByWordPressId = await readExistingEntries(CONTENT_DIR);
+const existingByWordPressId = await readExistingEntries(CONTENT_DIR, { allowDuplicates: prune });
 const importedWordPressIds = new Set(posts.map((post) => String(post.id)));
 const results = [];
 
 for (const post of posts) {
-  const existing = existingByWordPressId.get(String(post.id));
+  const postLanguage = detectPostLanguage(post);
+  const existingGroup = existingByWordPressId.get(String(post.id));
+  const existing = selectExistingEntry(existingGroup, postLanguage);
   const frontmatter = createFrontmatter(post, existing);
   const fileName = `${post.id}-${frontmatter.language}.md`;
   const filePath = path.join(CONTENT_DIR, fileName);
@@ -115,18 +117,21 @@ for (const post of posts) {
 
   if (!dryRun) {
     await writeFile(filePath, content, "utf8");
-    if (existing && existing.file !== fileName) {
-      await unlink(path.join(CONTENT_DIR, existing.file));
+    for (const oldFile of existingGroup?.files ?? []) {
+      if (oldFile !== fileName) {
+        await unlink(path.join(CONTENT_DIR, oldFile));
+      }
     }
   }
 }
 
 if (prune) {
-  for (const [wordpressId, existing] of existingByWordPressId) {
+  for (const [wordpressId, existingGroup] of existingByWordPressId) {
     if (importedWordPressIds.has(wordpressId)) {
       continue;
     }
 
+    const existing = existingGroup.primary;
     const filePath = path.join(CONTENT_DIR, existing.file);
     results.push({
       id: wordpressId,
@@ -137,7 +142,9 @@ if (prune) {
     });
 
     if (!dryRun) {
-      await unlink(filePath);
+      for (const oldFile of existingGroup.files) {
+        await unlink(path.join(CONTENT_DIR, oldFile));
+      }
     }
   }
 }
@@ -165,18 +172,18 @@ async function readPostsFromFile(file) {
   return Array.isArray(data) ? data : [data];
 }
 
-async function readExistingEntries(contentDir) {
-  const entries = new Map();
+async function readExistingEntries(contentDir, { allowDuplicates = false } = {}) {
+  const entriesByWordPressId = new Map();
   const duplicates = new Map();
   let files = [];
 
   try {
     files = await readdir(contentDir);
   } catch {
-    return entries;
+    return entriesByWordPressId;
   }
 
-  for (const file of files) {
+  for (const file of files.sort((a, b) => a.localeCompare(b))) {
     if (!file.endsWith(".md")) {
       continue;
     }
@@ -186,22 +193,39 @@ async function readExistingEntries(contentDir) {
     const frontmatter = parseFrontmatter(source);
     if (frontmatter.wordpressId) {
       const key = String(frontmatter.wordpressId);
-      const existing = entries.get(key);
+      const entry = { file, frontmatter };
+      const existingGroup = entriesByWordPressId.get(key);
 
-      if (existing) {
-        duplicates.set(key, [...(duplicates.get(key) ?? [existing.file]), file]);
+      if (existingGroup) {
+        existingGroup.entries.push(entry);
+        existingGroup.files.push(file);
+        duplicates.set(key, existingGroup.files);
         continue;
       }
 
-      entries.set(key, { file, frontmatter });
+      entriesByWordPressId.set(key, {
+        primary: entry,
+        entries: [entry],
+        files: [file],
+      });
     }
   }
 
-  if (duplicates.size > 0) {
+  if (!allowDuplicates && duplicates.size > 0) {
     throw new Error(formatDuplicateWordPressIds("Existing content has duplicate wordpressId values", duplicates));
   }
 
-  return entries;
+  return entriesByWordPressId;
+}
+
+function selectExistingEntry(existingGroup, language) {
+  if (!existingGroup) {
+    return undefined;
+  }
+
+  return existingGroup.entries.find((entry) => entry.frontmatter.language === language)
+    ?? existingGroup.entries.find((entry) => entry.file.endsWith(`-${language}.md`))
+    ?? existingGroup.primary;
 }
 
 function assertUniqueWordPressPosts(posts) {
@@ -278,12 +302,7 @@ function createFrontmatter(post, existing) {
   const title = stripHtml(post.title?.rendered ?? "");
   const contentHtml = cleanContentHtml(post.content?.rendered ?? "");
   const extractedStatementDate = extractStatementDate(contentHtml);
-  const language = detectEntryLanguage({
-    title,
-    contentHtml,
-    personDescription: post.acf?.opisanie_cheloveka,
-    caseDescription: post.acf?.opisanie_proczessa,
-  });
+  const language = detectPostLanguage(post);
   const originalLanguage = existingData.originalLanguage ?? language;
 
   const data = {
@@ -321,6 +340,15 @@ function createFrontmatter(post, existing) {
   };
 
   return removeUndefined(data);
+}
+
+function detectPostLanguage(post) {
+  return detectEntryLanguage({
+    title: stripHtml(post.title?.rendered ?? ""),
+    contentHtml: cleanContentHtml(post.content?.rendered ?? ""),
+    personDescription: post.acf?.opisanie_cheloveka,
+    caseDescription: post.acf?.opisanie_proczessa,
+  });
 }
 
 function detectEntryLanguage({ title, contentHtml, personDescription, caseDescription }) {
