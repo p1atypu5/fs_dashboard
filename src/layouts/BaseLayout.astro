@@ -10,6 +10,16 @@ const { title, description = "Readonly-зеркало последних сло�
 const base = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
+const basePath = new URL(base, Astro.url.origin).pathname;
+const basePathWithoutTrailingSlash = basePath.replace(/\/$/, "");
+const currentPath = Astro.url.pathname;
+const routePath =
+  currentPath === basePathWithoutTrailingSlash || currentPath === basePath
+    ? "/"
+    : currentPath.startsWith(basePath)
+      ? `/${currentPath.slice(basePath.length)}`.replace(/\/{2,}/g, "/")
+      : currentPath;
+const normalizedRoutePath = routePath.endsWith("/") ? routePath : `${routePath}/`;
 const pageTitle = title === "Последнее слово" ? title : `${title} | Последнее слово`;
 const freshnessDate = new Date(wpExportMeta.fetchedAt);
 const freshnessTimeZone = wpExportMeta.timeZone || "UTC";
@@ -23,6 +33,50 @@ const freshnessLabel = new Intl.DateTimeFormat("ru-RU", {
   timeZone: freshnessTimeZone,
   timeZoneName: "short",
 }).format(freshnessDate);
+
+const isHomeActive = normalizedRoutePath === "/";
+const isWordsActive = normalizedRoutePath.startsWith("/words/");
+const isReportsActive =
+  normalizedRoutePath.startsWith("/reports/") || normalizedRoutePath.startsWith("/service/");
+const isAboutActive = normalizedRoutePath.startsWith("/about/");
+const reportLinks = [
+  {
+    id: "names",
+    label: "Имена",
+    href: `${base}reports/names/`,
+  },
+  {
+    id: "tags",
+    label: "Теги",
+    href: `${base}reports/tags/`,
+  },
+  {
+    id: "missing-fields",
+    label: "Неполные поля",
+    href: `${base}reports/missing-fields/`,
+  },
+  {
+    id: "original-languages",
+    label: "Языки оригинала",
+    href: `${base}reports/original-languages/`,
+  },
+  {
+    id: "images",
+    label: "Изображения",
+    href: `${base}service/images/`,
+  },
+];
+const currentReportId = normalizedRoutePath.startsWith("/reports/names/")
+  ? "names"
+  : normalizedRoutePath.startsWith("/reports/tags/")
+    ? "tags"
+    : normalizedRoutePath.startsWith("/service/images/")
+      ? "images"
+      : normalizedRoutePath.startsWith("/reports/original-languages/")
+        ? "original-languages"
+        : normalizedRoutePath.startsWith("/reports/missing-fields/")
+          ? "missing-fields"
+          : "";
 ---
 
 <!doctype html>
@@ -39,17 +93,33 @@ const freshnessLabel = new Intl.DateTimeFormat("ru-RU", {
   <body>
     <header class="site-header">
       <div class="header-main">
-        <a class="brand" href={base}>Последнее слово</a>
+        <a class:list={["brand", { "is-active": isHomeActive }]} href={base} aria-current={isHomeActive ? "page" : undefined}>Последнее слово</a>
         <nav aria-label="Основная навигация">
-          <a href={`${base}words/`}>База слов</a>
-          <a href={`${base}reports/missing-fields/`}>Отчеты</a>
-          <a href={`${base}about/`}>О проекте</a>
+          <a class:list={{ "is-active": isWordsActive }} href={`${base}words/`} aria-current={isWordsActive ? "page" : undefined}>База слов</a>
+          <a class:list={{ "is-active": isReportsActive }} href={`${base}reports/missing-fields/`} aria-current={isReportsActive ? "page" : undefined}>Отчеты</a>
+          <a class:list={{ "is-active": isAboutActive }} href={`${base}about/`} aria-current={isAboutActive ? "page" : undefined}>О проекте</a>
         </nav>
       </div>
       <p class="data-freshness">
         База актуальна на <time datetime={wpExportMeta.fetchedAt}>{freshnessLabel}</time>
       </p>
     </header>
+    {
+      isReportsActive && (
+        <div class="report-nav-wrap">
+          <nav class="report-nav" aria-label="Страницы отчетов и справочников">
+            {reportLinks.map((link) => (
+              <a
+                href={link.href}
+                aria-current={link.id === currentReportId ? "page" : undefined}
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      )
+    }
     <main>
       <slot />
     </main>
@@ -59,14 +129,15 @@ const freshnessLabel = new Intl.DateTimeFormat("ru-RU", {
 <style is:global>
   :root {
     color-scheme: light;
-    --bg: #f7f5f0;
+    --bg: #f6f6f6;
     --surface: #ffffff;
     --surface-muted: #efede7;
     --text: #1f2523;
     --muted: #646d68;
     --line: #d9d5ca;
-    --accent: #12605b;
-    --accent-strong: #0a4743;
+    --accent: #345bdc;
+    --accent-strong: #2748b8;
+    --visited: #9f1f50;
     --warning: #9b4f18;
     font-family:
       Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -74,6 +145,10 @@ const freshnessLabel = new Intl.DateTimeFormat("ru-RU", {
 
   * {
     box-sizing: border-box;
+  }
+
+  html {
+    scrollbar-gutter: stable;
   }
 
   body {
@@ -85,6 +160,23 @@ const freshnessLabel = new Intl.DateTimeFormat("ru-RU", {
 
   a {
     color: var(--accent);
+    text-decoration-line: none;
+    text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    text-underline-offset: 3px;
+  }
+
+  a:hover {
+    text-decoration-line: underline;
+  }
+
+  a:visited {
+    color: var(--visited);
+    text-decoration-color: color-mix(in srgb, var(--visited) 45%, transparent);
+  }
+
+  a:visited:hover {
+    color: var(--visited);
+    text-decoration-color: color-mix(in srgb, var(--visited) 45%, transparent);
   }
 
   .site-header {
@@ -107,25 +199,89 @@ const freshnessLabel = new Intl.DateTimeFormat("ru-RU", {
 
   .brand {
     color: var(--text);
-    font-size: 18px;
-    font-weight: 750;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .brand:visited {
+    color: var(--text);
+  }
+
+  .brand:hover,
+  .brand:visited:hover {
+    color: var(--text);
     text-decoration: none;
   }
 
   nav {
     display: flex;
+    align-items: center;
     gap: 16px;
     flex-wrap: wrap;
   }
 
+  .brand,
   nav a {
-    color: var(--muted);
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    line-height: 1.2;
+  }
+
+  nav a {
+    color: var(--text);
     font-size: 15px;
+    font-weight: 500;
     text-decoration: none;
   }
 
-  nav a:hover {
-    color: var(--accent-strong);
+  .site-header a.is-active {
+    font-size: 18px;
+    font-weight: 750;
+  }
+
+  nav a:visited {
+    color: var(--text);
+  }
+
+  nav a:hover,
+  nav a:visited:hover {
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .report-nav-wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 8px 24px 0;
+  }
+
+  .report-nav {
+    gap: 14px;
+    min-height: 20px;
+  }
+
+  .report-nav a {
+    color: var(--text);
+    min-height: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .report-nav a:visited {
+    color: var(--text);
+  }
+
+  .report-nav a:hover,
+  .report-nav a:visited:hover {
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .report-nav a[aria-current="page"] {
+    font-weight: 750;
   }
 
   .data-freshness {
@@ -140,7 +296,7 @@ const freshnessLabel = new Intl.DateTimeFormat("ru-RU", {
   main {
     max-width: 1180px;
     margin: 0 auto;
-    padding: 36px 24px 64px;
+    padding: 0 24px 64px;
   }
 
   h1,
@@ -264,11 +420,23 @@ const freshnessLabel = new Intl.DateTimeFormat("ru-RU", {
   }
 
   .tag {
+    display: inline-flex;
+    align-items: center;
     padding: 4px 8px;
     color: var(--accent-strong);
-    background: #dcebe8;
+    background: color-mix(in srgb, var(--accent) 12%, var(--surface));
     border-radius: 999px;
     font-size: 13px;
+    text-decoration: none;
+  }
+
+  .tag:visited {
+    color: var(--accent-strong);
+  }
+
+  .tag:hover {
+    background: color-mix(in srgb, var(--accent) 20%, var(--surface));
+    text-decoration: none;
   }
 
   .button-row {
@@ -290,9 +458,33 @@ const freshnessLabel = new Intl.DateTimeFormat("ru-RU", {
     font-weight: 700;
   }
 
+  .button:visited {
+    color: #ffffff;
+  }
+
+  .button:hover,
+  .button:visited:hover {
+    color: #ffffff;
+    text-decoration: none;
+  }
+
   .button.secondary {
+    color: var(--accent);
+    background: var(--surface);
+    border: 2px solid var(--accent);
+  }
+
+  .button.secondary:visited {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .button.secondary:hover,
+  .button.secondary:focus-visible,
+  .button.secondary:visited:hover {
     color: var(--accent-strong);
-    background: var(--surface-muted);
+    background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+    text-decoration: none;
   }
 
   .article {

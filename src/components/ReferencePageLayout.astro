@@ -1,95 +1,14 @@
 ---
 type Props = {
-    current: "names" | "tags" | "missing-fields";
+    current:
+        | "names"
+        | "tags"
+        | "missing-fields"
+        | "original-languages"
+        | "images";
 };
 
-const { current } = Astro.props;
-const base = import.meta.env.BASE_URL.endsWith("/")
-    ? import.meta.env.BASE_URL
-    : `${import.meta.env.BASE_URL}/`;
-
-const links = [
-    {
-        id: "names",
-        label: "Имена",
-        href: `${base}reports/names/`,
-    },
-    {
-        id: "tags",
-        label: "Теги",
-        href: `${base}reports/tags/`,
-    },
-    {
-        id: "missing-fields",
-        label: "Неполные поля",
-        href: `${base}reports/missing-fields/`,
-    },
-];
+Astro.props satisfies Props;
 ---
 
-<div class="reference-layout">
-    <div>
-        <slot />
-    </div>
-
-    <aside class="reference-aside">
-        <nav class="reference-links" aria-label="Страницы отчетов и справочников">
-            {
-                links.map((link) => (
-                    <a
-                        href={link.href}
-                        aria-current={link.id === current ? "page" : undefined}
-                    >
-                        {link.label}
-                    </a>
-                ))
-            }
-        </nav>
-    </aside>
-</div>
-
-<style>
-    .reference-layout {
-        position: relative;
-    }
-
-    .reference-aside {
-        position: absolute;
-        top: 36px;
-        right: 0;
-        width: 190px;
-    }
-
-    .reference-links {
-        display: flex;
-        align-items: flex-end;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .reference-links a {
-        color: var(--muted);
-        font-size: 15px;
-        line-height: 1.2;
-        text-align: right;
-        text-decoration-line: underline;
-        text-decoration-color: color-mix(in srgb, var(--muted) 55%, var(--background));
-        text-decoration-thickness: 1px;
-        text-underline-offset: 4px;
-    }
-
-    .reference-links a:hover,
-    .reference-links a[aria-current="page"] {
-        color: var(--accent-strong);
-        text-decoration-color: var(--accent-strong);
-    }
-
-    @media (max-width: 860px) {
-        .reference-aside {
-            position: static;
-            width: auto;
-            padding-top: 0;
-            margin-top: 18px;
-        }
-    }
-</style>
+<slot />

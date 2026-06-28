@@ -4,11 +4,13 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "npm run validate:content",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
     "fetch:wp": "node scripts/fetch-wordpress.mjs",
-    "import:wp": "node scripts/import-wordpress.mjs"
+    "import:wp": "node scripts/import-wordpress.mjs",
+    "validate:content": "node scripts/validate-content.mjs"
   },
   "dependencies": {
     "astro": "^5.17.1"

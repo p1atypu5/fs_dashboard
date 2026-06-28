@@ -1,8 +1,71 @@
-import { mkdir, readFile, readdir, unlink, writeFile } from "node:fs/promises";
+import { appendFile, mkdir, readFile, readdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
 const CONTENT_DIR = path.join(process.cwd(), "src/content/last-words");
+
+const russianMonthByName = {
+  январь: "01",
+  января: "01",
+  февраль: "02",
+  февраля: "02",
+  март: "03",
+  марта: "03",
+  апрель: "04",
+  апреля: "04",
+  май: "05",
+  мая: "05",
+  июнь: "06",
+  июня: "06",
+  июль: "07",
+  июля: "07",
+  август: "08",
+  августа: "08",
+  сентябрь: "09",
+  сентября: "09",
+  октябрь: "10",
+  октября: "10",
+  ноябрь: "11",
+  ноября: "11",
+  декабрь: "12",
+  декабря: "12",
+};
+
+const russianOrdinalDayByName = {
+  первое: "1",
+  второе: "2",
+  третье: "3",
+  четвертое: "4",
+  четвёртое: "4",
+  пятое: "5",
+  шестое: "6",
+  седьмое: "7",
+  восьмое: "8",
+  девятое: "9",
+  десятое: "10",
+  одиннадцатое: "11",
+  двенадцатое: "12",
+  тринадцатое: "13",
+  четырнадцатое: "14",
+  пятнадцатое: "15",
+  шестнадцатое: "16",
+  семнадцатое: "17",
+  восемнадцатое: "18",
+  девятнадцатое: "19",
+  двадцатое: "20",
+  "двадцать первое": "21",
+  "двадцать второе": "22",
+  "двадцать третье": "23",
+  "двадцать четвертое": "24",
+  "двадцать четвёртое": "24",
+  "двадцать пятое": "25",
+  "двадцать шестое": "26",
+  "двадцать седьмое": "27",
+  "двадцать восьмое": "28",
+  "двадцать девятое": "29",
+  тридцатое: "30",
+  "тридцать первое": "31",
+};
 
 const args = parseArgs(process.argv.slice(2));
 const inputFile = args.input;
@@ -10,6 +73,9 @@ const limit = Number(args.limit ?? 20);
 const all = Boolean(args.all);
 const dryRun = Boolean(args["dry-run"]);
 const prune = Boolean(args.prune);
+const logOutput = args["log-output"];
+const logLimit = Number(args["log-limit"] ?? 1000);
+const mode = args.mode ?? (prune ? "full" : "incremental");
 
 if (!inputFile) {
   throw new Error("Missing --input. First save WordPress JSON with npm run fetch:wp.");
@@ -19,8 +85,13 @@ if (!all && (!Number.isInteger(limit) || limit < 1 || limit > 100)) {
   throw new Error("--limit must be an integer from 1 to 100, or pass --all");
 }
 
+if (!Number.isInteger(logLimit) || logLimit < 0) {
+  throw new Error("--log-limit must be a non-negative integer");
+}
+
 const inputPosts = await readPostsFromFile(inputFile);
 const posts = all ? inputPosts : inputPosts.slice(0, limit);
+assertUniqueWordPressPosts(posts);
 await mkdir(CONTENT_DIR, { recursive: true });
 
 const existingByWordPressId = await readExistingEntries(CONTENT_DIR);
@@ -38,11 +109,15 @@ for (const post of posts) {
     id: post.id,
     title: post.title?.rendered ?? "",
     file: path.relative(process.cwd(), filePath),
+    localSlug: frontmatter.localSlug,
     action: existing ? "update" : "create",
   });
 
   if (!dryRun) {
     await writeFile(filePath, content, "utf8");
+    if (existing && existing.file !== fileName) {
+      await unlink(path.join(CONTENT_DIR, existing.file));
+    }
   }
 }
 
@@ -57,6 +132,7 @@ if (prune) {
       id: wordpressId,
       title: existing.frontmatter.title ?? existing.frontmatter.person ?? "",
       file: path.relative(process.cwd(), filePath),
+      localSlug: existing.frontmatter.localSlug,
       action: "delete",
     });
 
@@ -70,6 +146,17 @@ for (const result of results) {
   console.log(`${result.action}: ${result.file} (${result.id}) ${stripHtml(result.title)}`);
 }
 
+if (logOutput && !dryRun && results.length > 0) {
+  await appendImportLog({
+    output: logOutput,
+    input: inputFile,
+    mode,
+    prune,
+    limit: logLimit,
+    results,
+  });
+}
+
 console.log(`${dryRun ? "checked" : "imported"} ${results.length} post(s)`);
 
 async function readPostsFromFile(file) {
@@ -80,6 +167,7 @@ async function readPostsFromFile(file) {
 
 async function readExistingEntries(contentDir) {
   const entries = new Map();
+  const duplicates = new Map();
   let files = [];
 
   try {
@@ -97,11 +185,87 @@ async function readExistingEntries(contentDir) {
     const source = await readFile(filePath, "utf8");
     const frontmatter = parseFrontmatter(source);
     if (frontmatter.wordpressId) {
-      entries.set(String(frontmatter.wordpressId), { file, frontmatter });
+      const key = String(frontmatter.wordpressId);
+      const existing = entries.get(key);
+
+      if (existing) {
+        duplicates.set(key, [...(duplicates.get(key) ?? [existing.file]), file]);
+        continue;
+      }
+
+      entries.set(key, { file, frontmatter });
     }
   }
 
+  if (duplicates.size > 0) {
+    throw new Error(formatDuplicateWordPressIds("Existing content has duplicate wordpressId values", duplicates));
+  }
+
   return entries;
+}
+
+function assertUniqueWordPressPosts(posts) {
+  const seen = new Map();
+  const duplicates = new Map();
+
+  for (const post of posts) {
+    const key = String(post.id);
+    const existing = seen.get(key);
+
+    if (existing) {
+      duplicates.set(key, [...(duplicates.get(key) ?? [existing]), post.slug ?? ""]);
+      continue;
+    }
+
+    seen.set(key, post.slug ?? "");
+  }
+
+  if (duplicates.size > 0) {
+    throw new Error(formatDuplicateWordPressIds("Input JSON has duplicate WordPress post ids", duplicates));
+  }
+}
+
+function formatDuplicateWordPressIds(message, duplicates) {
+  const details = [...duplicates.entries()]
+    .map(([wordpressId, items]) => `- ${wordpressId}: ${items.join(", ")}`)
+    .join("\n");
+
+  return `${message}:\n${details}`;
+}
+
+async function appendImportLog({ output, input, mode, prune, limit, results }) {
+  const outputPath = path.resolve(process.cwd(), output);
+  const runId = new Date().toISOString();
+  const lines = results.map((result) => JSON.stringify({
+    runId,
+    timestamp: new Date().toISOString(),
+    mode,
+    prune,
+    action: result.action,
+    wordpressId: Number(result.id),
+    file: result.file,
+    localSlug: result.localSlug,
+    title: stripHtml(result.title),
+    input,
+  }));
+
+  await mkdir(path.dirname(outputPath), { recursive: true });
+  await appendFile(outputPath, `${lines.join("\n")}\n`, "utf8");
+
+  if (limit > 0) {
+    await trimImportLog(outputPath, limit);
+  }
+}
+
+async function trimImportLog(outputPath, limit) {
+  const source = await readFile(outputPath, "utf8");
+  const lines = source.split("\n").filter(Boolean);
+
+  if (lines.length <= limit) {
+    return;
+  }
+
+  await writeFile(outputPath, `${lines.slice(-limit).join("\n")}\n`, "utf8");
 }
 
 function createFrontmatter(post, existing) {
@@ -114,15 +278,21 @@ function createFrontmatter(post, existing) {
   const title = stripHtml(post.title?.rendered ?? "");
   const contentHtml = cleanContentHtml(post.content?.rendered ?? "");
   const extractedStatementDate = extractStatementDate(contentHtml);
+  const language = detectEntryLanguage({
+    title,
+    contentHtml,
+    personDescription: post.acf?.opisanie_cheloveka,
+    caseDescription: post.acf?.opisanie_proczessa,
+  });
+  const originalLanguage = existingData.originalLanguage ?? language;
 
   const data = {
     wordpressId: post.id,
     wpSlug: post.slug,
     localSlug: existingData.localSlug ?? post.slug,
     translationGroupId: existingData.translationGroupId ?? String(post.id),
-    language: existingData.language ?? "ru",
-    originalLanguage: existingData.originalLanguage ?? existingData.language ?? "ru",
-    isOriginal: existingData.isOriginal ?? true,
+    language,
+    originalLanguage,
     sourceUrl: post.link,
     publishedAt: post.date,
     modifiedAt: post.modified,
@@ -153,6 +323,26 @@ function createFrontmatter(post, existing) {
   return removeUndefined(data);
 }
 
+function detectEntryLanguage({ title, contentHtml, personDescription, caseDescription }) {
+  const text = [
+    title,
+    stripHtml(contentHtml),
+    personDescription,
+    caseDescription,
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const sample = text.slice(0, 20000);
+  const cyrillicCount = (sample.match(/[А-Яа-яЁё]/g) ?? []).length;
+  const latinCount = (sample.match(/[A-Za-z]/g) ?? []).length;
+
+  if (latinCount === 0 && cyrillicCount === 0) {
+    return "unknown";
+  }
+
+  return latinCount > cyrillicCount ? "en" : "ru";
+}
+
 function formatContentFile(frontmatter, body) {
   return `---\n${formatYaml(frontmatter)}---\n\n${body.trim()}\n`;
 }
@@ -166,22 +356,45 @@ function cleanContentHtml(html) {
 
 function extractStatementDate(html) {
   const paragraphs = getTextParagraphs(html);
-  const sourceIndex = paragraphs.findIndex((paragraph) => /(?:^|\s)(Источник|Source)\s*:/i.test(paragraph));
+  const sourceIndex = findLastIndex(paragraphs, (paragraph) => isSourceParagraph(paragraph));
+  const candidateGroups = [];
 
-  if (sourceIndex === -1) {
-    return undefined;
+  if (sourceIndex !== -1) {
+    candidateGroups.push(paragraphs.slice(Math.max(0, sourceIndex - 8), sourceIndex).filter((paragraph) => !isSourceParagraph(paragraph)));
   }
 
-  const candidates = paragraphs.slice(Math.max(0, sourceIndex - 5), sourceIndex);
+  candidateGroups.push(paragraphs.slice(-12).filter((paragraph) => !isSourceParagraph(paragraph)));
 
-  for (let index = candidates.length - 1; index >= 0; index -= 1) {
-    const parsedDate = parseRussianStatementDate(candidates[index]);
-    if (parsedDate) {
-      return parsedDate;
+  for (const candidates of candidateGroups) {
+    const uniqueCandidates = uniqueValues(candidates);
+
+    for (let index = uniqueCandidates.length - 1; index >= 0; index -= 1) {
+      const parsedDate = parseStatementDate(uniqueCandidates[index]);
+      if (parsedDate) {
+        return parsedDate;
+      }
     }
   }
 
   return undefined;
+}
+
+function findLastIndex(items, predicate) {
+  for (let index = items.length - 1; index >= 0; index -= 1) {
+    if (predicate(items[index])) {
+      return index;
+    }
+  }
+
+  return -1;
+}
+
+function isSourceParagraph(value) {
+  return /(?:^|\s)(Источник|Source|Подробнее|More information|Фото|Photo)\s*:?/i.test(value);
+}
+
+function uniqueValues(values) {
+  return [...new Set(values)];
 }
 
 function getTextParagraphs(html) {
@@ -190,35 +403,156 @@ function getTextParagraphs(html) {
     .filter(Boolean);
 }
 
+function parseStatementDate(value) {
+  return parseRussianStatementDate(value)
+    ?? parseEnglishStatementDate(value)
+    ?? parseNumericStatementDate(value)
+    ?? parseIsoStatementDate(value);
+}
+
 function parseRussianStatementDate(value) {
-  const match = value.match(/(\d{1,2})\s+(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)\s+(\d{4})\s+года?/i);
+  const dayMonthYearMatch = value.match(/\b(\d{1,2})\s+(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря),?\s+(\d{3}\s*\d|\d{4})(?:\s+года?)?\b/i);
+
+  if (dayMonthYearMatch) {
+    const [, rawDay, rawMonth, rawYear] = dayMonthYearMatch;
+    const month = russianMonthByName[rawMonth.toLowerCase()];
+
+    if (!month) {
+      return undefined;
+    }
+
+    return formatDateParts(rawYear, month, rawDay);
+  }
+
+  const textualDayMonthYearMatch = value.match(/(?:^|\s)(первое|второе|третье|четвертое|четвёртое|пятое|шестое|седьмое|восьмое|девятое|десятое|одиннадцатое|двенадцатое|тринадцатое|четырнадцатое|пятнадцатое|шестнадцатое|семнадцатое|восемнадцатое|девятнадцатое|двадцатое|двадцать первое|двадцать второе|двадцать третье|двадцать четвертое|двадцать четвёртое|двадцать пятое|двадцать шестое|двадцать седьмое|двадцать восьмое|двадцать девятое|тридцатое|тридцать первое)\s+(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря),?\s+(\d{3}\s*\d|\d{4})(?:\s+года?)?(?:$|\s|[.,])/i);
+
+  if (textualDayMonthYearMatch) {
+    const [, rawDay, rawMonth, rawYear] = textualDayMonthYearMatch;
+    const day = russianOrdinalDayByName[rawDay.toLowerCase()];
+    const month = russianMonthByName[rawMonth.toLowerCase()];
+
+    if (!day || !month) {
+      return undefined;
+    }
+
+    return formatDateParts(rawYear, month, day);
+  }
+
+  const monthYearMatch = value.match(/(?:^|\s)(январь|февраль|март|апрель|май|июнь|июль|август|сентябрь|октябрь|ноябрь|декабрь)\s+(\d{3}\s*\d|\d{4})(?:\s+года?)?(?:$|\s|[.,])/i);
+
+  if (monthYearMatch) {
+    const [, rawMonth, rawYear] = monthYearMatch;
+    const month = russianMonthByName[rawMonth.toLowerCase()];
+
+    if (!month) {
+      return undefined;
+    }
+
+    return formatMonthParts(rawYear, month);
+  }
+
+  return undefined;
+}
+
+function parseEnglishStatementDate(value) {
+  const monthByName = {
+    january: "01",
+    february: "02",
+    march: "03",
+    april: "04",
+    may: "05",
+    june: "06",
+    july: "07",
+    august: "08",
+    september: "09",
+    october: "10",
+    november: "11",
+    december: "12",
+  };
+  const monthNames = Object.keys(monthByName).join("|");
+  const monthFirstMatch = value.match(new RegExp(`\\b(${monthNames})\\s+(\\d{1,2})(?:st|nd|rd|th)?[,]?\\s+(\\d{4})\\b`, "i"));
+
+  if (monthFirstMatch) {
+    const [, rawMonth, rawDay, rawYear] = monthFirstMatch;
+    return formatDateParts(rawYear, monthByName[rawMonth.toLowerCase()], rawDay);
+  }
+
+  const dayFirstMatch = value.match(new RegExp(`\\b(\\d{1,2})(?:st|nd|rd|th)?\\s+(${monthNames})[,]?\\s+(\\d{4})\\b`, "i"));
+
+  if (dayFirstMatch) {
+    const [, rawDay, rawMonth, rawYear] = dayFirstMatch;
+    return formatDateParts(rawYear, monthByName[rawMonth.toLowerCase()], rawDay);
+  }
+
+  return undefined;
+}
+
+function parseNumericStatementDate(value) {
+  const match = value.match(/\b(\d{1,2})[./](\d{1,2})[./](\d{3}\s*\d|\d{4})\b/);
 
   if (!match) {
     return undefined;
   }
 
   const [, rawDay, rawMonth, rawYear] = match;
-  const monthByName = {
-    января: "01",
-    февраля: "02",
-    марта: "03",
-    апреля: "04",
-    мая: "05",
-    июня: "06",
-    июля: "07",
-    августа: "08",
-    сентября: "09",
-    октября: "10",
-    ноября: "11",
-    декабря: "12",
-  };
-  const month = monthByName[rawMonth.toLowerCase()];
+  return formatDateParts(rawYear, rawMonth, rawDay);
+}
 
-  if (!month) {
+function parseIsoStatementDate(value) {
+  const match = value.match(/\b(\d{3}\s*\d|\d{4})-(\d{1,2})-(\d{1,2})\b/);
+
+  if (!match) {
     return undefined;
   }
 
-  return `${rawYear}-${month}-${rawDay.padStart(2, "0")}`;
+  const [, rawYear, rawMonth, rawDay] = match;
+  return formatDateParts(rawYear, rawMonth, rawDay);
+}
+
+function formatDateParts(rawYear, rawMonth, rawDay) {
+  const year = Number(normalizeYear(rawYear));
+  const month = Number(rawMonth);
+  const day = Number(rawDay);
+
+  if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) {
+    return undefined;
+  }
+
+  const date = new Date(Date.UTC(year, month - 1, day));
+
+  if (
+    year < 1900 ||
+    year > 2100 ||
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month - 1 ||
+    date.getUTCDate() !== day
+  ) {
+    return undefined;
+  }
+
+  return `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+}
+
+function formatMonthParts(rawYear, rawMonth) {
+  const year = Number(normalizeYear(rawYear));
+  const month = Number(rawMonth);
+
+  if (
+    !Number.isInteger(year) ||
+    !Number.isInteger(month) ||
+    year < 1900 ||
+    year > 2100 ||
+    month < 1 ||
+    month > 12
+  ) {
+    return undefined;
+  }
+
+  return `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}`;
+}
+
+function normalizeYear(rawYear) {
+  return String(rawYear).replace(/\s+/g, "");
 }
 
 function formatYaml(value, indent = "") {

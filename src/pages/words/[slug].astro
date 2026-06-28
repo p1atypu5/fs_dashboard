@@ -1,30 +1,45 @@
 ---
 import { getCollection, render } from "astro:content";
+import { formatRussianDate } from "../../lib/dates";
 import { toDisplayWord, type LastWordEntry } from "../../lib/lastWords";
+import { buildTagDirectory, getTagHref } from "../../lib/tags";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
     const entries = await getCollection("last-words");
+    const tagSlugs = Object.fromEntries(
+        buildTagDirectory(entries.map(toDisplayWord)).map((tag) => [tag.name, tag.slug]),
+    );
 
     return entries.map((entry) => ({
         params: { slug: entry.data.localSlug },
-        props: { entry },
+        props: { entry, tagSlugs },
     }));
 }
 
-const { entry } = Astro.props as { entry: LastWordEntry };
+const { entry, tagSlugs } = Astro.props as {
+    entry: LastWordEntry;
+    tagSlugs: Record<string, string>;
+};
 const word = toDisplayWord(entry);
 const { Content } = await render(entry);
 const countryPeriodLine =
     word.country && word.period
         ? `${word.country}: ${word.period}`
         : (word.country ?? word.period);
+const statementDateLine = word.statementDate
+    ? formatRussianDate(word.statementDate)
+    : undefined;
 const imageFormat = word.featuredImage?.mimeType
     ?.replace("image/", "")
     .toUpperCase();
 const imageResolution =
     word.featuredImage?.width && word.featuredImage?.height
         ? `${word.featuredImage.width} x ${word.featuredImage.height}`
+        : undefined;
+const imageAspectRatio =
+    word.featuredImage?.width && word.featuredImage?.height
+        ? formatAspectRatio(word.featuredImage.width, word.featuredImage.height)
         : undefined;
 const imageSize = word.featuredImage?.sizeBytes
     ? new Intl.NumberFormat("ru-RU", {
@@ -34,6 +49,25 @@ const imageSize = word.featuredImage?.sizeBytes
 const base = import.meta.env.BASE_URL.endsWith("/")
     ? import.meta.env.BASE_URL
     : `${import.meta.env.BASE_URL}/`;
+
+function formatAspectRatio(width: number, height: number) {
+    const divisor = greatestCommonDivisor(width, height);
+
+    return `${width / divisor}:${height / divisor}`;
+}
+
+function greatestCommonDivisor(a: number, b: number): number {
+    let left = a;
+    let right = b;
+
+    while (right !== 0) {
+        const remainder = left % right;
+        left = right;
+        right = remainder;
+    }
+
+    return left;
+}
 ---
 
 <BaseLayout title={word.title} description={`${word.person}: ${word.caseName}`}>
@@ -57,7 +91,7 @@ const base = import.meta.env.BASE_URL.endsWith("/")
 
         <aside class="word-aside" aria-label="Метаданные">
             {
-                word.featuredImage && (
+                word.featuredImage ? (
                     <figure class="word-photo">
                         <img
                             src={word.featuredImage.url}
@@ -72,14 +106,28 @@ const base = import.meta.env.BASE_URL.endsWith("/")
                                 {imageResolution && (
                                     <span>Разрешение: {imageResolution}</span>
                                 )}
+                                {imageAspectRatio && (
+                                    <span>
+                                        Соотношение сторон: {imageAspectRatio}
+                                    </span>
+                                )}
                                 {imageSize && <span>Вес: {imageSize} КБ</span>}
                             </figcaption>
                         )}
+                    </figure>
+                ) : (
+                    <figure class="word-photo word-photo-placeholder">
+                        <span>Нет фото</span>
                     </figure>
                 )
             }
             <div class="word-meta">
                 {countryPeriodLine && <p class="meta">{countryPeriodLine}</p>}
+                {
+                    statementDateLine && (
+                        <p class="meta">Дата произнесения: {statementDateLine}</p>
+                    )
+                }
                 {
                     word.readingTime && (
                         <p class="meta">Время чтения: {word.readingTime}</p>
@@ -88,7 +136,9 @@ const base = import.meta.env.BASE_URL.endsWith("/")
                 <div class="tag-row">
                     {
                         word.tags.map((tag: string) => (
-                            <span class="tag">{tag}</span>
+                            <a class="tag" href={getTagHref(base, tagSlugs[tag] ?? "tag")}>
+                                {tag}
+                            </a>
                         ))
                     }
                 </div>
@@ -114,6 +164,19 @@ const base = import.meta.env.BASE_URL.endsWith("/")
         margin: 0;
     }
 
+    .word-photo-placeholder {
+        display: grid;
+        place-items: center;
+        aspect-ratio: 4 / 3;
+        min-height: 220px;
+        color: var(--muted);
+        background: color-mix(in srgb, var(--accent) 6%, var(--surface-muted));
+        border: 1px dashed var(--line);
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 700;
+    }
+
     .photo-meta {
         display: grid;
         gap: 4px;
@@ -137,6 +200,17 @@ const base = import.meta.env.BASE_URL.endsWith("/")
         height: auto;
         border-radius: 8px;
         border: 1px solid var(--line);
+    }
+
+    .article-text :global(img) {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .article-text :global(figure) {
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
     }
 
     @media (max-width: 900px) {

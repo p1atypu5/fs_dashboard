@@ -1,16 +1,31 @@
 ---
 import { getCollection } from "astro:content";
 import WordCard from "../components/WordCard.astro";
+import { isCountryValue } from "../lib/countries";
 import { sortWordsByDate, toDisplayWord } from "../lib/lastWords";
+import { isRussianWord } from "../lib/people";
+import { buildTagDirectory } from "../lib/tags";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import wpExportMeta from "../data/wpExportMeta.json";
 
 const finalWords = (await getCollection("last-words")).map(toDisplayWord);
-const wordsByDate = sortWordsByDate(finalWords);
-const peopleCount = new Set(finalWords.map((word) => word.person)).size;
-const countriesCount = new Set(
-    finalWords.map((word) => word.country).filter(Boolean),
-).size;
+const russianWords = finalWords.filter(isRussianWord);
+const englishWords = finalWords.filter(
+    (word) => word.language === "en" && word.sourceUrl.includes("/en/"),
+);
+const canonicalWords = [...russianWords, ...englishWords];
+const wordsByDate = sortWordsByDate(canonicalWords);
+const tagSlugs = Object.fromEntries(
+    buildTagDirectory(canonicalWords).map((tag) => [tag.name, tag.slug]),
+);
+const peopleCount = new Set(russianWords.map((word) => word.person)).size;
+const countries = [
+    ...new Set(russianWords.map((word) => word.country).filter(isCountryValue)),
+].sort((a, b) => a.localeCompare(b, "ru"));
+const countriesCount = countries.length;
+const russianWordsCount = russianWords.length;
+const englishWordsCount = englishWords.length;
+const wordsCount = canonicalWords.length;
 const dayMs = 24 * 60 * 60 * 1000;
 const syncTimeZone = wpExportMeta.timeZone || "UTC";
 const syncDateParts = getDatePartsInTimeZone(
@@ -98,28 +113,28 @@ function toDateKey(date: Date) {
 ---
 
 <BaseLayout title="Последнее слово">
-    <section>
-        <h1>Readonly-зеркало последних слов</h1>
-        <div class="button-row">
-            <a class="button" href={`${base}words/`}>Открыть базу слов</a>
-            <a class="button secondary" href={`${base}about/`}
-                >Как это устроено</a
-            >
-        </div>
-    </section>
-
     <section class="stats-grid" aria-label="Сводка по базе">
         <div class="stat">
-            <strong>{finalWords.length}</strong>
+            <strong>{wordsCount}</strong>
             <span
                 >{
-                    formatCountLabel(finalWords.length, [
+                    formatCountLabel(wordsCount, [
                         "слово",
                         "слова",
                         "слов",
                     ])
                 }</span
             >
+            <dl class="stat-breakdown">
+                <div>
+                    <dt>на русском</dt>
+                    <dd>{russianWordsCount}</dd>
+                </div>
+                <div>
+                    <dt>на английском</dt>
+                    <dd>{englishWordsCount}</dd>
+                </div>
+            </dl>
         </div>
         <div class="stat">
             <strong>{peopleCount}</strong>
@@ -144,6 +159,16 @@ function toDateKey(date: Date) {
                     ])
                 }</span
             >
+            <p class="stat-note">{countries.join(", ")}</p>
+        </div>
+    </section>
+
+    <section>
+        <div class="button-row">
+            <a class="button" href={`${base}words/`}>Открыть базу слов</a>
+            <a class="button secondary" href={`${base}about/`}
+                >Как это устроено</a
+            >
         </div>
     </section>
 
@@ -155,7 +180,7 @@ function toDateKey(date: Date) {
             >
         </h2>
         <div class="word-list">
-            {latestWords.map((word) => <WordCard word={word} />)}
+            {latestWords.map((word) => <WordCard word={word} tagSlugs={tagSlugs} />)}
         </div>
     </section>
 </BaseLayout>
@@ -166,5 +191,38 @@ function toDateKey(date: Date) {
         font-size: 0.55em;
         font-weight: 500;
         white-space: nowrap;
+    }
+
+    .stat-breakdown {
+        display: grid;
+        gap: 4px;
+        margin: 14px 0 0;
+    }
+
+    .stat-breakdown div {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .stat-breakdown dt,
+    .stat-breakdown dd {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.25;
+    }
+
+    .stat-breakdown dd {
+        color: var(--text);
+        font-weight: 700;
+    }
+
+    .stat-note {
+        margin: 14px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.35;
     }
 </style>

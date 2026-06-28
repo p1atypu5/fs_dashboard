@@ -1,0 +1,186 @@
+---
+import { getCollection } from "astro:content";
+import ReferencePageLayout from "../../components/ReferencePageLayout.astro";
+import { toDisplayWord } from "../../lib/lastWords";
+import { detectOriginalLanguage } from "../../lib/originalLanguages";
+import { isRussianWord } from "../../lib/people";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const words = (await getCollection("last-words"))
+    .map(toDisplayWord)
+    .filter(isRussianWord);
+const records = words
+    .map((word) => ({
+        word,
+        detection: detectOriginalLanguage(word),
+    }))
+    .filter((record): record is typeof record & { detection: NonNullable<typeof record.detection> } =>
+        Boolean(record.detection),
+    )
+    .sort((a, b) => {
+        const languageCompare = a.detection.languageLabel.localeCompare(
+            b.detection.languageLabel,
+            "ru",
+        );
+
+        return languageCompare || a.word.person.localeCompare(b.word.person, "ru");
+    });
+const recordsByLanguage = [...records.reduce((map, record) => {
+    const key = record.detection.language;
+    map.set(key, [...(map.get(key) ?? []), record]);
+    return map;
+}, new Map<string, typeof records>()).entries()].sort(([, left], [, right]) =>
+    left[0].detection.languageLabel.localeCompare(
+        right[0].detection.languageLabel,
+        "ru",
+    ),
+);
+const conflictCount = records.filter((record) => record.detection.hasConflict).length;
+const base = import.meta.env.BASE_URL.endsWith("/")
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+---
+
+<BaseLayout title="Языки оригинала">
+    <ReferencePageLayout current="original-languages">
+        <section>
+            <div class="stats-grid">
+                <div class="stat">
+                    <strong>{records.length}</strong>
+                    <span>записей с другим языком оригинала</span>
+                </div>
+                <div class="stat">
+                    <strong>{recordsByLanguage.length}</strong>
+                    <span>языков найдено</span>
+                </div>
+                <div class="stat">
+                    <strong>{conflictCount}</strong>
+                    <span>конфликтов причин</span>
+                </div>
+            </div>
+        </section>
+
+        {
+            records.length === 0 && (
+                <section class="section">
+                    <p class="empty-state" style="display: block;">
+                        Записей с другим языком оригинала не найдено.
+                    </p>
+                </section>
+            )
+        }
+
+        {
+            recordsByLanguage.map(([language, languageRecords]) => (
+                <section class="section">
+                    <h2>
+                        {languageRecords[0].detection.languageLabel}{" "}
+                        <span class="language-code">{language}</span>
+                    </h2>
+                    <div class="word-list">
+                        {languageRecords.map(({ word, detection }) => (
+                            <article class="word-card report-card">
+                                <div>
+                                    <h3>
+                                        <a href={`${base}words/${word.slug}/`}>
+                                            {word.title}
+                                        </a>
+                                    </h3>
+                                    <p class="meta">
+                                        language: {word.language}, originalLanguage:{" "}
+                                        {detection.language}
+                                    </p>
+                                    <div class="reason-list">
+                                        {detection.reasons.map((reason) => (
+                                            <div class="reason-item">
+                                                <strong>{reason.label}</strong>
+                                                <span>{reason.evidence}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div class="report-actions">
+                                    {detection.hasConflict && (
+                                        <p class="warning">Есть конфликт</p>
+                                    )}
+                                    <p class="meta">WP #{word.id.replace(/\D/g, "")}</p>
+                                    <a
+                                        class="button secondary"
+                                        href={word.sourceUrl}
+                                    >
+                                        Посмотреть источник
+                                    </a>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+                </section>
+            ))
+        }
+    </ReferencePageLayout>
+</BaseLayout>
+
+<style>
+    .language-code {
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .report-card {
+        color: inherit;
+    }
+
+    .report-card h3 a {
+        color: var(--accent);
+        text-underline-offset: 3px;
+    }
+
+    .report-card h3 a:visited {
+        color: var(--visited);
+    }
+
+    .reason-list {
+        display: grid;
+        gap: 8px;
+        margin-top: 12px;
+    }
+
+    .reason-item {
+        display: grid;
+        gap: 3px;
+        max-width: 760px;
+        padding-left: 10px;
+        border-left: 2px solid var(--line);
+    }
+
+    .reason-item strong {
+        font-size: 13px;
+    }
+
+    .reason-item span {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.35;
+    }
+
+    .report-actions {
+        display: flex;
+        align-items: flex-end;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .warning {
+        margin: 0;
+        color: var(--warning);
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    @media (max-width: 860px) {
+        .report-actions {
+            align-items: flex-start;
+        }
+    }
+</style>

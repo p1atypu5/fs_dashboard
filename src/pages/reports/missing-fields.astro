@@ -5,6 +5,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const entries = await getCollection("last-words");
 
+function isRussianEntry(entry: (typeof entries)[number]) {
+    return entry.data.language === "ru" && !entry.data.sourceUrl.includes("/en/");
+}
+
 const checks = [
     {
         label: "Без фото",
@@ -22,6 +26,12 @@ const checks = [
         label: "Без эпохи",
         entries: entries.filter((entry) => !entry.data.period),
     },
+    {
+        label: "Без даты произнесения",
+        entries: entries.filter(
+            (entry) => isRussianEntry(entry) && !entry.data.statementDate,
+        ),
+    },
 ];
 const visibleChecks = checks.filter((check) => check.entries.length > 0);
 
@@ -32,11 +42,7 @@ const base = import.meta.env.BASE_URL.endsWith("/")
 
 <BaseLayout title="Неполные поля">
     <ReferencePageLayout current="missing-fields">
-            <section class="report-header">
-                <h1>Неполные поля</h1>
-            </section>
-
-            <section class="section">
+            <section>
                 <div class="stats-grid">
                     {
                         visibleChecks.map((check) => (
@@ -102,9 +108,12 @@ const base = import.meta.env.BASE_URL.endsWith("/")
     }
 
     .report-card h3 a {
-        color: var(--text);
-        text-decoration-color: var(--line);
+        color: var(--accent);
         text-underline-offset: 3px;
+    }
+
+    .report-card h3 a:visited {
+        color: var(--visited);
     }
 
     .report-actions {

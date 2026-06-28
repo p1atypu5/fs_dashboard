@@ -9,7 +9,6 @@ const lastWords = defineCollection({
     translationGroupId: z.string(),
     language: z.string(),
     originalLanguage: z.string(),
-    isOriginal: z.boolean(),
     sourceUrl: z.string().url(),
     publishedAt: z.string(),
     modifiedAt: z.string(),

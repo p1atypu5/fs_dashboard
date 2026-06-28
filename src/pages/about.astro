@@ -8,7 +8,6 @@ const base = import.meta.env.BASE_URL.endsWith("/")
 
 <BaseLayout title="О проекте">
     <article class="article">
-        <h1>О проекте</h1>
         <p class="lead">
             Это рабочее зеркало сайта “Последнее слово”: здесь можно быстро
             искать, читать и проверять опубликованные последние слова.
@@ -36,21 +35,28 @@ const base = import.meta.env.BASE_URL.endsWith("/")
                     <span>сводка по базе и последние добавления.</span>
                 </li>
                 <li>
-                    <a href={`${base}/words/`}>База слов</a>
-                    <span>таблица всех записей с поиском и сортировкой.</span>
-                </li>
-                <li>
-                    <a href={`${base}/reports/names/`}>Имена</a>
-                    <span>плотный список всех имён со ссылками на тексты.</span>
-                </li>
-                <li>
-                    <a href={`${base}/reports/tags/`}>Теги</a>
+                    <a href={`${base}words/`}>База слов</a>
                     <span
-                        >библиотека тегов с поиском и количеством записей.</span
+                        >таблица русскоязычных записей с поиском, фильтрами и
+                        датой произнесения.</span
                     >
                 </li>
                 <li>
-                    <a href={`${base}/reports/missing-fields/`}>Неполные поля</a
+                    <a href={`${base}reports/names/`}>Имена</a>
+                    <span
+                        >плотный список русскоязычных имён со ссылками на
+                        тексты.</span
+                    >
+                </li>
+                <li>
+                    <a href={`${base}reports/tags/`}>Теги</a>
+                    <span
+                        >русскоязычная библиотека тегов с поиском и количеством
+                        записей.</span
+                    >
+                </li>
+                <li>
+                    <a href={`${base}reports/missing-fields/`}>Неполные поля</a
                     >
                     <span
                         >отчёт по записям, где не хватает фото, описания, тегов

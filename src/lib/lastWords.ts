@@ -26,7 +26,7 @@ export type DisplayWord = {
   };
   language: string;
   originalLanguage: string;
-  isOriginal: boolean;
+  isTranslation: boolean;
   statementDate?: string;
   personDescription?: string;
   caseDescription?: string;
@@ -51,7 +51,7 @@ export function toDisplayWord(entry: LastWordEntry): DisplayWord {
     featuredImage: entry.data.featuredImage,
     language: entry.data.language,
     originalLanguage: entry.data.originalLanguage,
-    isOriginal: entry.data.isOriginal,
+    isTranslation: entry.data.language !== entry.data.originalLanguage,
     statementDate: entry.data.statementDate,
     personDescription: entry.data.personDescription,
     caseDescription: entry.data.caseDescription,

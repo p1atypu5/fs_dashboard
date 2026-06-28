@@ -1,0 +1,449 @@
+---
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import process from "node:process";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+type ImportAction = "create" | "update" | "delete";
+
+type ImportLogRecord = {
+  runId: string;
+  timestamp: string;
+  mode: string;
+  prune: boolean;
+  action: ImportAction;
+  wordpressId: number;
+  file: string;
+  localSlug?: string;
+  title: string;
+  input: string;
+};
+
+const LOG_PATH = path.join(process.cwd(), "src/data/wpImportLog.jsonl");
+const importLog = (await readImportLog(LOG_PATH)).sort((a, b) =>
+  b.timestamp.localeCompare(a.timestamp),
+);
+const latestRunId = importLog[0]?.runId;
+const latestRunRecords = latestRunId
+  ? importLog.filter((record) => record.runId === latestRunId)
+  : [];
+const runCount = new Set(importLog.map((record) => record.runId)).size;
+const actionCounts = countByAction(importLog);
+const base = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+
+function countByAction(records: ImportLogRecord[]) {
+  return {
+    create: records.filter((record) => record.action === "create").length,
+    update: records.filter((record) => record.action === "update").length,
+    delete: records.filter((record) => record.action === "delete").length,
+  };
+}
+
+async function readImportLog(filePath: string): Promise<ImportLogRecord[]> {
+  try {
+    const source = await readFile(filePath, "utf8");
+    return source
+      .split("\n")
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map(parseImportLogLine)
+      .filter((record): record is ImportLogRecord => Boolean(record));
+  } catch (error) {
+    if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
+      return [];
+    }
+
+    throw error;
+  }
+}
+
+function parseImportLogLine(line: string) {
+  try {
+    const value = JSON.parse(line);
+
+    if (
+      !value ||
+      typeof value.runId !== "string" ||
+      typeof value.timestamp !== "string" ||
+      typeof value.action !== "string" ||
+      typeof value.wordpressId !== "number"
+    ) {
+      return undefined;
+    }
+
+    return value as ImportLogRecord;
+  } catch {
+    return undefined;
+  }
+}
+
+function formatDateTime(value: string) {
+  return new Intl.DateTimeFormat("ru-RU", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  }).format(new Date(value));
+}
+
+function getActionLabel(action: ImportAction) {
+  const labels = {
+    create: "Создано",
+    update: "Обновлено",
+    delete: "Удалено",
+  };
+
+  return labels[action] ?? action;
+}
+
+function getModeLabel(mode: string) {
+  return mode === "full" ? "Full" : "Incremental";
+}
+---
+
+<BaseLayout
+  title="Сервис: журнал импорта"
+  description="Инкрементальный журнал изменений, сделанных импортом WordPress-контента."
+>
+  <section aria-label="Журнал импорта WordPress">
+    <div class="page-head">
+      <h1>Журнал импорта</h1>
+      <p class="summary-line">
+        {importLog.length} строк · {runCount} запусков · последний: {latestRunRecords.length} ·
+        {actionCounts.create}/{actionCounts.update}/{actionCounts.delete} C/U/D
+      </p>
+    </div>
+
+    <div class="table-tools">
+      <label>
+        <span>Действие</span>
+        <select id="import-action">
+          <option value="">Все действия</option>
+          <option value="create">Создано</option>
+          <option value="update">Обновлено</option>
+          <option value="delete">Удалено</option>
+        </select>
+      </label>
+      <label>
+        <span>Режим</span>
+        <select id="import-mode">
+          <option value="">Все режимы</option>
+          <option value="incremental">Incremental</option>
+          <option value="full">Full</option>
+        </select>
+      </label>
+      <label>
+        <span>Поиск</span>
+        <input id="import-query" type="search" placeholder="ID, название или файл" />
+      </label>
+      <div class="table-tools-meta">
+        <p class="meta">
+          <span id="import-count">{importLog.length}</span> из {importLog.length} строк
+        </p>
+        <button class="reset-table" id="import-reset" type="button">Сбросить</button>
+      </div>
+    </div>
+
+    {
+      importLog.length > 0 ? (
+        <div class="words-table-wrap">
+          <table class="words-table" id="import-table">
+            <thead>
+              <tr>
+                <th>Время</th>
+                <th>Действие</th>
+                <th>WordPress ID</th>
+                <th>Запись</th>
+                <th>Файл</th>
+              </tr>
+            </thead>
+            <tbody>
+              {importLog.map((record) => (
+                <tr
+                  data-action={record.action}
+                  data-mode={record.mode}
+                  data-search={`${record.wordpressId} ${record.title} ${record.file}`.toLowerCase()}
+                >
+                  <td>
+                    <time datetime={record.timestamp}>{formatDateTime(record.timestamp)}</time>
+                  </td>
+                  <td>
+                    <span class={`action-tag action-${record.action}`}>
+                      {getActionLabel(record.action)}
+                    </span>
+                    <span class="mode-label">{getModeLabel(record.mode)}</span>
+                  </td>
+                  <td>{record.wordpressId}</td>
+                  <td class="word-name-cell">
+                    {record.localSlug && record.action !== "delete" ? (
+                      <a href={`${base}words/${record.localSlug}/`}>{record.title}</a>
+                    ) : (
+                      record.title
+                    )}
+                  </td>
+                  <td class="file-cell">{record.file}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <p class="empty-log">Журнал импорта пока пуст.</p>
+      )
+    }
+  </section>
+
+  <script>
+    const actionSelect = document.querySelector("#import-action");
+    const modeSelect = document.querySelector("#import-mode");
+    const queryInput = document.querySelector("#import-query");
+    const resetButton = document.querySelector("#import-reset");
+    const countNode = document.querySelector("#import-count");
+    const table = document.querySelector("#import-table");
+    const rows = table ? Array.from(table.querySelectorAll("tbody tr")) : [];
+
+    function getControlValue(control) {
+      if (
+        control instanceof HTMLInputElement ||
+        control instanceof HTMLSelectElement
+      ) {
+        return control.value;
+      }
+
+      return "";
+    }
+
+    function applyFilters() {
+      const action = getControlValue(actionSelect);
+      const mode = getControlValue(modeSelect);
+      const query = getControlValue(queryInput).trim().toLowerCase();
+      let visibleCount = 0;
+
+      for (const row of rows) {
+        const matchesAction = !action || row.dataset.action === action;
+        const matchesMode = !mode || row.dataset.mode === mode;
+        const matchesQuery =
+          !query || (row.dataset.search ?? "").includes(query);
+        const isVisible = matchesAction && matchesMode && matchesQuery;
+
+        row.hidden = !isVisible;
+        visibleCount += isVisible ? 1 : 0;
+      }
+
+      if (countNode) {
+        countNode.textContent = String(visibleCount);
+      }
+    }
+
+    function resetFilters() {
+      if (actionSelect instanceof HTMLSelectElement) {
+        actionSelect.value = "";
+      }
+
+      if (modeSelect instanceof HTMLSelectElement) {
+        modeSelect.value = "";
+      }
+
+      if (queryInput instanceof HTMLInputElement) {
+        queryInput.value = "";
+      }
+
+      applyFilters();
+    }
+
+    applyFilters();
+    actionSelect?.addEventListener("change", applyFilters);
+    modeSelect?.addEventListener("change", applyFilters);
+    queryInput?.addEventListener("input", applyFilters);
+    resetButton?.addEventListener("click", resetFilters);
+  </script>
+</BaseLayout>
+
+<style>
+  .page-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 34px;
+    line-height: 1.05;
+  }
+
+  .summary-line {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.35;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .table-tools {
+    display: grid;
+    grid-template-columns: minmax(130px, 170px) minmax(130px, 170px) minmax(220px, 1fr) auto;
+    align-items: end;
+    gap: 10px;
+    margin-top: 0;
+  }
+
+  .table-tools label {
+    display: grid;
+    gap: 6px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .table-tools input,
+  .table-tools select {
+    min-height: 36px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  .table-tools-meta {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 10px;
+    white-space: nowrap;
+  }
+
+  .reset-table {
+    min-height: 36px;
+    padding: 6px 9px;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .reset-table:hover,
+  .reset-table:focus-visible {
+    color: var(--accent-strong);
+    border-color: var(--accent);
+  }
+
+  .reset-table:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .words-table-wrap {
+    margin-top: 12px;
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+  }
+
+  .words-table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+    table-layout: auto;
+  }
+
+  .words-table th,
+  .words-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .words-table th {
+    color: var(--muted);
+    background: var(--surface-muted);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .words-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .action-tag {
+    display: inline-flex;
+    align-items: center;
+    min-height: 22px;
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .mode-label {
+    display: block;
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.2;
+  }
+
+  .action-create {
+    color: #0f6b3b;
+    background: #dff2e7;
+  }
+
+  .action-update {
+    color: #2748b8;
+    background: #e2e8ff;
+  }
+
+  .action-delete {
+    color: #8a2a1f;
+    background: #f7dfda;
+  }
+
+  .file-cell {
+    color: var(--muted);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 12px;
+  }
+
+  .empty-log {
+    margin-top: 24px;
+    padding: 24px;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px dashed var(--line);
+    border-radius: 8px;
+  }
+
+  @media (max-width: 860px) {
+    .page-head {
+      align-items: start;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .summary-line {
+      text-align: left;
+      white-space: normal;
+    }
+
+    .table-tools {
+      grid-template-columns: 1fr;
+    }
+
+    .table-tools-meta {
+      justify-content: start;
+      white-space: normal;
+    }
+  }
+</style>

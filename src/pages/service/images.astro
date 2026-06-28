@@ -1,0 +1,630 @@
+---
+import { getCollection } from "astro:content";
+import { toDisplayWord } from "../../lib/lastWords";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+type ImageRecord = {
+    wordTitle: string;
+    wordSlug: string;
+    imageUrl: string;
+    sourceType: "featured" | "inline";
+    extension: string;
+    resolution: string;
+    sizeBytes?: number;
+    sizeLabel: string;
+};
+
+const finalWords = (await getCollection("last-words"))
+    .map(toDisplayWord)
+    .sort((a, b) => a.person.localeCompare(b.person, "ru"));
+const imageRecords = finalWords
+    .flatMap((word) => getImageRecords(word))
+    .sort((a, b) => a.wordTitle.localeCompare(b.wordTitle, "ru"));
+const extensions = [
+    ...new Set(imageRecords.map((record) => record.extension).filter(Boolean)),
+].sort((a, b) => a.localeCompare(b, "ru"));
+const base = import.meta.env.BASE_URL.endsWith("/")
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+
+function getImageRecords(word: ReturnType<typeof toDisplayWord>): ImageRecord[] {
+    const records: ImageRecord[] = [];
+
+    if (word.featuredImage) {
+        records.push({
+            wordTitle: word.title,
+            wordSlug: word.slug,
+            imageUrl: word.featuredImage.url,
+            sourceType: "featured",
+            extension: getImageExtension(
+                word.featuredImage.url,
+                word.featuredImage.mimeType,
+            ),
+            resolution: formatResolution(
+                word.featuredImage.width,
+                word.featuredImage.height,
+            ),
+            sizeBytes: word.featuredImage.sizeBytes,
+            sizeLabel: formatImageSize(word.featuredImage.sizeBytes),
+        });
+    }
+
+    for (const image of extractInlineImages(word.text)) {
+        records.push({
+            wordTitle: word.title,
+            wordSlug: word.slug,
+            imageUrl: image.src,
+            sourceType: "inline",
+            extension: getImageExtension(image.src),
+            resolution: formatResolution(image.width, image.height),
+            sizeBytes: undefined,
+            sizeLabel: "нет данных",
+        });
+    }
+
+    return records;
+}
+
+function extractInlineImages(html: string) {
+    const images: Array<{
+        src: string;
+        width?: number;
+        height?: number;
+    }> = [];
+    const imageTagPattern = /<img\b[^>]*>/gi;
+
+    for (const match of html.matchAll(imageTagPattern)) {
+        const tag = match[0];
+        const src = getAttributeValue(tag, "src");
+
+        if (!src) {
+            continue;
+        }
+
+        images.push({
+            src,
+            width: getNumericAttributeValue(tag, "width"),
+            height: getNumericAttributeValue(tag, "height"),
+        });
+    }
+
+    return images;
+}
+
+function getAttributeValue(tag: string, name: string) {
+    const pattern = new RegExp(`${name}=["']([^"']+)["']`, "i");
+    return tag.match(pattern)?.[1];
+}
+
+function getNumericAttributeValue(tag: string, name: string) {
+    const value = getAttributeValue(tag, name);
+    const numberValue = value ? Number(value) : undefined;
+
+    return Number.isFinite(numberValue) ? numberValue : undefined;
+}
+
+function getImageExtension(url: string, mimeType?: string) {
+    if (mimeType?.startsWith("image/")) {
+        return mimeType.replace("image/", "").toLowerCase();
+    }
+
+    try {
+        const pathname = new URL(url).pathname;
+        const extension = pathname.match(/\.([a-z0-9]+)$/i)?.[1];
+
+        return extension?.toLowerCase() ?? "";
+    } catch {
+        const extension = url.split("?")[0]?.match(/\.([a-z0-9]+)$/i)?.[1];
+
+        return extension?.toLowerCase() ?? "";
+    }
+}
+
+function formatResolution(width?: number, height?: number) {
+    return width && height ? `${width} x ${height}` : "нет данных";
+}
+
+function formatImageSize(sizeBytes?: number) {
+    if (!sizeBytes) {
+        return "нет данных";
+    }
+
+    return `${new Intl.NumberFormat("ru-RU", {
+        maximumFractionDigits: 1,
+    }).format(sizeBytes / 1024)} КБ`;
+}
+
+function getSourceLabel(sourceType: ImageRecord["sourceType"]) {
+    return sourceType === "featured" ? "Обложка" : "В тексте";
+}
+---
+
+<BaseLayout title="Сервис: изображения">
+    <section aria-label="Изображения в последних словах">
+        <div class="table-tools">
+            <label>
+                <span>Расширение</span>
+                <select id="images-extension">
+                    <option value="">Все расширения</option>
+                    {
+                        extensions.map((extension) => (
+                            <option value={extension}>{extension}</option>
+                        ))
+                    }
+                </select>
+            </label>
+            <label>
+                <span>Вес от, КБ</span>
+                <input id="images-size-min" type="number" min="0" step="1" />
+            </label>
+            <label>
+                <span>Вес до, КБ</span>
+                <input id="images-size-max" type="number" min="0" step="1" />
+            </label>
+            <div class="table-tools-meta">
+                <p class="meta">
+                    <span id="images-count">{imageRecords.length}</span> из {
+                        imageRecords.length
+                    } изображений
+                </p>
+                <button class="reset-table" id="images-reset" type="button"
+                    >Сбросить</button
+                >
+            </div>
+        </div>
+
+        <div class="words-table-wrap">
+            <table class="words-table" id="images-table">
+                <thead>
+                    <tr>
+                        <th
+                            class="is-sorted"
+                            data-sort-header="0"
+                            aria-sort="ascending"
+                        >
+                            <button type="button" data-sort-column="0"
+                                >Последнее слово</button
+                            >
+                        </th>
+                        <th data-sort-header="1" aria-sort="none">
+                            <button type="button" data-sort-column="1"
+                                >Тип</button
+                            >
+                        </th>
+                        <th data-sort-header="2" aria-sort="none">
+                            <button type="button" data-sort-column="2"
+                                >Расширение</button
+                            >
+                        </th>
+                        <th data-sort-header="3" aria-sort="none">
+                            <button type="button" data-sort-column="3"
+                                >Разрешение</button
+                            >
+                        </th>
+                        <th data-sort-header="4" aria-sort="none">
+                            <button type="button" data-sort-column="4"
+                                >Вес</button
+                            >
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        imageRecords.map((record) => (
+                            <tr
+                                data-extension={record.extension}
+                                data-size-kb={
+                                    record.sizeBytes
+                                        ? String(record.sizeBytes / 1024)
+                                        : ""
+                                }
+                            >
+                                <td class="word-name-cell">
+                                    <a href={`${base}words/${record.wordSlug}/`}>
+                                        {record.wordTitle}
+                                    </a>
+                                </td>
+                                <td class="image-source-cell">
+                                    <span class="image-source-tag">
+                                        {getSourceLabel(record.sourceType)}
+                                    </span>
+                                </td>
+                                <td class="image-extension-cell">
+                                    {record.extension || "нет данных"}
+                                </td>
+                                <td class="image-resolution-cell">
+                                    {record.resolution}
+                                </td>
+                                <td class="image-size-cell">
+                                    {record.sizeLabel}
+                                </td>
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <script>
+        const extensionSelect = document.querySelector("#images-extension");
+        const sizeMinInput = document.querySelector("#images-size-min");
+        const sizeMaxInput = document.querySelector("#images-size-max");
+        const resetButton = document.querySelector("#images-reset");
+        const countNode = document.querySelector("#images-count");
+        const table = document.querySelector("#images-table");
+        const tbody = table?.querySelector("tbody");
+        const rows = tbody ? Array.from(tbody.querySelectorAll("tr")) : [];
+        const sortState = {
+            column: 0,
+            direction: "asc",
+        };
+
+        function getCellText(row, columnIndex) {
+            return row.children[columnIndex]?.textContent?.trim() ?? "";
+        }
+
+        function getSortValue(row, columnIndex) {
+            if (columnIndex === 4) {
+                const sizeKb = Number(row.dataset.sizeKb);
+                return Number.isFinite(sizeKb) ? sizeKb : -1;
+            }
+
+            return getCellText(row, columnIndex);
+        }
+
+        function getInputNumber(input) {
+            if (!(input instanceof HTMLInputElement) || input.value === "") {
+                return undefined;
+            }
+
+            const value = Number(input.value);
+            return Number.isFinite(value) ? value : undefined;
+        }
+
+        function applyFilters() {
+            const selectedExtension =
+                extensionSelect instanceof HTMLSelectElement
+                    ? extensionSelect.value
+                    : "";
+            const minSize = getInputNumber(sizeMinInput);
+            const maxSize = getInputNumber(sizeMaxInput);
+            let visibleCount = 0;
+
+            for (const row of rows) {
+                const extension = row.dataset.extension ?? "";
+                const sizeKb =
+                    row.dataset.sizeKb === ""
+                        ? undefined
+                        : Number(row.dataset.sizeKb);
+                const matchesExtension =
+                    !selectedExtension || extension === selectedExtension;
+                const matchesMin =
+                    minSize === undefined ||
+                    (sizeKb !== undefined && sizeKb >= minSize);
+                const matchesMax =
+                    maxSize === undefined ||
+                    (sizeKb !== undefined && sizeKb <= maxSize);
+                const isVisible =
+                    matchesExtension && matchesMin && matchesMax;
+
+                row.hidden = !isVisible;
+                visibleCount += isVisible ? 1 : 0;
+            }
+
+            if (countNode) {
+                countNode.textContent = String(visibleCount);
+            }
+        }
+
+        function updateSortIndicators() {
+            table?.querySelectorAll("[data-sort-header]").forEach((header) => {
+                if (!(header instanceof HTMLTableCellElement)) {
+                    return;
+                }
+
+                const isActive =
+                    Number(header.dataset.sortHeader) === sortState.column;
+                header.classList.toggle("is-sorted", isActive);
+                header.dataset.sortDirection = isActive
+                    ? sortState.direction
+                    : "";
+                header.setAttribute(
+                    "aria-sort",
+                    isActive
+                        ? sortState.direction === "asc"
+                            ? "ascending"
+                            : "descending"
+                        : "none",
+                );
+            });
+        }
+
+        function applySort() {
+            if (!tbody) {
+                return;
+            }
+
+            const direction = sortState.direction === "asc" ? 1 : -1;
+            const sortedRows = [...rows].sort((a, b) => {
+                const aValue = getSortValue(a, sortState.column);
+                const bValue = getSortValue(b, sortState.column);
+
+                if (
+                    typeof aValue === "number" &&
+                    typeof bValue === "number"
+                ) {
+                    return (aValue - bValue) * direction;
+                }
+
+                return (
+                    String(aValue).localeCompare(
+                        String(bValue),
+                        "ru",
+                        {
+                            numeric: true,
+                            sensitivity: "base",
+                        },
+                    ) * direction
+                );
+            });
+
+            tbody.replaceChildren(...sortedRows);
+            updateSortIndicators();
+        }
+
+        function sortRows(columnIndex) {
+            if (sortState.column === columnIndex) {
+                sortState.direction =
+                    sortState.direction === "asc" ? "desc" : "asc";
+            } else {
+                sortState.column = columnIndex;
+                sortState.direction = "asc";
+            }
+
+            applySort();
+            applyFilters();
+        }
+
+        function resetTable() {
+            if (extensionSelect instanceof HTMLSelectElement) {
+                extensionSelect.value = "";
+            }
+
+            if (sizeMinInput instanceof HTMLInputElement) {
+                sizeMinInput.value = "";
+            }
+
+            if (sizeMaxInput instanceof HTMLInputElement) {
+                sizeMaxInput.value = "";
+            }
+
+            sortState.column = 0;
+            sortState.direction = "asc";
+            applySort();
+            applyFilters();
+        }
+
+        applySort();
+        applyFilters();
+
+        extensionSelect?.addEventListener("change", applyFilters);
+        sizeMinInput?.addEventListener("input", applyFilters);
+        sizeMaxInput?.addEventListener("input", applyFilters);
+        resetButton?.addEventListener("click", resetTable);
+        table?.querySelectorAll("[data-sort-column]").forEach((button) => {
+            button.addEventListener("click", () => {
+                if (!(button instanceof HTMLElement)) {
+                    return;
+                }
+
+                sortRows(Number(button.dataset.sortColumn));
+            });
+        });
+    </script>
+</BaseLayout>
+
+<style>
+    .table-tools {
+        display: grid;
+        grid-template-columns:
+            minmax(160px, 220px) minmax(120px, 160px)
+            minmax(120px, 160px) auto;
+        align-items: end;
+        gap: 16px;
+        margin-top: 24px;
+    }
+
+    .table-tools label {
+        display: grid;
+        gap: 6px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .table-tools-meta {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        gap: 12px;
+        white-space: nowrap;
+    }
+
+    .reset-table {
+        padding: 7px 10px;
+        color: var(--text);
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        font: inherit;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    .reset-table:hover,
+    .reset-table:focus-visible {
+        color: var(--accent-strong);
+        border-color: var(--accent);
+    }
+
+    .reset-table:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+
+    .words-table-wrap {
+        margin-top: 18px;
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+    }
+
+    .words-table {
+        width: 100%;
+        min-width: 900px;
+        border-collapse: collapse;
+        table-layout: auto;
+    }
+
+    .words-table th,
+    .words-table td {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .words-table th {
+        padding: 0;
+        color: var(--muted);
+        background: var(--surface-muted);
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .words-table th button {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        width: 100%;
+        padding: 12px 14px;
+        color: inherit;
+        background: transparent;
+        border: 0;
+        font: inherit;
+        font-weight: 700;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .words-table th button::after {
+        content: "↕";
+        color: var(--muted);
+        font-size: 12px;
+        opacity: 0.65;
+    }
+
+    .words-table th button:hover,
+    .words-table th button:focus-visible {
+        color: var(--accent-strong);
+    }
+
+    .words-table th button:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: -2px;
+    }
+
+    .words-table th.is-sorted {
+        color: var(--accent-strong);
+        background: color-mix(in srgb, var(--accent) 12%, var(--surface-muted));
+    }
+
+    .words-table th.is-sorted button::after {
+        content: "↑";
+        color: var(--accent-strong);
+        opacity: 1;
+    }
+
+    .words-table th.is-sorted[data-sort-direction="desc"] button::after {
+        content: "↓";
+    }
+
+    .words-table tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .words-table td {
+        color: var(--text);
+        font-size: 14px;
+    }
+
+    .words-table a {
+        color: var(--accent);
+        font-weight: 700;
+        text-underline-offset: 3px;
+    }
+
+    .words-table a:visited {
+        color: var(--visited);
+    }
+
+    .words-table a:hover {
+        color: var(--accent);
+        text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    }
+
+    .words-table a:visited:hover {
+        color: var(--visited);
+        text-decoration-color: color-mix(in srgb, var(--visited) 45%, transparent);
+    }
+
+    .word-name-cell,
+    .image-source-cell,
+    .image-extension-cell,
+    .image-resolution-cell,
+    .image-size-cell {
+        white-space: nowrap;
+    }
+
+    .word-name-cell {
+        width: 320px;
+    }
+
+    .image-source-cell {
+        width: 120px;
+    }
+
+    .image-extension-cell {
+        width: 120px;
+    }
+
+    .image-resolution-cell,
+    .image-size-cell {
+        width: 150px;
+    }
+
+    .image-source-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 8px;
+        color: var(--accent-strong);
+        background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    @media (max-width: 860px) {
+        .table-tools {
+            grid-template-columns: 1fr;
+        }
+
+        .table-tools-meta {
+            justify-content: start;
+            white-space: normal;
+        }
+    }
+</style>

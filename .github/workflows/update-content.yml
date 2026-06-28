@@ -79,9 +79,9 @@ jobs:
       - name: Generate content
         run: |
           if [ "$SYNC_MODE" = "full" ]; then
-            npm run import:wp -- --input data/wp-export/posts.raw.json --all --prune
+            npm run import:wp -- --input data/wp-export/posts.raw.json --all --prune --mode "$SYNC_MODE" --log-output src/data/wpImportLog.jsonl
           else
-            npm run import:wp -- --input data/wp-export/posts.raw.json --all
+            npm run import:wp -- --input data/wp-export/posts.raw.json --all --mode "$SYNC_MODE" --log-output src/data/wpImportLog.jsonl
           fi
 
       - name: Build site
@@ -92,6 +92,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add src/content/last-words src/data/wpExportMeta.json
+          if [ -f src/data/wpImportLog.jsonl ]; then
+            git add src/data/wpImportLog.jsonl
+          fi
           if git diff --cached --quiet; then
             echo "No content changes to commit."
           else

@@ -1,11 +1,39 @@
 ---
 import { getCollection } from "astro:content";
+import { formatRussianTableDate } from "../../lib/dates";
 import { toDisplayWord } from "../../lib/lastWords";
+import { detectOriginalLanguage } from "../../lib/originalLanguages";
+import { isRussianWord } from "../../lib/people";
+import { buildTagDirectory, getTagHref, isRussianTag } from "../../lib/tags";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const finalWords = (await getCollection("last-words"))
     .map(toDisplayWord)
+    .filter(isRussianWord)
     .sort((a, b) => a.person.localeCompare(b.person, "ru"));
+const tagSlugs = Object.fromEntries(
+    buildTagDirectory(finalWords).map((tag) => [tag.name, tag.slug]),
+);
+const countries = [
+    ...new Set(finalWords.map((word) => word.country).filter(Boolean)),
+].sort((a, b) => a.localeCompare(b, "ru"));
+const periods = [
+    ...new Set(finalWords.map((word) => word.period).filter(Boolean)),
+].sort((a, b) => a.localeCompare(b, "ru"));
+const tags = [...new Set(finalWords.flatMap((word) => word.tags))]
+    .filter(isRussianTag)
+    .sort((a, b) => a.localeCompare(b, "ru"));
+const originalLanguagesBySlug = Object.fromEntries(
+    finalWords.map((word) => {
+        const detection = detectOriginalLanguage(word);
+        return [
+            word.slug,
+            detection && detection.language !== word.language
+                ? detection.languageLabel
+                : "",
+        ];
+    }),
+);
 
 const base = import.meta.env.BASE_URL.endsWith("/")
     ? import.meta.env.BASE_URL
@@ -13,17 +41,29 @@ const base = import.meta.env.BASE_URL.endsWith("/")
 ---
 
 <BaseLayout title="База слов">
-    <section>
-        <h1>База слов</h1>
-    </section>
-
-    <section class="section" aria-label="Все последние слова">
+    <section class="section words-section" aria-label="Все последние слова">
         <div class="table-tools">
-            <input
-                id="words-search"
-                type="search"
-                placeholder="Поиск по имени, стране, эпохе или тегам"
-            />
+            <div class="table-tools-search">
+                <input
+                    id="words-search"
+                    type="search"
+                    placeholder="Поиск по имени, стране, эпохе или тегам"
+                />
+            </div>
+            <div class="table-tools-filters">
+                <select id="words-country">
+                    <option value="">Все страны</option>
+                    {countries.map((country) => <option value={country}>{country}</option>)}
+                </select>
+                <select id="words-period">
+                    <option value="">Все эпохи</option>
+                    {periods.map((period) => <option value={period}>{period}</option>)}
+                </select>
+                <select id="words-tag">
+                    <option value="">Все теги</option>
+                    {tags.map((tag) => <option value={tag}>{tag}</option>)}
+                </select>
+            </div>
             <div class="table-tools-meta">
                 <p class="meta">
                     <span id="words-count">{finalWords.length}</span> из {
@@ -50,16 +90,21 @@ const base = import.meta.env.BASE_URL.endsWith("/")
                         </th>
                         <th data-sort-header="1" aria-sort="none">
                             <button type="button" data-sort-column="1"
-                                >Страна</button
+                                >Дата слова</button
                             >
                         </th>
                         <th data-sort-header="2" aria-sort="none">
                             <button type="button" data-sort-column="2"
-                                >Эпоха</button
+                                >Страна</button
                             >
                         </th>
                         <th data-sort-header="3" aria-sort="none">
                             <button type="button" data-sort-column="3"
+                                >Язык оригинала</button
+                            >
+                        </th>
+                        <th data-sort-header="4" aria-sort="none">
+                            <button type="button" data-sort-column="4"
                                 >Теги</button
                             >
                         </th>
@@ -68,24 +113,48 @@ const base = import.meta.env.BASE_URL.endsWith("/")
                 <tbody>
                     {
                         finalWords.map((word) => (
-                            <tr>
+                            <tr
+                                data-country={word.country ?? ""}
+                                data-period={word.period ?? ""}
+                                data-tags={word.tags.join("|")}
+                                data-has-photo={word.featuredImage ? "true" : "false"}
+                            >
                                 <td class="word-name-cell">
                                     <a href={`${base}words/${word.slug}/`}>
                                         {word.title}
                                     </a>
                                 </td>
+                                <td class="word-statement-date-cell" data-sort-value={word.statementDate ?? ""}>
+                                    {
+                                        word.statementDate && (
+                                            <time datetime={word.statementDate}>
+                                                {formatRussianTableDate(word.statementDate)}
+                                            </time>
+                                        )
+                                    }
+                                </td>
                                 <td class="word-country-cell">
                                     {word.country ?? ""}
                                 </td>
-                                <td class="word-period-cell">
-                                    {word.period ?? ""}
+                                <td class="word-original-language-cell">
+                                    {originalLanguagesBySlug[word.slug]}
                                 </td>
                                 <td>
                                     {[...word.tags]
                                         .sort((a, b) =>
                                             a.localeCompare(b, "ru"),
                                         )
-                                        .join(", ")}
+                                        .map((tag, index, tags) => (
+                                            <>
+                                                <a
+                                                    class="word-tag-link"
+                                                    href={getTagHref(base, tagSlugs[tag] ?? "tag")}
+                                                >
+                                                    {tag}
+                                                </a>
+                                                {index < tags.length - 1 && ", "}
+                                            </>
+                                        ))}
                                 </td>
                             </tr>
                         ))
@@ -97,6 +166,9 @@ const base = import.meta.env.BASE_URL.endsWith("/")
 
     <script>
         const searchInput = document.querySelector("#words-search");
+        const countrySelect = document.querySelector("#words-country");
+        const periodSelect = document.querySelector("#words-period");
+        const tagSelect = document.querySelector("#words-tag");
         const resetButton = document.querySelector("#words-reset");
         const countNode = document.querySelector("#words-count");
         const table = document.querySelector("#words-table");
@@ -109,20 +181,50 @@ const base = import.meta.env.BASE_URL.endsWith("/")
         };
 
         function getCellText(row, columnIndex) {
-            return row.children[columnIndex]?.textContent?.trim() ?? "";
+            const cell = row.children[columnIndex];
+
+            if (!(cell instanceof HTMLElement)) {
+                return "";
+            }
+
+            return cell.dataset.sortValue ?? cell.textContent?.trim() ?? "";
         }
 
-        function applySearch() {
+        function applyFilters() {
             if (!(searchInput instanceof HTMLInputElement)) {
                 return;
             }
 
             const query = searchInput.value.trim().toLowerCase();
+            const selectedCountry =
+                countrySelect instanceof HTMLSelectElement
+                    ? countrySelect.value
+                    : "";
+            const selectedPeriod =
+                periodSelect instanceof HTMLSelectElement
+                    ? periodSelect.value
+                    : "";
+            const selectedTag =
+                tagSelect instanceof HTMLSelectElement ? tagSelect.value : "";
             let visibleCount = 0;
 
             for (const row of rows) {
-                const text = row.textContent?.toLowerCase() ?? "";
-                const isVisible = query.length === 0 || text.includes(query);
+                const text = `${row.textContent ?? ""} ${row.dataset.period ?? ""}`.toLowerCase();
+                const rowTags = (row.dataset.tags ?? "").split("|").filter(Boolean);
+                const matchesSearch = query.length === 0 || text.includes(query);
+                const matchesCountry =
+                    !selectedCountry ||
+                    (row.dataset.country ?? "") === selectedCountry;
+                const matchesPeriod =
+                    !selectedPeriod ||
+                    (row.dataset.period ?? "") === selectedPeriod;
+                const matchesTag =
+                    !selectedTag || rowTags.includes(selectedTag);
+                const isVisible =
+                    matchesSearch &&
+                    matchesCountry &&
+                    matchesPeriod &&
+                    matchesTag;
                 row.hidden = !isVisible;
                 visibleCount += isVisible ? 1 : 0;
             }
@@ -141,6 +243,18 @@ const base = import.meta.env.BASE_URL.endsWith("/")
                 storageKey,
                 JSON.stringify({
                     search: searchInput.value,
+                    country:
+                        countrySelect instanceof HTMLSelectElement
+                            ? countrySelect.value
+                            : "",
+                    period:
+                        periodSelect instanceof HTMLSelectElement
+                            ? periodSelect.value
+                            : "",
+                    tag:
+                        tagSelect instanceof HTMLSelectElement
+                            ? tagSelect.value
+                            : "",
                     sortColumn: sortState.column,
                     sortDirection: sortState.direction,
                 }),
@@ -163,7 +277,7 @@ const base = import.meta.env.BASE_URL.endsWith("/")
                 if (
                     Number.isInteger(savedColumn) &&
                     savedColumn >= 0 &&
-                    savedColumn <= 3
+                    savedColumn <= 4
                 ) {
                     sortState.column = savedColumn;
                     sortState.direction = savedDirection;
@@ -174,6 +288,27 @@ const base = import.meta.env.BASE_URL.endsWith("/")
                     typeof savedState.search === "string"
                 ) {
                     searchInput.value = savedState.search;
+                }
+
+                if (
+                    countrySelect instanceof HTMLSelectElement &&
+                    typeof savedState.country === "string"
+                ) {
+                    countrySelect.value = savedState.country;
+                }
+
+                if (
+                    periodSelect instanceof HTMLSelectElement &&
+                    typeof savedState.period === "string"
+                ) {
+                    periodSelect.value = savedState.period;
+                }
+
+                if (
+                    tagSelect instanceof HTMLSelectElement &&
+                    typeof savedState.tag === "string"
+                ) {
+                    tagSelect.value = savedState.tag;
                 }
             } catch {
                 window.localStorage.removeItem(storageKey);
@@ -237,7 +372,7 @@ const base = import.meta.env.BASE_URL.endsWith("/")
 
             applySort();
             saveState();
-            applySearch();
+            applyFilters();
         }
 
         function resetTable() {
@@ -245,19 +380,43 @@ const base = import.meta.env.BASE_URL.endsWith("/")
                 searchInput.value = "";
             }
 
+            if (countrySelect instanceof HTMLSelectElement) {
+                countrySelect.value = "";
+            }
+
+            if (periodSelect instanceof HTMLSelectElement) {
+                periodSelect.value = "";
+            }
+
+            if (tagSelect instanceof HTMLSelectElement) {
+                tagSelect.value = "";
+            }
+
             sortState.column = 0;
             sortState.direction = "asc";
             window.localStorage.removeItem(storageKey);
             applySort();
-            applySearch();
+            applyFilters();
         }
 
         readState();
         applySort();
-        applySearch();
+        applyFilters();
 
         searchInput?.addEventListener("input", () => {
-            applySearch();
+            applyFilters();
+            saveState();
+        });
+        countrySelect?.addEventListener("change", () => {
+            applyFilters();
+            saveState();
+        });
+        periodSelect?.addEventListener("change", () => {
+            applyFilters();
+            saveState();
+        });
+        tagSelect?.addEventListener("change", () => {
+            applyFilters();
             saveState();
         });
         resetButton?.addEventListener("click", resetTable);
@@ -275,22 +434,53 @@ const base = import.meta.env.BASE_URL.endsWith("/")
 
 <style>
     .table-tools {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        display: grid;
         gap: 16px;
         margin-top: 24px;
     }
 
-    .table-tools input {
-        max-width: 460px;
+    .words-section {
+        width: min(1280px, calc(100vw - 48px));
+        margin-left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .table-tools-search {
+        max-width: 520px;
+    }
+
+    .table-tools-search input {
+        width: 100%;
+    }
+
+    .table-tools-search input,
+    .table-tools-filters select {
+        min-height: 38px;
+        padding: 7px 18px 7px 10px;
+    }
+
+    .table-tools-filters select {
+        -webkit-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 18 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.5 6.75L9 11.25L13.5 6.75' stroke='%231f2523' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-position: right 18px center;
+        background-repeat: no-repeat;
+        background-size: 18px 18px;
+        padding-right: 10px;
+    }
+
+    .table-tools-filters {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(160px, 220px));
+        gap: 12px;
     }
 
     .table-tools-meta {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         gap: 12px;
-        white-space: nowrap;
+        flex-wrap: wrap;
     }
 
     .reset-table {
@@ -325,7 +515,7 @@ const base = import.meta.env.BASE_URL.endsWith("/")
 
     .words-table {
         width: 100%;
-        min-width: 860px;
+        min-width: 1040px;
         border-collapse: collapse;
         table-layout: auto;
     }
@@ -403,47 +593,75 @@ const base = import.meta.env.BASE_URL.endsWith("/")
     }
 
     .words-table a {
-        color: var(--text);
+        color: var(--accent);
         font-weight: 700;
-        text-decoration-color: var(--line);
         text-underline-offset: 3px;
     }
 
+    .words-table a:visited {
+        color: var(--visited);
+    }
+
+    .words-table a.word-tag-link:visited {
+        color: var(--accent);
+    }
+
     .words-table a:hover {
-        color: var(--accent-strong);
-        text-decoration-color: var(--accent-strong);
+        color: var(--accent);
+        text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    }
+
+    .words-table a:visited:hover {
+        color: var(--visited);
+        text-decoration-color: color-mix(in srgb, var(--visited) 45%, transparent);
+    }
+
+    .words-table a.word-tag-link:visited:hover {
+        color: var(--accent);
+        text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
     }
 
     .word-name-cell,
     .word-country-cell,
-    .word-period-cell {
+    .word-original-language-cell,
+    .word-statement-date-cell {
         white-space: nowrap;
     }
 
     .word-name-cell {
-        width: 360px;
+        width: 240px;
     }
 
     .word-country-cell {
-        width: 110px;
+        width: 88px;
     }
 
-    .word-period-cell {
-        width: 92px;
+    .word-original-language-cell {
+        width: 130px;
+    }
+
+    .word-statement-date-cell {
+        width: 150px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
     }
 
     @media (max-width: 720px) {
-        .table-tools {
-            align-items: flex-start;
-            flex-direction: column;
+        .table-tools-search {
+            max-width: none;
         }
 
-        .table-tools input {
-            max-width: none;
+        .table-tools-filters {
+            grid-template-columns: 1fr;
         }
 
         .table-tools-meta {
             white-space: normal;
+        }
+
+        .words-section {
+            width: 100%;
+            margin-left: 0;
+            transform: none;
         }
     }
 </style>

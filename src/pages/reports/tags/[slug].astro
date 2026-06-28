@@ -1,0 +1,79 @@
+---
+import { getCollection } from "astro:content";
+import WordCard from "../../../components/WordCard.astro";
+import ReferencePageLayout from "../../../components/ReferencePageLayout.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { toDisplayWord, type DisplayWord } from "../../../lib/lastWords";
+import { buildTagDirectory, isRussianTag } from "../../../lib/tags";
+
+type Props = {
+    tag: {
+        name: string;
+        slug: string;
+        count: number;
+        words: DisplayWord[];
+    };
+    tagSlugs: Record<string, string>;
+};
+
+export async function getStaticPaths() {
+    const words = (await getCollection("last-words"))
+        .map(toDisplayWord)
+        .filter((word) => word.language === "ru");
+    const tags = buildTagDirectory(words).filter((tag) => isRussianTag(tag.name));
+    const tagSlugs = Object.fromEntries(
+        tags.map((tag) => [tag.name, tag.slug]),
+    );
+
+    return tags.map((tag) => ({
+        params: { slug: tag.slug },
+        props: { tag, tagSlugs },
+    }));
+}
+
+const { tag, tagSlugs } = Astro.props as Props;
+const base = import.meta.env.BASE_URL.endsWith("/")
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+
+function formatCountLabel(count: number) {
+    const mod10 = count % 10;
+    const mod100 = count % 100;
+
+    if (mod10 === 1 && mod100 !== 11) {
+        return "запись";
+    }
+
+    if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) {
+        return "записи";
+    }
+
+    return "записей";
+}
+---
+
+<BaseLayout title={tag.name}>
+    <ReferencePageLayout current="tags">
+        <section>
+            <h1>{tag.name}</h1>
+            <p class="meta">
+                {tag.count} {formatCountLabel(tag.count)}
+            </p>
+        </section>
+
+        <section class="section">
+            <div class="button-row tag-back-row">
+                <a class="button secondary" href={`${base}reports/tags/`}>Ко всем тегам</a>
+            </div>
+            <div class="word-list">
+                {tag.words.map((word) => <WordCard word={word} tagSlugs={tagSlugs} />)}
+            </div>
+        </section>
+    </ReferencePageLayout>
+</BaseLayout>
+
+<style>
+    .tag-back-row {
+        margin-bottom: 24px;
+    }
+</style>

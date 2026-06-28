@@ -1,28 +1,23 @@
 ---
 import { getCollection } from "astro:content";
+import { toDisplayWord } from "../../lib/lastWords";
+import { buildTagDirectory, getTagHref, isRussianTag } from "../../lib/tags";
 import ReferencePageLayout from "../../components/ReferencePageLayout.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const entries = await getCollection("last-words");
-const tagsByName = new Map<string, number>();
-
-for (const entry of entries) {
-    for (const tag of entry.data.tags) {
-        tagsByName.set(tag, (tagsByName.get(tag) ?? 0) + 1);
-    }
-}
-
-const tags = [...tagsByName.entries()]
-    .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => a.name.localeCompare(b.name, "ru"));
+const tags = buildTagDirectory(
+    (await getCollection("last-words"))
+        .map(toDisplayWord)
+        .filter((word) => word.language === "ru"),
+).filter((tag) => isRussianTag(tag.name));
+const base = import.meta.env.BASE_URL.endsWith("/")
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
 ---
 
 <BaseLayout title="Библиотека тегов">
     <ReferencePageLayout current="tags">
-        <section>
-            <h1>Библиотека тегов</h1>
-        </section>
-        <section class="section tags-section">
+        <section class="tags-section">
             <div class="tags-tools">
                 <input id="tags-search" type="search" placeholder="Найти тег" />
                 <p class="meta">
@@ -34,7 +29,7 @@ const tags = [...tagsByName.entries()]
                 {
                     tags.map((tag) => (
                         <div class="tag-item">
-                            <span>{tag.name}</span>
+                            <a href={getTagHref(base, tag.slug)}>{tag.name}</a>
                             <small>{tag.count}</small>
                         </div>
                     ))
@@ -57,7 +52,9 @@ const tags = [...tagsByName.entries()]
 
                 for (const item of tagItems) {
                     const text = item.textContent?.toLowerCase() ?? "";
-                    const isVisible = query.length === 0 || text.includes(query);
+                    const matchesSearch =
+                        query.length === 0 || text.includes(query);
+                    const isVisible = matchesSearch;
                     item.toggleAttribute("hidden", !isVisible);
                     visibleCount += isVisible ? 1 : 0;
                 }
@@ -68,6 +65,7 @@ const tags = [...tagsByName.entries()]
             }
 
             searchInput?.addEventListener("input", applySearch);
+            applySearch();
         </script>
     </ReferencePageLayout>
 </BaseLayout>
@@ -78,15 +76,15 @@ const tags = [...tagsByName.entries()]
     }
 
     .tags-tools {
-        display: flex;
+        display: grid;
+        grid-template-columns: minmax(220px, 420px) auto;
         align-items: center;
-        justify-content: space-between;
         gap: 16px;
         margin-top: 24px;
     }
 
     .tags-tools input {
-        max-width: 420px;
+        max-width: none;
     }
 
     .tags-list {
@@ -105,6 +103,25 @@ const tags = [...tagsByName.entries()]
         color: var(--text);
         font-size: 14px;
         line-height: 1.35;
+    }
+
+    .tag-item a {
+        color: var(--accent);
+        text-underline-offset: 3px;
+    }
+
+    .tag-item a:visited {
+        color: var(--visited);
+    }
+
+    .tag-item a:hover {
+        color: var(--accent);
+        text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    }
+
+    .tag-item a:visited:hover {
+        color: var(--visited);
+        text-decoration-color: color-mix(in srgb, var(--visited) 45%, transparent);
     }
 
     .tag-item small {
@@ -126,7 +143,7 @@ const tags = [...tagsByName.entries()]
     @media (max-width: 640px) {
         .tags-tools {
             align-items: flex-start;
-            flex-direction: column;
+            grid-template-columns: 1fr;
         }
 
         .tags-tools input {

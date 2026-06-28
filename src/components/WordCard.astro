@@ -1,26 +1,25 @@
 ---
 import type { DisplayWord } from "../lib/lastWords";
+import { formatRussianDate } from "../lib/dates";
+import { getTagHref } from "../lib/tags";
 
 type Props = {
   word: DisplayWord;
+  tagSlugs?: Record<string, string>;
 };
 
-const { word } = Astro.props;
+const { word, tagSlugs = {} } = Astro.props;
 const base = import.meta.env.BASE_URL.endsWith("/")
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
 const place = word.city ?? word.country ?? "Место не заполнено";
 const countryPeriod = word.country && word.period ? `${word.country}: ${word.period}` : word.country ?? word.period;
-const publishedDate = new Intl.DateTimeFormat("ru-RU", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-}).format(new Date(word.date));
+const publishedDate = formatRussianDate(word.date);
+const statementDate = word.statementDate ? formatRussianDate(word.statementDate) : undefined;
 ---
 
-<a
+<div
   class="word-card"
-  href={`${base}words/${word.slug}/`}
   data-word-card
   data-person={word.person.toLowerCase()}
   data-case={word.caseName.toLowerCase()}
@@ -30,22 +29,46 @@ const publishedDate = new Intl.DateTimeFormat("ru-RU", {
   data-text={word.text.toLowerCase()}
 >
   <div>
-    <h3>{word.title}</h3>
+    <h3>
+      <a class="word-card-link" href={`${base}words/${word.slug}/`}>{word.title}</a>
+    </h3>
     <p>{word.caseName}</p>
     <div class="tag-row">
-      {word.tags.map((tag) => <span class="tag">{tag}</span>)}
+      {word.tags.map((tag) => (
+        <a class="tag" href={getTagHref(base, tagSlugs[tag] ?? "tag")}>{tag}</a>
+      ))}
     </div>
   </div>
   <div class="word-card-side">
     <time class="published-date" datetime={word.date}>Опубликовано {publishedDate}</time>
     <p class="meta">
       {countryPeriod}
+      {statementDate && <><br />Дата слова: {statementDate}</>}
       {word.readingTime && <><br />Время чтения: {word.readingTime}</>}
     </p>
   </div>
-</a>
+</div>
 
 <style>
+  .word-card-link {
+    color: var(--accent);
+    text-underline-offset: 3px;
+  }
+
+  .word-card-link:visited {
+    color: var(--visited);
+  }
+
+  .word-card-link:hover {
+    color: var(--accent);
+    text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+
+  .word-card-link:visited:hover {
+    color: var(--visited);
+    text-decoration-color: color-mix(in srgb, var(--visited) 45%, transparent);
+  }
+
   .word-card-side {
     display: grid;
     gap: 14px;

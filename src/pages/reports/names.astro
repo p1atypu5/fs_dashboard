@@ -2,68 +2,91 @@
 import { getCollection } from "astro:content";
 import ReferencePageLayout from "../../components/ReferencePageLayout.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { toDisplayWord } from "../../lib/lastWords";
+import { buildPersonDirectory, getPersonHref } from "../../lib/people";
 
-const entries = await getCollection("last-words");
-const names = entries
-    .map((entry) => ({
-        name: entry.data.person,
-        slug: entry.data.localSlug,
-        statementDate: entry.data.statementDate,
-    }))
-    .sort((a, b) => a.name.localeCompare(b.name, "ru"));
+const people = buildPersonDirectory(
+    (await getCollection("last-words")).map(toDisplayWord),
+);
 
 const base = import.meta.env.BASE_URL.endsWith("/")
     ? import.meta.env.BASE_URL
     : `${import.meta.env.BASE_URL}/`;
-
-const dateFormatter = new Intl.DateTimeFormat("ru-RU", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-});
-
-function formatStatementDate(date?: string) {
-    if (!date) {
-        return undefined;
-    }
-
-    return dateFormatter.format(new Date(`${date}T00:00:00`));
-}
 ---
 
 <BaseLayout title="Все имена">
     <ReferencePageLayout current="names">
-        <section>
-            <h1>Все имена</h1>
-        </section>
+        <section class="names-section">
+            <div class="names-tools">
+                <input id="names-search" type="search" placeholder="Найти имя" />
+                <p class="meta">
+                    <span id="names-count">{people.length}</span> из {people.length} имен
+                </p>
+            </div>
 
-        <section class="section names-section">
-            <p class="meta">{names.length} записей</p>
             <div class="names-list">
                 {
-                    names.map((item) => (
+                    people.map((person) => (
                         <span class="name-item">
-                            <a href={`${base}words/${item.slug}/`}>
-                                {item.name}
+                            <a href={getPersonHref(base, person.slug)}>
+                                {person.name}
                             </a>
-                            {item.statementDate && (
-                                <time
-                                    class="name-date"
-                                    datetime={item.statementDate}
-                                >
-                                    {formatStatementDate(item.statementDate)}
-                                </time>
+                            {person.count > 1 && (
+                                <span class="name-count">({person.count})</span>
                             )}
                         </span>
                     ))
                 }
             </div>
         </section>
+
+        <script>
+            const searchInput = document.querySelector("#names-search");
+            const countNode = document.querySelector("#names-count");
+            const nameItems = Array.from(document.querySelectorAll(".name-item"));
+
+            function applySearch() {
+                if (!(searchInput instanceof HTMLInputElement)) {
+                    return;
+                }
+
+                const query = searchInput.value.trim().toLowerCase();
+                let visibleCount = 0;
+
+                for (const item of nameItems) {
+                    const text = item.textContent?.toLowerCase() ?? "";
+                    const matchesSearch =
+                        query.length === 0 || text.includes(query);
+                    const isVisible = matchesSearch;
+                    item.toggleAttribute("hidden", !isVisible);
+                    visibleCount += isVisible ? 1 : 0;
+                }
+
+                if (countNode) {
+                    countNode.textContent = String(visibleCount);
+                }
+            }
+
+            searchInput?.addEventListener("input", applySearch);
+            applySearch();
+        </script>
     </ReferencePageLayout>
 </BaseLayout>
 
 <style>
     .names-section {
+        max-width: none;
+    }
+
+    .names-tools {
+        display: grid;
+        grid-template-columns: minmax(220px, 420px) auto;
+        align-items: center;
+        gap: 16px;
+        margin-top: 24px;
+    }
+
+    .names-tools input {
         max-width: none;
     }
 
@@ -81,13 +104,16 @@ function formatStatementDate(date?: string) {
     }
 
     .name-item a {
-        color: var(--text);
+        color: var(--accent);
         font-size: 14px;
-        text-decoration-color: var(--line);
         text-underline-offset: 3px;
     }
 
-    :global(.name-item .name-date) {
+    .name-item a:visited {
+        color: var(--visited);
+    }
+
+    .name-count {
         display: inline-block;
         margin-left: 5px;
         color: color-mix(in srgb, var(--muted) 70%, var(--background));
@@ -98,8 +124,17 @@ function formatStatementDate(date?: string) {
     }
 
     .name-item a:hover {
-        color: var(--accent-strong);
-        text-decoration-color: var(--accent-strong);
+        color: var(--accent);
+        text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    }
+
+    .name-item a:visited:hover {
+        color: var(--visited);
+        text-decoration-color: color-mix(in srgb, var(--visited) 45%, transparent);
+    }
+
+    .name-item[hidden] {
+        display: none;
     }
 
     @media (max-width: 900px) {
@@ -109,6 +144,15 @@ function formatStatementDate(date?: string) {
     }
 
     @media (max-width: 640px) {
+        .names-tools {
+            align-items: flex-start;
+            grid-template-columns: 1fr;
+        }
+
+        .names-tools input {
+            max-width: none;
+        }
+
         .names-list {
             column-count: 1;
         }
