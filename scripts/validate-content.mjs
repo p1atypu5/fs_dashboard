@@ -5,7 +5,7 @@ import process from "node:process";
 const CONTENT_DIR = path.join(process.cwd(), "src/content/last-words");
 
 const entries = await readContentEntries(CONTENT_DIR);
-const duplicateGroups = findDuplicateWordPressIds(entries);
+const duplicateGroups = findDisallowedDuplicateWordPressIds(entries);
 const invalidEntries = entries.filter((entry) => !Number.isInteger(entry.wordpressId));
 
 if (invalidEntries.length > 0 || duplicateGroups.length > 0) {
@@ -20,7 +20,7 @@ if (invalidEntries.length > 0 || duplicateGroups.length > 0) {
   throw new Error("Content validation failed");
 }
 
-console.log(`validated ${entries.length} content file(s): wordpressId values are unique`);
+console.log(`validated ${entries.length} content file(s): wordpressId values are consistent`);
 
 async function readContentEntries(contentDir) {
   const files = (await readdir(contentDir))
@@ -34,6 +34,8 @@ async function readContentEntries(contentDir) {
     const frontmatter = parseFrontmatter(source);
     entries.push({
       file: path.join("src/content/last-words", file),
+      language: frontmatter.language,
+      sourceUrl: frontmatter.sourceUrl,
       wordpressId: frontmatter.wordpressId,
     });
   }
@@ -41,7 +43,7 @@ async function readContentEntries(contentDir) {
   return entries;
 }
 
-function findDuplicateWordPressIds(entries) {
+function findDisallowedDuplicateWordPressIds(entries) {
   const byWordPressId = new Map();
 
   for (const entry of entries) {
@@ -51,13 +53,28 @@ function findDuplicateWordPressIds(entries) {
 
     const key = String(entry.wordpressId);
     const group = byWordPressId.get(key) ?? [];
-    group.push(entry.file);
+    group.push(entry);
     byWordPressId.set(key, group);
   }
 
   return [...byWordPressId.entries()]
-    .filter(([, files]) => files.length > 1)
-    .map(([wordpressId, files]) => ({ wordpressId, files }));
+    .filter(([, group]) => group.length > 1 && !isAllowedTransitionalDuplicate(group))
+    .map(([wordpressId, group]) => ({
+      wordpressId,
+      files: group.map((entry) => entry.file),
+    }));
+}
+
+function isAllowedTransitionalDuplicate(entries) {
+  const sourceUrls = new Set(entries.map((entry) => entry.sourceUrl));
+  const languages = new Set(entries.map((entry) => entry.language));
+
+  return (
+    entries.length === 2
+    && sourceUrls.size === 1
+    && languages.size === entries.length
+    && [...sourceUrls].every((sourceUrl) => typeof sourceUrl === "string" && sourceUrl.includes("/en/"))
+  );
 }
 
 function parseFrontmatter(source) {

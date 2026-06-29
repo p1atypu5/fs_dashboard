@@ -12,7 +12,7 @@ export async function getStaticPaths() {
     );
 
     return entries.map((entry) => ({
-        params: { slug: entry.data.localSlug },
+        params: { slug: toDisplayWord(entry).slug },
         props: { entry, tagSlugs },
     }));
 }

@@ -36,7 +36,7 @@ export type DisplayWord = {
 export function toDisplayWord(entry: LastWordEntry): DisplayWord {
   return {
     id: entry.id,
-    slug: entry.data.localSlug,
+    slug: normalizeLocalSlug(entry.data.localSlug),
     title: entry.data.title,
     person: entry.data.person,
     caseName: entry.data.caseDescription ?? "Описание дела не заполнено",
@@ -57,6 +57,14 @@ export function toDisplayWord(entry: LastWordEntry): DisplayWord {
     caseDescription: entry.data.caseDescription,
     readingTime: entry.data.readingTime,
   };
+}
+
+export function normalizeLocalSlug(value: string) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
 }
 
 export function sortWordsByDate(words: DisplayWord[]) {

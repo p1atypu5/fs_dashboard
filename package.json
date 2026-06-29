@@ -9,7 +9,11 @@
     "preview": "astro preview",
     "astro": "astro",
     "fetch:wp": "node scripts/fetch-wordpress.mjs",
+    "integrity:update": "node scripts/content-integrity.mjs --update",
     "import:wp": "node scripts/import-wordpress.mjs",
+    "test": "npm run test:stats && npm run test:integrity",
+    "test:integrity": "node scripts/content-integrity.mjs --check",
+    "test:stats": "node scripts/test-statistics.mjs",
     "validate:content": "node scripts/validate-content.mjs"
   },
   "dependencies": {

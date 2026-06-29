@@ -35,6 +35,10 @@ const recordsByLanguage = [...records.reduce((map, record) => {
         "ru",
     ),
 );
+const detectedLanguages = recordsByLanguage.map(([language, languageRecords]) => ({
+    code: language,
+    label: languageRecords[0].detection.languageLabel,
+}));
 const conflictCount = records.filter((record) => record.detection.hasConflict).length;
 const base = import.meta.env.BASE_URL.endsWith("/")
     ? import.meta.env.BASE_URL
@@ -52,6 +56,15 @@ const base = import.meta.env.BASE_URL.endsWith("/")
                 <div class="stat">
                     <strong>{recordsByLanguage.length}</strong>
                     <span>языков найдено</span>
+                    {
+                        detectedLanguages.length > 0 && (
+                            <small>
+                                {detectedLanguages
+                                    .map(({ code, label }) => `${label} (${code})`)
+                                    .join(", ")}
+                            </small>
+                        )
+                    }
                 </div>
                 <div class="stat">
                     <strong>{conflictCount}</strong>

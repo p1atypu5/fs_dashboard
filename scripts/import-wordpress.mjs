@@ -308,7 +308,7 @@ function createFrontmatter(post, existing) {
   const data = {
     wordpressId: post.id,
     wpSlug: post.slug,
-    localSlug: existingData.localSlug ?? post.slug,
+    localSlug: normalizeLocalSlug(existingData.localSlug ?? post.slug),
     translationGroupId: existingData.translationGroupId ?? String(post.id),
     language,
     originalLanguage,
@@ -349,6 +349,14 @@ function detectPostLanguage(post) {
     personDescription: post.acf?.opisanie_cheloveka,
     caseDescription: post.acf?.opisanie_proczessa,
   });
+}
+
+function normalizeLocalSlug(value) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
 }
 
 function detectEntryLanguage({ title, contentHtml, personDescription, caseDescription }) {
