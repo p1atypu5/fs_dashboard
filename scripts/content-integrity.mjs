@@ -41,7 +41,13 @@ async function checkBaseline() {
   );
   const expectedFiles = Object.keys(expectedEntries).sort((a, b) => a.localeCompare(b));
   const currentFiles = Object.keys(currentEntries).sort((a, b) => a.localeCompare(b));
-  const missingEntries = expectedFiles.filter((file) => !currentEntries[file]);
+  const missingBaselineEntries = expectedFiles.filter((file) => !currentEntries[file]);
+  const prunedTransitionalEntries = missingBaselineEntries.filter((file) =>
+    isAllowedPrunedTransitionalEntry(expectedEntries[file]),
+  );
+  const missingEntries = missingBaselineEntries.filter(
+    (file) => !isAllowedPrunedTransitionalEntry(expectedEntries[file]),
+  );
   const newEntries = currentFiles.filter((file) => !expectedEntries[file]);
   const emptyEntries = currentFiles.filter((file) => currentEntries[file].textLength === 0);
   const shortEntries = currentFiles.filter((file) => currentEntries[file].textLength < MIN_TEXT_LENGTH);
@@ -88,6 +94,7 @@ async function checkBaseline() {
   );
 
   printWarning("missing entries", missingEntries);
+  printWarning("pruned transitional entries", prunedTransitionalEntries);
   printWarning("new entries", newEntries);
   printWarning("changed entries", changedEntries);
 
@@ -97,6 +104,7 @@ async function checkBaseline() {
       `${changedEntries.length} changed`,
       `${newEntries.length} new`,
       `${missingEntries.length} missing`,
+      `${prunedTransitionalEntries.length} pruned transitional`,
     ].join(", "),
   );
 }
@@ -212,6 +220,14 @@ function countWords(value) {
   }
 
   return value.split(/\s+/).filter(Boolean).length;
+}
+
+function isAllowedPrunedTransitionalEntry(entry) {
+  return (
+    entry?.language === "ru"
+    && typeof entry.sourceUrl === "string"
+    && entry.sourceUrl.includes("/en/")
+  );
 }
 
 function formatList(values) {

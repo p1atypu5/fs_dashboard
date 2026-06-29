@@ -757,28 +757,10 @@
       "textLength": 529,
       "wordCount": 79
     },
-    "15603-ru.md": {
-      "file": "15603-ru.md",
-      "wordpressId": 15603,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2024/08/19/zarema-musaeva-eng/",
-      "textHash": "e949c8549784bc1bdbff8b4f2dcc35b5f83a9d0d9684aba94426f3f2b050e134",
-      "textLength": 529,
-      "wordCount": 79
-    },
     "15608-en.md": {
       "file": "15608-en.md",
       "wordpressId": 15608,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2024/10/15/miftakhov-azat-fanisovich-eng/",
-      "textHash": "4820f54f1972235fb6beac285289b1f5244010f35be80683cdec95d9842e0808",
-      "textLength": 8085,
-      "wordCount": 1398
-    },
-    "15608-ru.md": {
-      "file": "15608-ru.md",
-      "wordpressId": 15608,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2024/10/15/miftakhov-azat-fanisovich-eng/",
       "textHash": "4820f54f1972235fb6beac285289b1f5244010f35be80683cdec95d9842e0808",
       "textLength": 8085,
@@ -797,15 +779,6 @@
       "file": "15627-en.md",
       "wordpressId": 15627,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2024/10/15/ponomarenko-mariya-nikolaevna/",
-      "textHash": "d95bcd171edbf196233819c15443c03a829cf8c2c3eedcf03016309003c43143",
-      "textLength": 6844,
-      "wordCount": 1186
-    },
-    "15627-ru.md": {
-      "file": "15627-ru.md",
-      "wordpressId": 15627,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2024/10/15/ponomarenko-mariya-nikolaevna/",
       "textHash": "d95bcd171edbf196233819c15443c03a829cf8c2c3eedcf03016309003c43143",
       "textLength": 6844,
@@ -883,28 +856,10 @@
       "textLength": 7808,
       "wordCount": 1371
     },
-    "15714-ru.md": {
-      "file": "15714-ru.md",
-      "wordpressId": 15714,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2024/10/29/alexey-navalny/",
-      "textHash": "54a44f6b90ecd154d8b9bd294f4d95affe4f64a29d1473d0e0750f4c9ed2e1ae",
-      "textLength": 7808,
-      "wordCount": 1371
-    },
     "15722-en.md": {
       "file": "15722-en.md",
       "wordpressId": 15722,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2024/10/29/oleg-orlov/",
-      "textHash": "8434808c0897d34b87adf268085a4873bea78ea4db5e4d629d5d5936363be0e6",
-      "textLength": 9567,
-      "wordCount": 1588
-    },
-    "15722-ru.md": {
-      "file": "15722-ru.md",
-      "wordpressId": 15722,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2024/10/29/oleg-orlov/",
       "textHash": "8434808c0897d34b87adf268085a4873bea78ea4db5e4d629d5d5936363be0e6",
       "textLength": 9567,
@@ -928,15 +883,6 @@
       "textLength": 7170,
       "wordCount": 1194
     },
-    "15735-ru.md": {
-      "file": "15735-ru.md",
-      "wordpressId": 15735,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2024/10/30/dmitry-skurikhin/",
-      "textHash": "811e164ab59a35a8970d651dface1f1063bfa92dd4cf82540e3089e11b4a51e9",
-      "textLength": 7170,
-      "wordCount": 1194
-    },
     "15743-ru.md": {
       "file": "15743-ru.md",
       "wordpressId": 15743,
@@ -955,15 +901,6 @@
       "textLength": 3946,
       "wordCount": 671
     },
-    "15748-ru.md": {
-      "file": "15748-ru.md",
-      "wordpressId": 15748,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2024/11/01/vladimir-kara-murza/",
-      "textHash": "645e472abaf1028b6861584fef2efd6330a9880712d919a02d7a8680c87794ba",
-      "textLength": 3946,
-      "wordCount": 671
-    },
     "15752-en.md": {
       "file": "15752-en.md",
       "wordpressId": 15752,
@@ -973,28 +910,10 @@
       "textLength": 8758,
       "wordCount": 1562
     },
-    "15752-ru.md": {
-      "file": "15752-ru.md",
-      "wordpressId": 15752,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2024/11/08/alla-gutnikova/",
-      "textHash": "4d811f2d810e4ab75ad083ebd0669b65e3924361f1376ec9866a3cea6edfabf6",
-      "textLength": 8758,
-      "wordCount": 1562
-    },
     "15758-en.md": {
       "file": "15758-en.md",
       "wordpressId": 15758,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2024/11/26/alexey-gorinov-eng/",
-      "textHash": "687563f8c2b75a01ae57c5432cda63a0da82f8f4c3d8921e9755e9cb01b4fb93",
-      "textLength": 6389,
-      "wordCount": 1116
-    },
-    "15758-ru.md": {
-      "file": "15758-ru.md",
-      "wordpressId": 15758,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2024/11/26/alexey-gorinov-eng/",
       "textHash": "687563f8c2b75a01ae57c5432cda63a0da82f8f4c3d8921e9755e9cb01b4fb93",
       "textLength": 6389,
@@ -1018,15 +937,6 @@
       "textLength": 9437,
       "wordCount": 1703
     },
-    "15775-ru.md": {
-      "file": "15775-ru.md",
-      "wordpressId": 15775,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2024/11/08/roman-ivanov/",
-      "textHash": "30029a2a5d978e71bdfb0b2122bd1ffaa05df95d400061c13fabcd0c7ddcdeaa",
-      "textLength": 9437,
-      "wordCount": 1703
-    },
     "15777-ru.md": {
       "file": "15777-ru.md",
       "wordpressId": 15777,
@@ -1040,15 +950,6 @@
       "file": "15786-en.md",
       "wordpressId": 15786,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2024/11/26/ilya-yashin/",
-      "textHash": "7fffdb2f7a20e9ee379df789fdf85724646fee43f945c853c250a8e1489a2e50",
-      "textLength": 6543,
-      "wordCount": 1131
-    },
-    "15786-ru.md": {
-      "file": "15786-ru.md",
-      "wordpressId": 15786,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2024/11/26/ilya-yashin/",
       "textHash": "7fffdb2f7a20e9ee379df789fdf85724646fee43f945c853c250a8e1489a2e50",
       "textLength": 6543,
@@ -1135,28 +1036,10 @@
       "textLength": 4424,
       "wordCount": 770
     },
-    "15877-ru.md": {
-      "file": "15877-ru.md",
-      "wordpressId": 15877,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2024/11/29/alexey-gorinov-2-eng/",
-      "textHash": "38ae50ad42ffdba58b7ca5d8b7122ec95e88dddc5c2ea2b4df20d3eeae8769b4",
-      "textLength": 4424,
-      "wordCount": 770
-    },
     "15883-en.md": {
       "file": "15883-en.md",
       "wordpressId": 15883,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/05/31/mikhail-krieger-en/",
-      "textHash": "aec7e0c20b69fcddff0084af3289f6428d044392a633ac1e22f0077e856ef21b",
-      "textLength": 8829,
-      "wordCount": 1480
-    },
-    "15883-ru.md": {
-      "file": "15883-ru.md",
-      "wordpressId": 15883,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2025/05/31/mikhail-krieger-en/",
       "textHash": "aec7e0c20b69fcddff0084af3289f6428d044392a633ac1e22f0077e856ef21b",
       "textLength": 8829,
@@ -1954,15 +1837,6 @@
       "textLength": 3950,
       "wordCount": 670
     },
-    "16687-ru.md": {
-      "file": "16687-ru.md",
-      "wordpressId": 16687,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/05/31/kamardin-artem/",
-      "textHash": "45305c6ff091c34103f18ec7441f4431a06900716d13a5be21e46f69cbf2c4c9",
-      "textLength": 3950,
-      "wordCount": 670
-    },
     "16698-ru.md": {
       "file": "16698-ru.md",
       "wordpressId": 16698,
@@ -2242,15 +2116,6 @@
       "textLength": 6647,
       "wordCount": 1081
     },
-    "16862-ru.md": {
-      "file": "16862-ru.md",
-      "wordpressId": 16862,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/05/31/dzhemilev-mustafa-2-eng/",
-      "textHash": "6d0990e77d94bb0a5968e80d5b48250a5318e354cbc380b84d6d675de1929d9c",
-      "textLength": 6647,
-      "wordCount": 1081
-    },
     "16866-en.md": {
       "file": "16866-en.md",
       "wordpressId": 16866,
@@ -2260,28 +2125,10 @@
       "textLength": 6371,
       "wordCount": 1008
     },
-    "16866-ru.md": {
-      "file": "16866-ru.md",
-      "wordpressId": 16866,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/05/31/saliev-seyran-eng/",
-      "textHash": "9a66464c170af26bb01a8ac2011b195dd7dc9abed1f24792b681af9e1ab09846",
-      "textLength": 6371,
-      "wordCount": 1008
-    },
     "16870-en.md": {
       "file": "16870-en.md",
       "wordpressId": 16870,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/05/31/belyalov-memet-eng/",
-      "textHash": "7bcca86d117840b239dc9abafba532663b75f2f2c79865a7ee7a22bf7570829b",
-      "textLength": 8266,
-      "wordCount": 1343
-    },
-    "16870-ru.md": {
-      "file": "16870-ru.md",
-      "wordpressId": 16870,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2025/05/31/belyalov-memet-eng/",
       "textHash": "7bcca86d117840b239dc9abafba532663b75f2f2c79865a7ee7a22bf7570829b",
       "textLength": 8266,
@@ -2300,15 +2147,6 @@
       "file": "16883-en.md",
       "wordpressId": 16883,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/05/28/melkonyancz-grigorij-arkadevich-eng/",
-      "textHash": "276f9a0820ffaa2bd468b2746e5c7a18de18d0d505ed745e68776d5309af5777",
-      "textLength": 9661,
-      "wordCount": 1631
-    },
-    "16883-ru.md": {
-      "file": "16883-ru.md",
-      "wordpressId": 16883,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2025/05/28/melkonyancz-grigorij-arkadevich-eng/",
       "textHash": "276f9a0820ffaa2bd468b2746e5c7a18de18d0d505ed745e68776d5309af5777",
       "textLength": 9661,
@@ -2449,28 +2287,10 @@
       "textLength": 292,
       "wordCount": 42
     },
-    "17136-ru.md": {
-      "file": "17136-ru.md",
-      "wordpressId": 17136,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/07/01/berkovich-evgeniya/",
-      "textHash": "579884181454a0505e736fd30efab518352ceb2b3a413a0037ba931796b217aa",
-      "textLength": 292,
-      "wordCount": 42
-    },
     "17141-en.md": {
       "file": "17141-en.md",
       "wordpressId": 17141,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/07/01/yurii-dmitriev/",
-      "textHash": "98d40ee146f8a431dade37fb10401027a3602abf52a42dfd45906e8b3eadeaa5",
-      "textLength": 15655,
-      "wordCount": 2859
-    },
-    "17141-ru.md": {
-      "file": "17141-ru.md",
-      "wordpressId": 17141,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2025/07/01/yurii-dmitriev/",
       "textHash": "98d40ee146f8a431dade37fb10401027a3602abf52a42dfd45906e8b3eadeaa5",
       "textLength": 15655,
@@ -2485,28 +2305,10 @@
       "textLength": 2748,
       "wordCount": 473
     },
-    "17146-ru.md": {
-      "file": "17146-ru.md",
-      "wordpressId": 17146,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/07/02/svetlana-petriychuk-eng/",
-      "textHash": "14efb03c042f4143dcf4b61684f554b2364c67e8b6f0a7b82a42585808b0aaf7",
-      "textLength": 2748,
-      "wordCount": 473
-    },
     "17148-en.md": {
       "file": "17148-en.md",
       "wordpressId": 17148,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/07/02/svetlana-petriychuk/",
-      "textHash": "56128e2abc866161a5619de6aed62e05bb99941afe8e5462e6c09a852453419a",
-      "textLength": 4351,
-      "wordCount": 774
-    },
-    "17148-ru.md": {
-      "file": "17148-ru.md",
-      "wordpressId": 17148,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2025/07/02/svetlana-petriychuk/",
       "textHash": "56128e2abc866161a5619de6aed62e05bb99941afe8e5462e6c09a852453419a",
       "textLength": 4351,
@@ -2710,15 +2512,6 @@
       "textLength": 13554,
       "wordCount": 2225
     },
-    "17386-ru.md": {
-      "file": "17386-ru.md",
-      "wordpressId": 17386,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/09/07/ulvi-hasanli-2/",
-      "textHash": "9b71babeb47f55d643d0c9087ff66b3030c4f925338bb785db375623c48501e9",
-      "textLength": 13554,
-      "wordCount": 2225
-    },
     "17395-ru.md": {
       "file": "17395-ru.md",
       "wordpressId": 17395,
@@ -2791,15 +2584,6 @@
       "textLength": 1093,
       "wordCount": 190
     },
-    "17451-ru.md": {
-      "file": "17451-ru.md",
-      "wordpressId": 17451,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/09/21/andrei-trofimov/",
-      "textHash": "cfd955923f468b119c73292b98cf7f9f6c8f77a8bda8ce172df892dd9daa0a93",
-      "textLength": 1093,
-      "wordCount": 190
-    },
     "17462-ru.md": {
       "file": "17462-ru.md",
       "wordpressId": 17462,
@@ -2836,15 +2620,6 @@
       "textLength": 6061,
       "wordCount": 1066
     },
-    "17510-ru.md": {
-      "file": "17510-ru.md",
-      "wordpressId": 17510,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/10/03/farid-mehralizade/",
-      "textHash": "b97d0a0519733ebe68ff08ba303c45488b4d62f4ccd480d85250e1a8a7fe268f",
-      "textLength": 6061,
-      "wordCount": 1066
-    },
     "17515-en.md": {
       "file": "17515-en.md",
       "wordpressId": 17515,
@@ -2854,28 +2629,10 @@
       "textLength": 10532,
       "wordCount": 1797
     },
-    "17515-ru.md": {
-      "file": "17515-ru.md",
-      "wordpressId": 17515,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/10/03/elnara-gasimova/",
-      "textHash": "411e82b46cefd841307cc63d7cb42178d1bca47fe36ada74a50ee0e4870e099d",
-      "textLength": 10532,
-      "wordCount": 1797
-    },
     "17520-en.md": {
       "file": "17520-en.md",
       "wordpressId": 17520,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/10/03/mahammad-kekalov/",
-      "textHash": "18ee1a1a0fc5651f62691c6597dbd59950544eeefb5f1c6d534ec10d75849412",
-      "textLength": 6013,
-      "wordCount": 1063
-    },
-    "17520-ru.md": {
-      "file": "17520-ru.md",
-      "wordpressId": 17520,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2025/10/03/mahammad-kekalov/",
       "textHash": "18ee1a1a0fc5651f62691c6597dbd59950544eeefb5f1c6d534ec10d75849412",
       "textLength": 6013,
@@ -3043,15 +2800,6 @@
       "textLength": 15281,
       "wordCount": 2424
     },
-    "17643-ru.md": {
-      "file": "17643-ru.md",
-      "wordpressId": 17643,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/11/02/lev-shlosberg-eng/",
-      "textHash": "69abaa32e65c1739364ae2efa66de5033b59b06e62eb5c2ebdb1c7bdb994dbd6",
-      "textLength": 15281,
-      "wordCount": 2424
-    },
     "17646-ru.md": {
       "file": "17646-ru.md",
       "wordpressId": 17646,
@@ -3133,28 +2881,10 @@
       "textLength": 1802,
       "wordCount": 285
     },
-    "17765-ru.md": {
-      "file": "17765-ru.md",
-      "wordpressId": 17765,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/11/23/ivan-tishchenko-eng/",
-      "textHash": "73d3a1b63fd59840b8583c678d0c691eb1126e69bb643fbf340d4ed7c91be9c6",
-      "textLength": 1802,
-      "wordCount": 285
-    },
     "17767-en.md": {
       "file": "17767-en.md",
       "wordpressId": 17767,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/11/23/ruslan-sidiki-eng/",
-      "textHash": "94e87e08f4476cf704bbb9a8f3ec16380f37d53585109430c069a20d584e5492",
-      "textLength": 2838,
-      "wordCount": 480
-    },
-    "17767-ru.md": {
-      "file": "17767-ru.md",
-      "wordpressId": 17767,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2025/11/23/ruslan-sidiki-eng/",
       "textHash": "94e87e08f4476cf704bbb9a8f3ec16380f37d53585109430c069a20d584e5492",
       "textLength": 2838,
@@ -3169,28 +2899,10 @@
       "textLength": 500,
       "wordCount": 84
     },
-    "17769-ru.md": {
-      "file": "17769-ru.md",
-      "wordpressId": 17769,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/11/23/andrei-trofimov-2-eng/",
-      "textHash": "22b974d54adf7926153937146bedb198298b6594973ca356e8798ca567b2bf45",
-      "textLength": 500,
-      "wordCount": 84
-    },
     "17771-en.md": {
       "file": "17771-en.md",
       "wordpressId": 17771,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/11/23/darya-kozyreva-eng/",
-      "textHash": "3f3b7c868b60ceed1f06fbae90c12a496ca8e99f5a1763b8efcec9724d6b51ee",
-      "textLength": 10775,
-      "wordCount": 1839
-    },
-    "17771-ru.md": {
-      "file": "17771-ru.md",
-      "wordpressId": 17771,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2025/11/23/darya-kozyreva-eng/",
       "textHash": "3f3b7c868b60ceed1f06fbae90c12a496ca8e99f5a1763b8efcec9724d6b51ee",
       "textLength": 10775,
@@ -3205,28 +2917,10 @@
       "textLength": 4965,
       "wordCount": 852
     },
-    "17773-ru.md": {
-      "file": "17773-ru.md",
-      "wordpressId": 17773,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/11/23/temirlan-ensebek-eng/",
-      "textHash": "e3a1b48f7daa7396b3816caf20e9a1dc579e360e0ff6d20b1319f2e353898d2d",
-      "textLength": 4965,
-      "wordCount": 852
-    },
     "17775-en.md": {
       "file": "17775-en.md",
       "wordpressId": 17775,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/11/25/yaroslav-zhdamarov-eng/",
-      "textHash": "f00f23afd9b0de35d9a8554dad8d6f27604baf27bf862d3cddf8b2b0d51e7f45",
-      "textLength": 2278,
-      "wordCount": 410
-    },
-    "17775-ru.md": {
-      "file": "17775-ru.md",
-      "wordpressId": 17775,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2025/11/25/yaroslav-zhdamarov-eng/",
       "textHash": "f00f23afd9b0de35d9a8554dad8d6f27604baf27bf862d3cddf8b2b0d51e7f45",
       "textLength": 2278,
@@ -3241,28 +2935,10 @@
       "textLength": 597,
       "wordCount": 96
     },
-    "17777-ru.md": {
-      "file": "17777-ru.md",
-      "wordpressId": 17777,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/11/25/oleksiy-smykov-eng/",
-      "textHash": "f99a20d7f3973a7d2b1f1fc7465b5c2676960d84e360da40acaaa1d49289f4a5",
-      "textLength": 597,
-      "wordCount": 96
-    },
     "17779-en.md": {
       "file": "17779-en.md",
       "wordpressId": 17779,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/11/25/mark-kislitsyn-eng/",
-      "textHash": "a8b50a2fd7034a39132c91ace6e951862e776d64809b6fb292de33f5dffea0ac",
-      "textLength": 1302,
-      "wordCount": 239
-    },
-    "17779-ru.md": {
-      "file": "17779-ru.md",
-      "wordpressId": 17779,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2025/11/25/mark-kislitsyn-eng/",
       "textHash": "a8b50a2fd7034a39132c91ace6e951862e776d64809b6fb292de33f5dffea0ac",
       "textLength": 1302,
@@ -3277,28 +2953,10 @@
       "textLength": 2091,
       "wordCount": 373
     },
-    "17781-ru.md": {
-      "file": "17781-ru.md",
-      "wordpressId": 17781,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/11/25/anatoliy-hrytsyk-eng/",
-      "textHash": "ad685da583ad0fed8a4e85c860c85b9d2a105dc4f604ff3895cda01c87126577",
-      "textLength": 2091,
-      "wordCount": 373
-    },
     "17783-en.md": {
       "file": "17783-en.md",
       "wordpressId": 17783,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/11/25/mykyta-timonin-eng/",
-      "textHash": "58fa501215b0b2938c3b7247300770bcc7d695079f3ef83fc079d105954a7049",
-      "textLength": 6107,
-      "wordCount": 1027
-    },
-    "17783-ru.md": {
-      "file": "17783-ru.md",
-      "wordpressId": 17783,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2025/11/25/mykyta-timonin-eng/",
       "textHash": "58fa501215b0b2938c3b7247300770bcc7d695079f3ef83fc079d105954a7049",
       "textLength": 6107,
@@ -3313,28 +2971,10 @@
       "textLength": 6659,
       "wordCount": 1135
     },
-    "17785-ru.md": {
-      "file": "17785-ru.md",
-      "wordpressId": 17785,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/11/25/oleh-zharkov-eng/",
-      "textHash": "d2e37f319fe3f3f0fb66934bc42bca310b6f5326a608b9aea3e00870ddae6e2c",
-      "textLength": 6659,
-      "wordCount": 1135
-    },
     "17790-en.md": {
       "file": "17790-en.md",
       "wordpressId": 17790,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/11/25/oleksandr-mukhin-eng/",
-      "textHash": "0869188bf420ee740a1095404beb4cc0db102e0898f53920f5200bec77e98db7",
-      "textLength": 7305,
-      "wordCount": 1274
-    },
-    "17790-ru.md": {
-      "file": "17790-ru.md",
-      "wordpressId": 17790,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2025/11/25/oleksandr-mukhin-eng/",
       "textHash": "0869188bf420ee740a1095404beb4cc0db102e0898f53920f5200bec77e98db7",
       "textLength": 7305,
@@ -3430,28 +3070,10 @@
       "textLength": 1100,
       "wordCount": 205
     },
-    "17943-ru.md": {
-      "file": "17943-ru.md",
-      "wordpressId": 17943,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/12/18/liudmila-tetenyova/",
-      "textHash": "724d379ccfc3bbcb5d72a99c7f5d09f4cd539972291b3ccfd7c3d0862031be23",
-      "textLength": 1100,
-      "wordCount": 205
-    },
     "17946-en.md": {
       "file": "17946-en.md",
       "wordpressId": 17946,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/12/18/anton-khozhaev/",
-      "textHash": "b3d57cc8da42f38e036b882db549cb042969b6f539a494445b280f79c24738e0",
-      "textLength": 5021,
-      "wordCount": 858
-    },
-    "17946-ru.md": {
-      "file": "17946-ru.md",
-      "wordpressId": 17946,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2025/12/18/anton-khozhaev/",
       "textHash": "b3d57cc8da42f38e036b882db549cb042969b6f539a494445b280f79c24738e0",
       "textLength": 5021,
@@ -3475,28 +3097,10 @@
       "textLength": 3897,
       "wordCount": 711
     },
-    "17969-ru.md": {
-      "file": "17969-ru.md",
-      "wordpressId": 17969,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/12/19/igor-paskar-2/",
-      "textHash": "5d5f06a236eeb3336125b6eb6374a63c490c033fcc23f4d99bdf338c909b7e24",
-      "textLength": 3897,
-      "wordCount": 711
-    },
     "17972-en.md": {
       "file": "17972-en.md",
       "wordpressId": 17972,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/12/19/aleksandra-skochilenko-en/",
-      "textHash": "9ac3d42d9d239f2ab4391d1c4a6d6e380d9207fba13b7e8d21b7e8e2ab87de84",
-      "textLength": 18010,
-      "wordCount": 3247
-    },
-    "17972-ru.md": {
-      "file": "17972-ru.md",
-      "wordpressId": 17972,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2025/12/19/aleksandra-skochilenko-en/",
       "textHash": "9ac3d42d9d239f2ab4391d1c4a6d6e380d9207fba13b7e8d21b7e8e2ab87de84",
       "textLength": 18010,
@@ -3551,15 +3155,6 @@
       "file": "18025-en.md",
       "wordpressId": 18025,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2025/12/26/yulia-lemeshchenko/",
-      "textHash": "453acc8b9bb827df96784c7e70b2d5de5c68c3a3f25a9190813c54f36d5359ef",
-      "textLength": 2288,
-      "wordCount": 419
-    },
-    "18025-ru.md": {
-      "file": "18025-ru.md",
-      "wordpressId": 18025,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2025/12/26/yulia-lemeshchenko/",
       "textHash": "453acc8b9bb827df96784c7e70b2d5de5c68c3a3f25a9190813c54f36d5359ef",
       "textLength": 2288,
@@ -3637,15 +3232,6 @@
       "textLength": 3378,
       "wordCount": 580
     },
-    "18140-ru.md": {
-      "file": "18140-ru.md",
-      "wordpressId": 18140,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2026/01/13/aleksandr-nesterenko/",
-      "textHash": "45665e039a13f21aece59412645de9e3b6b82cc16eadb610fc9e58a04086b132",
-      "textLength": 3378,
-      "wordCount": 580
-    },
     "18142-ru.md": {
       "file": "18142-ru.md",
       "wordpressId": 18142,
@@ -3664,28 +3250,10 @@
       "textLength": 4201,
       "wordCount": 716
     },
-    "18146-ru.md": {
-      "file": "18146-ru.md",
-      "wordpressId": 18146,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2026/01/14/yuri-galanskov/",
-      "textHash": "8fed8fb2ff7918b1b408af2cb22a028dba5e3260ef1201e164c97e665ff4163e",
-      "textLength": 4201,
-      "wordCount": 716
-    },
     "18148-en.md": {
       "file": "18148-en.md",
       "wordpressId": 18148,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2026/01/14/alexander-ginzburg/",
-      "textHash": "55108b436e5272a0339a814af691f7647d00ebb788ef00f7d3ed9be55e11bb18",
-      "textLength": 7488,
-      "wordCount": 1307
-    },
-    "18148-ru.md": {
-      "file": "18148-ru.md",
-      "wordpressId": 18148,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2026/01/14/alexander-ginzburg/",
       "textHash": "55108b436e5272a0339a814af691f7647d00ebb788ef00f7d3ed9be55e11bb18",
       "textLength": 7488,
@@ -3700,28 +3268,10 @@
       "textLength": 932,
       "wordCount": 170
     },
-    "18150-ru.md": {
-      "file": "18150-ru.md",
-      "wordpressId": 18150,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2026/01/14/vera-lashkova/",
-      "textHash": "6b34b35efd626fe565f53b60a8f01a1ec976857ae5afa41e3b45af31b16520e7",
-      "textLength": 932,
-      "wordCount": 170
-    },
     "18153-en.md": {
       "file": "18153-en.md",
       "wordpressId": 18153,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2026/01/14/aleksey-dobrovolskiy/",
-      "textHash": "f75b0621546301806ad986193034e24187399d504b69e7c8f0213055d785fab8",
-      "textLength": 768,
-      "wordCount": 138
-    },
-    "18153-ru.md": {
-      "file": "18153-ru.md",
-      "wordpressId": 18153,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2026/01/14/aleksey-dobrovolskiy/",
       "textHash": "f75b0621546301806ad986193034e24187399d504b69e7c8f0213055d785fab8",
       "textLength": 768,
@@ -4483,15 +4033,6 @@
       "textLength": 5027,
       "wordCount": 874
     },
-    "19565-ru.md": {
-      "file": "19565-ru.md",
-      "wordpressId": 19565,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2026/04/28/the-final-statement/",
-      "textHash": "27cbdcb4b4af7729b3c366addc53fe7a7ec748843ebc310691d964f1b8497d87",
-      "textLength": 5027,
-      "wordCount": 874
-    },
     "19580-ru.md": {
       "file": "19580-ru.md",
       "wordpressId": 19580,
@@ -4510,28 +4051,10 @@
       "textLength": 10588,
       "wordCount": 1796
     },
-    "19595-ru.md": {
-      "file": "19595-ru.md",
-      "wordpressId": 19595,
-      "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/en/2026/05/22/uvarov-nikita/",
-      "textHash": "8e7c32e278ff6c6895a5f9fe21b4d7f57d470985dd3ec8d9fac60a3d607421b7",
-      "textLength": 10588,
-      "wordCount": 1796
-    },
     "19646-en.md": {
       "file": "19646-en.md",
       "wordpressId": 19646,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2026/05/27/akhihiro-gaevsky-khanada/",
-      "textHash": "6e4ed1559a9c52288cf642c74774b10598652559fdbbf94daad2e7c7f346bc2f",
-      "textLength": 4908,
-      "wordCount": 794
-    },
-    "19646-ru.md": {
-      "file": "19646-ru.md",
-      "wordpressId": 19646,
-      "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/en/2026/05/27/akhihiro-gaevsky-khanada/",
       "textHash": "6e4ed1559a9c52288cf642c74774b10598652559fdbbf94daad2e7c7f346bc2f",
       "textLength": 4908,
@@ -4641,7 +4164,7 @@
       "wordpressId": 19811,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2026/06/27/shabanov-andrej-aleksandrovich1/",
-      "textHash": "efed72deffa0c1f26df3cc7c8e5f6c65eb77222352bbfa103615558eb577a843",
+      "textHash": "b7fb3f0d808cc94ed7c5163f03d77edcb9f07d8bc481b743037e4ae04771740f",
       "textLength": 1727,
       "wordCount": 252
     },
