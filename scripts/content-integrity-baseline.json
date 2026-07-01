@@ -4258,6 +4258,24 @@
       "textLength": 26605,
       "wordCount": 3696
     },
+    "19940-ru.md": {
+      "file": "19940-ru.md",
+      "wordpressId": 19940,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/06/30/belousova-kseniya-igorevna2/",
+      "textHash": "1d6cf5cd5c2f36f5f5cd5eaefed3bf60492c885fede2ee578f978df9fabd9953",
+      "textLength": 1377,
+      "wordCount": 210
+    },
+    "19945-ru.md": {
+      "file": "19945-ru.md",
+      "wordpressId": 19945,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/06/30/bykov-yaroslav-olegovitch/",
+      "textHash": "d42d0af41ebe24b965d7dc55fc123c32f53326da7d9cf8e01db490e08729a7b3",
+      "textLength": 499,
+      "wordCount": 81
+    },
     "205-ru.md": {
       "file": "205-ru.md",
       "wordpressId": 205,
