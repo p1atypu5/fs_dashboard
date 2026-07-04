@@ -4132,6 +4132,24 @@
       "textLength": 3224,
       "wordCount": 470
     },
+    "19756-ru.md": {
+      "file": "19756-ru.md",
+      "wordpressId": 19756,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/07/03/nadezhdin-hristofor-alekseevich/",
+      "textHash": "6240cff8eb63a32a49a013cefba6e2f234d98d28f9c526b60baccbc1f9ad205e",
+      "textLength": 1334,
+      "wordCount": 187
+    },
+    "19765-ru.md": {
+      "file": "19765-ru.md",
+      "wordpressId": 19765,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/07/03/brusilova-varvara-ivanovna/",
+      "textHash": "2842d47f60e48b51257dd636824c985e2687900fdc3e72d0c04f79e1fe636b60",
+      "textLength": 883,
+      "wordCount": 133
+    },
     "19787-ru.md": {
       "file": "19787-ru.md",
       "wordpressId": 19787,
@@ -4284,6 +4302,15 @@
       "textHash": "7a57a9f05c6a8b1aa170a2de5da20cc254c29508a53fbd0db40870934a3e6548",
       "textLength": 10297,
       "wordCount": 1426
+    },
+    "19973-ru.md": {
+      "file": "19973-ru.md",
+      "wordpressId": 19973,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/07/03/dilmuhametov-ajrat-ahnafovich2/",
+      "textHash": "ef81343f0863526747c9e1e51014dc1b65be9ad47bf3b41ae9cd740645e1121d",
+      "textLength": 77773,
+      "wordCount": 10542
     },
     "205-ru.md": {
       "file": "205-ru.md",
