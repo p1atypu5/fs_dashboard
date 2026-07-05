@@ -4312,6 +4312,33 @@
       "textLength": 77773,
       "wordCount": 10542
     },
+    "19982-ru.md": {
+      "file": "19982-ru.md",
+      "wordpressId": 19982,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/07/04/solyonova-mariya-sergeevna/",
+      "textHash": "5a307c386cb2a9d171c1472b49151a3dd66fb084cc2bd8b754e34154def48895",
+      "textLength": 5661,
+      "wordCount": 807
+    },
+    "19983-ru.md": {
+      "file": "19983-ru.md",
+      "wordpressId": 19983,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/07/05/belousova-kseniya-igorevna/",
+      "textHash": "1d6cf5cd5c2f36f5f5cd5eaefed3bf60492c885fede2ee578f978df9fabd9953",
+      "textLength": 1377,
+      "wordCount": 210
+    },
+    "19994-ru.md": {
+      "file": "19994-ru.md",
+      "wordpressId": 19994,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/07/05/fryazinov-sergej-ivanovich-o-sergij-fryazinov/",
+      "textHash": "33bc17c31ce17c0455078116113fa916d43ded9da95230ca6b11065daa76c387",
+      "textLength": 6705,
+      "wordCount": 1038
+    },
     "205-ru.md": {
       "file": "205-ru.md",
       "wordpressId": 205,
