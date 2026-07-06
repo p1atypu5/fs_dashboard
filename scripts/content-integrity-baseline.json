@@ -4339,6 +4339,15 @@
       "textLength": 6705,
       "wordCount": 1038
     },
+    "20011-en.md": {
+      "file": "20011-en.md",
+      "wordpressId": 20011,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/06/dmitriy-balog/",
+      "textHash": "ac3f91ecb0dc61333c31b513c2e7bb311b0545bcbf2596e3c8f8632ce69b25fe",
+      "textLength": 4915,
+      "wordCount": 829
+    },
     "205-ru.md": {
       "file": "205-ru.md",
       "wordpressId": 205,
