@@ -4339,6 +4339,15 @@
       "textLength": 6705,
       "wordCount": 1038
     },
+    "20005-ru.md": {
+      "file": "20005-ru.md",
+      "wordpressId": 20005,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/07/07/telegin-pavel-nikolaevich-ieromonah-makarij/",
+      "textHash": "49dd9dc60d5d13687a33e447ab344d01ab57dfd55a73e23ca9d4e57b65587af8",
+      "textLength": 307,
+      "wordCount": 46
+    },
     "20011-en.md": {
       "file": "20011-en.md",
       "wordpressId": 20011,
@@ -4347,6 +4356,33 @@
       "textHash": "ac3f91ecb0dc61333c31b513c2e7bb311b0545bcbf2596e3c8f8632ce69b25fe",
       "textLength": 4915,
       "wordCount": 829
+    },
+    "20021-ru.md": {
+      "file": "20021-ru.md",
+      "wordpressId": 20021,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/07/07/lepyohin-pavel-vasilevich/",
+      "textHash": "31d09b0ab4829c59e18fe893e27737bafbf0501fde689e012a2410546af86d29",
+      "textLength": 1173,
+      "wordCount": 172
+    },
+    "20030-en.md": {
+      "file": "20030-en.md",
+      "wordpressId": 20030,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/08/nataliya-minenkova/",
+      "textHash": "d367b08dc0b7d1f192edd9e19ba89f2bb6b707d19900daf5a50bd9ad5ab8f161",
+      "textLength": 21604,
+      "wordCount": 3317
+    },
+    "20034-en.md": {
+      "file": "20034-en.md",
+      "wordpressId": 20034,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/08/iliya-vasiliev/",
+      "textHash": "a563efdf50edfc432ca34f3f78da783c80309c09de210a70c7db15eba10bdcc1",
+      "textLength": 22098,
+      "wordCount": 3767
     },
     "205-ru.md": {
       "file": "205-ru.md",
