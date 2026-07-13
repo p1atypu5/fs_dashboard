@@ -4384,6 +4384,87 @@
       "textLength": 22098,
       "wordCount": 3767
     },
+    "20046-en.md": {
+      "file": "20046-en.md",
+      "wordpressId": 20046,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/13/iliya-vasiliev-2/",
+      "textHash": "a4e355f9f92df47b8b1f345b154794307f5fec7cb00c61ab6d0c25f1028fc6de",
+      "textLength": 17761,
+      "wordCount": 2915
+    },
+    "20051-en.md": {
+      "file": "20051-en.md",
+      "wordpressId": 20051,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/13/vladimir-teterev/",
+      "textHash": "42c7d85e000e168b9ca17e0aa195548e6a08623ee57aa2b401184de272682977",
+      "textLength": 692,
+      "wordCount": 120
+    },
+    "20056-en.md": {
+      "file": "20056-en.md",
+      "wordpressId": 20056,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/13/denis-tkachenko/",
+      "textHash": "6a95d136bc9a8c45e63a4a237b94fd9b86183e76500687fed1b177898a87af52",
+      "textLength": 293,
+      "wordCount": 50
+    },
+    "20060-en.md": {
+      "file": "20060-en.md",
+      "wordpressId": 20060,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/13/aleksey-mazurenko/",
+      "textHash": "31f103668d25c55da77552df719637b5bf98f7c36053111199d23407d7ab9cbe",
+      "textLength": 3585,
+      "wordCount": 591
+    },
+    "20063-en.md": {
+      "file": "20063-en.md",
+      "wordpressId": 20063,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/13/andrey-kulish/",
+      "textHash": "387da8fb12c762ea0675681132a9bef56d67f9d350cc4b25bab0e0fb2d26601e",
+      "textLength": 700,
+      "wordCount": 124
+    },
+    "20066-en.md": {
+      "file": "20066-en.md",
+      "wordpressId": 20066,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/13/andrey-antonenko/",
+      "textHash": "8fddea191686fe284f5e1a8ab3db32c8d2cfb181e2508c6fbf6dfdb09985cb62",
+      "textLength": 3723,
+      "wordCount": 636
+    },
+    "20069-en.md": {
+      "file": "20069-en.md",
+      "wordpressId": 20069,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/13/lyudmila-gonchar/",
+      "textHash": "2f5287d9ee7fb9fda4c9f356c70a7b6f3e890a0e25f9194bd5093879b17d50bf",
+      "textLength": 649,
+      "wordCount": 108
+    },
+    "20074-en.md": {
+      "file": "20074-en.md",
+      "wordpressId": 20074,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/13/yaroslav-zhdamarov/",
+      "textHash": "3431f7272a5762408f75b20160eede42a7120c5a1b843c235219c9006167d30e",
+      "textLength": 2404,
+      "wordCount": 430
+    },
+    "20081-en.md": {
+      "file": "20081-en.md",
+      "wordpressId": 20081,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/13/nikita-timonin/",
+      "textHash": "24afbd247c0d7031a63ca3d2acc570dc8a641e405d484e1b6cd5df92175b5da1",
+      "textLength": 6467,
+      "wordCount": 1081
+    },
     "205-ru.md": {
       "file": "205-ru.md",
       "wordpressId": 205,
