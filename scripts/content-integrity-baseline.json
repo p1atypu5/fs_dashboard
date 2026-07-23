@@ -4474,6 +4474,24 @@
       "textLength": 6467,
       "wordCount": 1081
     },
+    "20096-en.md": {
+      "file": "20096-en.md",
+      "wordpressId": 20096,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/22/oleg-zharkov/",
+      "textHash": "3f61d16a1be9a30a638945a51c818e4b3be1994969030c82f934196e4357316f",
+      "textLength": 7145,
+      "wordCount": 1207
+    },
+    "20100-en.md": {
+      "file": "20100-en.md",
+      "wordpressId": 20100,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/22/alexandr-mukhin/",
+      "textHash": "f62e1bfccb6bb8c55f8415f65e0aaacac52a8500b285279fdda8c376841de94b",
+      "textLength": 8066,
+      "wordCount": 1376
+    },
     "205-ru.md": {
       "file": "205-ru.md",
       "wordpressId": 205,
