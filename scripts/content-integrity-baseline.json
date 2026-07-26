@@ -4501,6 +4501,15 @@
       "textLength": 3027,
       "wordCount": 400
     },
+    "20125-en.md": {
+      "file": "20125-en.md",
+      "wordpressId": 20125,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/26/david-gofstein/",
+      "textHash": "ed05b23a08f4e097a778af59d1f53991693be1e86ef35e75c2f51c8e0f37773e",
+      "textLength": 1131,
+      "wordCount": 201
+    },
     "205-ru.md": {
       "file": "205-ru.md",
       "wordpressId": 205,
