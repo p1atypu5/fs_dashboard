@@ -4510,6 +4510,51 @@
       "textLength": 1131,
       "wordCount": 201
     },
+    "20132-en.md": {
+      "file": "20132-en.md",
+      "wordpressId": 20132,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/26/joseph-yuzefovich/",
+      "textHash": "345e2d3370d8ead78306d2071c52f74cd2a4503690b6b58849f78a8400866632",
+      "textLength": 2470,
+      "wordCount": 399
+    },
+    "20136-en.md": {
+      "file": "20136-en.md",
+      "wordpressId": 20136,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/26/lina-shtern/",
+      "textHash": "f78182d78a9cf61c46b527a4facf44fa0b66b31c7beaebcb6b585ce8efead945",
+      "textLength": 2997,
+      "wordCount": 522
+    },
+    "20141-en.md": {
+      "file": "20141-en.md",
+      "wordpressId": 20141,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/27/boris-shimeliovich/",
+      "textHash": "90d8c54dc31031f91a1a869f84df4c436b6ad25d8ed36822678c057b691d82fa",
+      "textLength": 3906,
+      "wordCount": 652
+    },
+    "20145-en.md": {
+      "file": "20145-en.md",
+      "wordpressId": 20145,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/27/isaak-fefer/",
+      "textHash": "b88704dbbba7a99e972558ccec7b77f25dac3bf3f00f099428cdbdde347f4670",
+      "textLength": 1421,
+      "wordCount": 237
+    },
+    "20149-en.md": {
+      "file": "20149-en.md",
+      "wordpressId": 20149,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/27/emiliia-teumin/",
+      "textHash": "e742441060da01106e07a13eacdb363b06f73c168eebecde63429300ff5e0c60",
+      "textLength": 1313,
+      "wordCount": 230
+    },
     "205-ru.md": {
       "file": "205-ru.md",
       "wordpressId": 205,
