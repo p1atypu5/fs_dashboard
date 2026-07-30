@@ -4492,6 +4492,15 @@
       "textLength": 8066,
       "wordCount": 1376
     },
+    "20105-ru.md": {
+      "file": "20105-ru.md",
+      "wordpressId": 20105,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/07/29/sokolov-aleksej-veniaminovich/",
+      "textHash": "d327627d035994c4e4df1e8b9e2498e90f865e912fc0a4c128fef08bed5074da",
+      "textLength": 18092,
+      "wordCount": 2750
+    },
     "20114-ru.md": {
       "file": "20114-ru.md",
       "wordpressId": 20114,
@@ -4560,9 +4569,27 @@
       "wordpressId": 20153,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2026/07/29/oficzerov-sergej-gennadevich/",
-      "textHash": "09f2cf29d6c1c944a91fa761a7a84a48585e34f2ffd371605a380776a6985d08",
-      "textLength": 6121,
+      "textHash": "db0818e8df94e6161659b2177eebc13a8ea4c8f5b891511eccba1b6d495e6e5e",
+      "textLength": 6123,
       "wordCount": 917
+    },
+    "20181-en.md": {
+      "file": "20181-en.md",
+      "wordpressId": 20181,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/29/leon-talmi/",
+      "textHash": "3f6d654363c5daff4e2f8c9cdf87b41ef22f44e935353b225f2f6ac62cd0afe8",
+      "textLength": 1763,
+      "wordCount": 325
+    },
+    "20185-en.md": {
+      "file": "20185-en.md",
+      "wordpressId": 20185,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/30/perets-markish/",
+      "textHash": "456bae3b7288151761ac0d318ccac42e2d453774d4f557a60e26399db1dcc9ee",
+      "textLength": 3756,
+      "wordCount": 667
     },
     "205-ru.md": {
       "file": "205-ru.md",
