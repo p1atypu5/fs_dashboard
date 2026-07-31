@@ -4474,6 +4474,15 @@
       "textLength": 6467,
       "wordCount": 1081
     },
+    "20089-ru.md": {
+      "file": "20089-ru.md",
+      "wordpressId": 20089,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/07/30/arshinova-tatyana-pavlovna/",
+      "textHash": "28ecf693fded323440a7c36462057004b35b5df20efb43844e00ce8cfea74b21",
+      "textLength": 5767,
+      "wordCount": 887
+    },
     "20096-en.md": {
       "file": "20096-en.md",
       "wordpressId": 20096,
@@ -4590,6 +4599,15 @@
       "textHash": "456bae3b7288151761ac0d318ccac42e2d453774d4f557a60e26399db1dcc9ee",
       "textLength": 3756,
       "wordCount": 667
+    },
+    "20192-en.md": {
+      "file": "20192-en.md",
+      "wordpressId": 20192,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/07/30/solomon-lozovskiy/",
+      "textHash": "c9854835346b1f4556041486e25a3051ddf23f2339a352e34c3957ce10cd5ddf",
+      "textLength": 3373,
+      "wordCount": 563
     },
     "205-ru.md": {
       "file": "205-ru.md",
