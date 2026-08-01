@@ -1311,9 +1311,9 @@
       "wordpressId": 16130,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2025/02/22/korolyov-vsevolod-anatolevich/",
-      "textHash": "ade2ebd36688af50aa5985513a4da12e8d17ecf7f8410e5d6b5bc2005c7a49f4",
-      "textLength": 1457,
-      "wordCount": 233
+      "textHash": "4a5709344c7bd4f550baf207b4ef6442853fea5325ba9ee53e977633d9f669d0",
+      "textLength": 1467,
+      "wordCount": 238
     },
     "16138-ru.md": {
       "file": "16138-ru.md",
@@ -4608,6 +4608,24 @@
       "textHash": "c9854835346b1f4556041486e25a3051ddf23f2339a352e34c3957ce10cd5ddf",
       "textLength": 3373,
       "wordCount": 563
+    },
+    "20197-en.md": {
+      "file": "20197-en.md",
+      "wordpressId": 20197,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/08/01/lev-kvitko/",
+      "textHash": "18c46c246bad4f4b1047c5834d3ca51f54c331b046d663154be8946012dbaaa5",
+      "textLength": 6002,
+      "wordCount": 1034
+    },
+    "20202-en.md": {
+      "file": "20202-en.md",
+      "wordpressId": 20202,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/08/01/veniamin-zuskin/",
+      "textHash": "3f9cc42734f2fa467fe9a44b48f60c582e20b06935dbb617f34c6964ce5add2a",
+      "textLength": 1375,
+      "wordCount": 243
     },
     "205-ru.md": {
       "file": "205-ru.md",
