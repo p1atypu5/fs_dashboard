@@ -3993,9 +3993,9 @@
       "wordpressId": 19407,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2026/05/15/kostylenkov-ruslan-dmitrievich/",
-      "textHash": "be63eb81db1ec9b52537654c76d93e458df53cb348017851da9628498e2652a5",
-      "textLength": 3675,
-      "wordCount": 545
+      "textHash": "c7a22468458728e3c205a07afb1016e736de4da3b42ddf0447c6db86badf638b",
+      "textLength": 3718,
+      "wordCount": 546
     },
     "19458-ru.md": {
       "file": "19458-ru.md",
@@ -4626,6 +4626,42 @@
       "textHash": "3f9cc42734f2fa467fe9a44b48f60c582e20b06935dbb617f34c6964ce5add2a",
       "textLength": 1375,
       "wordCount": 243
+    },
+    "20205-ru.md": {
+      "file": "20205-ru.md",
+      "wordpressId": 20205,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/08/01/dubovik-mariya-sergeevna/",
+      "textHash": "59650c75eac416a2543206d6045994b306c74f657af4eda644e4ca2f5b25146e",
+      "textLength": 8797,
+      "wordCount": 1432
+    },
+    "20212-ru.md": {
+      "file": "20212-ru.md",
+      "wordpressId": 20212,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/08/01/karamzin-pyotr-aleksandrovich/",
+      "textHash": "3fb1eac5fe04a0a416f2577581c1c1887859ce8db55ede48d6080aebf683f54b",
+      "textLength": 434,
+      "wordCount": 69
+    },
+    "20218-ru.md": {
+      "file": "20218-ru.md",
+      "wordpressId": 20218,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/08/01/pavlikova-anna-dmitrievna/",
+      "textHash": "c169a1edf6485f278eaa98c159c6da9f6329718da8f500bbd9c3bee81124e13a",
+      "textLength": 8166,
+      "wordCount": 1402
+    },
+    "20232-ru.md": {
+      "file": "20232-ru.md",
+      "wordpressId": 20232,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/08/01/kryukov-vyacheslav-vladislavovich/",
+      "textHash": "3478eee6f154e5ee56387619bb6d6efeb50fec9cef084e97bc699bb586ed226d",
+      "textLength": 4771,
+      "wordCount": 747
     },
     "205-ru.md": {
       "file": "205-ru.md",
