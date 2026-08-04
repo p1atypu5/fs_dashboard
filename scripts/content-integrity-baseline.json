@@ -4663,6 +4663,33 @@
       "textLength": 4771,
       "wordCount": 747
     },
+    "20248-en.md": {
+      "file": "20248-en.md",
+      "wordpressId": 20248,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/08/03/chayka-vatenberg-ostrovskaya/",
+      "textHash": "e9590675efb7ea289dea4b774daa477fa87c905c0d2115dc1b46875cd3e56c4a",
+      "textLength": 1629,
+      "wordCount": 272
+    },
+    "20252-en.md": {
+      "file": "20252-en.md",
+      "wordpressId": 20252,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/08/04/iliya-vatenberg/",
+      "textHash": "2b972b86d4bd997ca7e347e4be1e0d407d3cf51195b684b813b8bea8f836a0d2",
+      "textLength": 2653,
+      "wordCount": 467
+    },
+    "20257-en.md": {
+      "file": "20257-en.md",
+      "wordpressId": 20257,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/08/04/david-bergelson/",
+      "textHash": "935dbbb523659cd09d98d137f985366432bd11f3edd9f7527df52c81b24f3f7f",
+      "textLength": 3395,
+      "wordCount": 597
+    },
     "205-ru.md": {
       "file": "205-ru.md",
       "wordpressId": 205,
