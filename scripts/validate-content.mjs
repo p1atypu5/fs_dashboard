@@ -1,14 +1,21 @@
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import {
+  parseFeaturedImageFromMarkdown,
+  validateFeaturedImage,
+} from "./wordpress-featured-image.mjs";
 
 const CONTENT_DIR = path.join(process.cwd(), "src/content/last-words");
 
 const entries = await readContentEntries(CONTENT_DIR);
 const duplicateGroups = findDisallowedDuplicateWordPressIds(entries);
 const invalidEntries = entries.filter((entry) => !Number.isInteger(entry.wordpressId));
+const invalidFeaturedImages = entries.flatMap((entry) =>
+  validateFeaturedImage(entry.featuredImage).map((error) => ({ file: entry.file, error })),
+);
 
-if (invalidEntries.length > 0 || duplicateGroups.length > 0) {
+if (invalidEntries.length > 0 || duplicateGroups.length > 0 || invalidFeaturedImages.length > 0) {
   for (const entry of invalidEntries) {
     console.error(`invalid wordpressId: ${entry.file}`);
   }
@@ -17,10 +24,14 @@ if (invalidEntries.length > 0 || duplicateGroups.length > 0) {
     console.error(`duplicate wordpressId ${group.wordpressId}: ${group.files.join(", ")}`);
   }
 
+  for (const { file, error } of invalidFeaturedImages) {
+    console.error(`${file}: ${error}`);
+  }
+
   throw new Error("Content validation failed");
 }
 
-console.log(`validated ${entries.length} content file(s): wordpressId values are consistent`);
+console.log(`validated ${entries.length} content file(s): ids and featured images are consistent`);
 
 async function readContentEntries(contentDir) {
   const files = (await readdir(contentDir))
@@ -34,6 +45,7 @@ async function readContentEntries(contentDir) {
     const frontmatter = parseFrontmatter(source);
     entries.push({
       file: path.join("src/content/last-words", file),
+      featuredImage: parseFeaturedImageFromMarkdown(source),
       language: frontmatter.language,
       sourceUrl: frontmatter.sourceUrl,
       wordpressId: frontmatter.wordpressId,

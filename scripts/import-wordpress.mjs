@@ -1,6 +1,7 @@
 import { appendFile, mkdir, readFile, readdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import { normalizeFeaturedImage } from "./wordpress-featured-image.mjs";
 
 const CONTENT_DIR = path.join(process.cwd(), "src/content/last-words");
 
@@ -323,16 +324,7 @@ function createFrontmatter(post, existing) {
     country: categories[0]?.name,
     period: years[0]?.name,
     tags: tags.map((tag) => tag.name),
-    featuredImage: featured
-      ? {
-          url: featured.source_url,
-          alt: featured.alt_text || title,
-          mimeType: featured.mime_type || undefined,
-          width: featured.media_details?.width || undefined,
-          height: featured.media_details?.height || undefined,
-          sizeBytes: featured.media_details?.filesize || undefined,
-        }
-      : undefined,
+    featuredImage: normalizeFeaturedImage(featured, title),
     court: existingData.court || undefined,
     city: existingData.city || undefined,
     statementDate: existingData.statementDate || extractedStatementDate || undefined,
