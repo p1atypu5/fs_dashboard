@@ -1,6 +1,7 @@
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import { isAllowedTransitionalDuplicate } from "./content-duplicates.mjs";
 import {
   parseFeaturedImageFromMarkdown,
   validateFeaturedImage,
@@ -75,18 +76,6 @@ function findDisallowedDuplicateWordPressIds(entries) {
       wordpressId,
       files: group.map((entry) => entry.file),
     }));
-}
-
-function isAllowedTransitionalDuplicate(entries) {
-  const sourceUrls = new Set(entries.map((entry) => entry.sourceUrl));
-  const languages = new Set(entries.map((entry) => entry.language));
-
-  return (
-    entries.length === 2
-    && sourceUrls.size === 1
-    && languages.size === entries.length
-    && [...sourceUrls].every((sourceUrl) => typeof sourceUrl === "string" && sourceUrl.includes("/en/"))
-  );
 }
 
 function parseFrontmatter(source) {

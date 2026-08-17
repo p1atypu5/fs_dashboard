@@ -1,6 +1,10 @@
 import { appendFile, mkdir, readFile, readdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import {
+  getFilesToRemoveAfterImport,
+  isAllowedTransitionalDuplicate,
+} from "./content-duplicates.mjs";
 import { normalizeFeaturedImage } from "./wordpress-featured-image.mjs";
 
 const CONTENT_DIR = path.join(process.cwd(), "src/content/last-words");
@@ -118,10 +122,13 @@ for (const post of posts) {
 
   if (!dryRun) {
     await writeFile(filePath, content, "utf8");
-    for (const oldFile of existingGroup?.files ?? []) {
-      if (oldFile !== fileName) {
-        await unlink(path.join(CONTENT_DIR, oldFile));
-      }
+    const filesToRemove = getFilesToRemoveAfterImport(
+      existingGroup?.entries ?? [],
+      fileName,
+      { prune },
+    );
+    for (const oldFile of filesToRemove) {
+      await unlink(path.join(CONTENT_DIR, oldFile));
     }
   }
 }
@@ -175,7 +182,6 @@ async function readPostsFromFile(file) {
 
 async function readExistingEntries(contentDir, { allowDuplicates = false } = {}) {
   const entriesByWordPressId = new Map();
-  const duplicates = new Map();
   let files = [];
 
   try {
@@ -200,7 +206,6 @@ async function readExistingEntries(contentDir, { allowDuplicates = false } = {})
       if (existingGroup) {
         existingGroup.entries.push(entry);
         existingGroup.files.push(file);
-        duplicates.set(key, existingGroup.files);
         continue;
       }
 
@@ -212,8 +217,23 @@ async function readExistingEntries(contentDir, { allowDuplicates = false } = {})
     }
   }
 
-  if (!allowDuplicates && duplicates.size > 0) {
-    throw new Error(formatDuplicateWordPressIds("Existing content has duplicate wordpressId values", duplicates));
+  const disallowedDuplicates = new Map(
+    [...entriesByWordPressId.entries()]
+      .filter(([, group]) =>
+        group.entries.length > 1
+        && !allowDuplicates
+        && !isAllowedTransitionalDuplicate(group.entries.map((entry) => entry.frontmatter)),
+      )
+      .map(([wordpressId, group]) => [wordpressId, group.files]),
+  );
+
+  if (disallowedDuplicates.size > 0) {
+    throw new Error(
+      formatDuplicateWordPressIds(
+        "Existing content has duplicate wordpressId values",
+        disallowedDuplicates,
+      ),
+    );
   }
 
   return entriesByWordPressId;

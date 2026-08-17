@@ -12,7 +12,7 @@
     "integrity:update": "node scripts/content-integrity.mjs --update",
     "import:wp": "node scripts/import-wordpress.mjs",
     "test": "npm run test:import && npm run test:stats && npm run test:integrity",
-    "test:import": "node scripts/test-wordpress-featured-image.mjs",
+    "test:import": "node scripts/test-wordpress-featured-image.mjs && node scripts/test-content-duplicates.mjs",
     "test:integrity": "node scripts/content-integrity.mjs --check",
     "test:stats": "node scripts/test-statistics.mjs",
     "validate:content": "node scripts/validate-content.mjs"
