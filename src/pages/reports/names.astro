@@ -3,10 +3,11 @@ import { getCollection } from "astro:content";
 import ReferencePageLayout from "../../components/ReferencePageLayout.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { toDisplayWord } from "../../lib/lastWords";
-import { buildPersonDirectory, getPersonHref } from "../../lib/people";
+import { buildPersonDirectory, getPersonDirectoryHref } from "../../lib/people";
+import { getRussianWorkingWords } from "../../lib/queries";
 
 const people = buildPersonDirectory(
-    (await getCollection("last-words")).map(toDisplayWord),
+    getRussianWorkingWords((await getCollection("last-words")).map(toDisplayWord)),
 );
 
 const base = import.meta.env.BASE_URL.endsWith("/")
@@ -28,7 +29,7 @@ const base = import.meta.env.BASE_URL.endsWith("/")
                 {
                     people.map((person) => (
                         <span class="name-item">
-                            <a href={getPersonHref(base, person.slug)}>
+                            <a href={getPersonDirectoryHref(base, person)}>
                                 {person.name}
                             </a>
                             {person.count > 1 && (

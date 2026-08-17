@@ -1,13 +1,10 @@
 ---
 import { getCollection } from "astro:content";
 import ReferencePageLayout from "../../components/ReferencePageLayout.astro";
+import { isRussianWorkingWord } from "../../lib/queries";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const entries = await getCollection("last-words");
-
-function isRussianEntry(entry: (typeof entries)[number]) {
-    return entry.data.language === "ru" && !entry.data.sourceUrl.includes("/en/");
-}
 
 const checks = [
     {
@@ -29,7 +26,7 @@ const checks = [
     {
         label: "Без даты произнесения",
         entries: entries.filter(
-            (entry) => isRussianEntry(entry) && !entry.data.statementDate,
+            (entry) => isRussianWorkingWord(entry.data) && !entry.data.statementDate,
         ),
     },
 ];

@@ -8,18 +8,10 @@ export type PersonDirectoryEntry = {
   words: DisplayWord[];
 };
 
-export function isRussianWord(word: DisplayWord) {
-  return word.language === "ru" && !word.sourceUrl.includes("/en/");
-}
-
 export function buildPersonDirectory(words: DisplayWord[]) {
   const wordsByPerson = new Map<string, DisplayWord[]>();
 
   for (const word of words) {
-    if (!isRussianWord(word)) {
-      continue;
-    }
-
     const existingWords = wordsByPerson.get(word.person);
 
     if (existingWords) {
@@ -51,4 +43,12 @@ export function buildPersonDirectory(words: DisplayWord[]) {
 
 export function getPersonHref(base: string, slug: string) {
   return `${base}reports/names/${slug}/`;
+}
+
+export function getPersonDirectoryHref(base: string, person: PersonDirectoryEntry) {
+  if (person.count === 1) {
+    return `${base}words/${person.words[0].slug}/`;
+  }
+
+  return getPersonHref(base, person.slug);
 }

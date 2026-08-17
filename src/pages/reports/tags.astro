@@ -1,15 +1,14 @@
 ---
 import { getCollection } from "astro:content";
 import { toDisplayWord } from "../../lib/lastWords";
-import { buildTagDirectory, getTagHref, isRussianTag } from "../../lib/tags";
+import { getRussianWorkingWords } from "../../lib/queries";
+import { buildTagDirectory, getTagHref } from "../../lib/tags";
 import ReferencePageLayout from "../../components/ReferencePageLayout.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const tags = buildTagDirectory(
-    (await getCollection("last-words"))
-        .map(toDisplayWord)
-        .filter((word) => word.language === "ru"),
-).filter((tag) => isRussianTag(tag.name));
+    getRussianWorkingWords((await getCollection("last-words")).map(toDisplayWord)),
+);
 const base = import.meta.env.BASE_URL.endsWith("/")
     ? import.meta.env.BASE_URL
     : `${import.meta.env.BASE_URL}/`;

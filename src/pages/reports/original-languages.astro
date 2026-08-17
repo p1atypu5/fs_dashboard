@@ -3,12 +3,12 @@ import { getCollection } from "astro:content";
 import ReferencePageLayout from "../../components/ReferencePageLayout.astro";
 import { toDisplayWord } from "../../lib/lastWords";
 import { detectOriginalLanguage } from "../../lib/originalLanguages";
-import { isRussianWord } from "../../lib/people";
+import { getRussianWorkingWords } from "../../lib/queries";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const words = (await getCollection("last-words"))
-    .map(toDisplayWord)
-    .filter(isRussianWord);
+const words = getRussianWorkingWords(
+    (await getCollection("last-words")).map(toDisplayWord),
+);
 const records = words
     .map((word) => ({
         word,

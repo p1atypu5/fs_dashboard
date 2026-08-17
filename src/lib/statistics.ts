@@ -1,6 +1,10 @@
 import { isCountryValue } from "./countries";
 import type { DisplayWord } from "./lastWords";
-import { isRussianWord } from "./people";
+import {
+  getEnglishWorkingWords,
+  getRussianWorkingWords,
+  isEnglishWorkingWord,
+} from "./queries";
 
 export type HomeStatistics = {
   wordsCount: number;
@@ -14,13 +18,11 @@ export type HomeStatistics = {
   canonicalWords: DisplayWord[];
 };
 
-export function isEnglishWord(word: Pick<DisplayWord, "language" | "sourceUrl">) {
-  return word.language === "en" && word.sourceUrl.includes("/en/");
-}
+export { isEnglishWorkingWord as isEnglishWord };
 
 export function calculateHomeStatistics(words: DisplayWord[]): HomeStatistics {
-  const russianWords = words.filter(isRussianWord);
-  const englishWords = words.filter(isEnglishWord);
+  const russianWords = getRussianWorkingWords(words);
+  const englishWords = getEnglishWorkingWords(words);
   const canonicalWords = [...russianWords, ...englishWords];
   const countries = [
     ...new Set(russianWords.map((word) => word.country).filter(isCountryValue)),

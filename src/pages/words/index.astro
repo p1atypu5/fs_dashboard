@@ -3,13 +3,13 @@ import { getCollection } from "astro:content";
 import { formatRussianTableDate } from "../../lib/dates";
 import { toDisplayWord } from "../../lib/lastWords";
 import { detectOriginalLanguage } from "../../lib/originalLanguages";
-import { isRussianWord } from "../../lib/people";
-import { buildTagDirectory, getTagHref, isRussianTag } from "../../lib/tags";
+import { getRussianWorkingWords } from "../../lib/queries";
+import { buildTagDirectory, getTagHref } from "../../lib/tags";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const finalWords = (await getCollection("last-words"))
-    .map(toDisplayWord)
-    .filter(isRussianWord)
+const finalWords = getRussianWorkingWords(
+    (await getCollection("last-words")).map(toDisplayWord),
+)
     .sort((a, b) => a.person.localeCompare(b.person, "ru"));
 const tagSlugs = Object.fromEntries(
     buildTagDirectory(finalWords).map((tag) => [tag.name, tag.slug]),
@@ -21,7 +21,6 @@ const periods = [
     ...new Set(finalWords.map((word) => word.period).filter(Boolean)),
 ].sort((a, b) => a.localeCompare(b, "ru"));
 const tags = [...new Set(finalWords.flatMap((word) => word.tags))]
-    .filter(isRussianTag)
     .sort((a, b) => a.localeCompare(b, "ru"));
 const originalLanguagesBySlug = Object.fromEntries(
     finalWords.map((word) => {

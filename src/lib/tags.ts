@@ -43,10 +43,6 @@ export function buildTagDirectory(words: DisplayWord[]) {
     });
 }
 
-export function isRussianTag(tag: string) {
-  return /[а-яё]/i.test(tag);
-}
-
 export function getTagHref(base: string, slug: string) {
   return `${base}reports/tags/${slug}/`;
 }

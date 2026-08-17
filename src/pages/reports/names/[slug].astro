@@ -5,6 +5,7 @@ import ReferencePageLayout from "../../../components/ReferencePageLayout.astro";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { toDisplayWord, type DisplayWord } from "../../../lib/lastWords";
 import { buildPersonDirectory } from "../../../lib/people";
+import { getRussianWorkingWords } from "../../../lib/queries";
 import { buildTagDirectory } from "../../../lib/tags";
 
 type Props = {
@@ -18,7 +19,9 @@ type Props = {
 };
 
 export async function getStaticPaths() {
-    const words = (await getCollection("last-words")).map(toDisplayWord);
+    const words = getRussianWorkingWords(
+        (await getCollection("last-words")).map(toDisplayWord),
+    );
     const people = buildPersonDirectory(words);
     const tagSlugs = Object.fromEntries(
         buildTagDirectory(words).map((tag) => [tag.name, tag.slug]),

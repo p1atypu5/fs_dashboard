@@ -4,7 +4,8 @@ import WordCard from "../../../components/WordCard.astro";
 import ReferencePageLayout from "../../../components/ReferencePageLayout.astro";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { toDisplayWord, type DisplayWord } from "../../../lib/lastWords";
-import { buildTagDirectory, isRussianTag } from "../../../lib/tags";
+import { getRussianWorkingWords } from "../../../lib/queries";
+import { buildTagDirectory } from "../../../lib/tags";
 
 type Props = {
     tag: {
@@ -17,10 +18,10 @@ type Props = {
 };
 
 export async function getStaticPaths() {
-    const words = (await getCollection("last-words"))
-        .map(toDisplayWord)
-        .filter((word) => word.language === "ru");
-    const tags = buildTagDirectory(words).filter((tag) => isRussianTag(tag.name));
+    const words = getRussianWorkingWords(
+        (await getCollection("last-words")).map(toDisplayWord),
+    );
+    const tags = buildTagDirectory(words);
     const tagSlugs = Object.fromEntries(
         tags.map((tag) => [tag.name, tag.slug]),
     );
