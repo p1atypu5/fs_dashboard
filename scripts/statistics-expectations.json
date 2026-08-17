@@ -1,16 +1,18 @@
 {
-  "wordsCount": 503,
-  "russianWordsCount": 450,
-  "englishWordsCount": 53,
-  "peopleCount": 402,
+  "wordsCount": 559,
+  "russianWordsCount": 472,
+  "englishWordsCount": 87,
+  "peopleCount": 419,
   "countries": [
     "Азербайджан",
+    "Башкортостан",
     "Беларусь",
     "Грузия",
     "Казахстан",
     "Кыргызстан",
     "Литва",
     "Россия",
+    "РСФСР",
     "СССР",
     "Узбекистан"
   ]
