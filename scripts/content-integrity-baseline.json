@@ -5248,6 +5248,60 @@
       "textLength": 72815,
       "wordCount": 10031
     },
+    "20349-en.md": {
+      "file": "20349-en.md",
+      "wordpressId": 20349,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/08/18/konstantin-babitskiy/",
+      "textHash": "11d4fd5306f15f62ed306485029fa7576d758034fbc38e8fb5fe25374eeb6156",
+      "textLength": 3424,
+      "wordCount": 611
+    },
+    "20354-en.md": {
+      "file": "20354-en.md",
+      "wordpressId": 20354,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/08/19/vadim-delone/",
+      "textHash": "cf27197de860f8bf32f6761f828a8f893fe6c5555f5283aba56eb033e8ccdf96",
+      "textLength": 6537,
+      "wordCount": 1133
+    },
+    "20358-en.md": {
+      "file": "20358-en.md",
+      "wordpressId": 20358,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/08/19/vladimir-dremlyuga/",
+      "textHash": "60b47d7b78a06a175419cd932d8bbacd8857c1b010654f4818ec4a47814ac06e",
+      "textLength": 4451,
+      "wordCount": 753
+    },
+    "20362-en.md": {
+      "file": "20362-en.md",
+      "wordpressId": 20362,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/08/19/pavel-litvinov/",
+      "textHash": "5c8589e17deab5d76e7853e8c0fe9d95f7420533d5926c4e3af6d95ad62b2903",
+      "textLength": 5968,
+      "wordCount": 1016
+    },
+    "20366-en.md": {
+      "file": "20366-en.md",
+      "wordpressId": 20366,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/08/19/larisa-bogoraz/",
+      "textHash": "fbda911fb268f5a0510ce9f7b1b2eb81e182e9949ea056f47eb7fb6a9c889f43",
+      "textLength": 7160,
+      "wordCount": 1241
+    },
+    "20372-ru.md": {
+      "file": "20372-ru.md",
+      "wordpressId": 20372,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/08/19/chokan-aleksej-petrovich/",
+      "textHash": "29d3717008b5496bba42a6cd7e02dab9dba1443dc147a13e8c848074a349ba07",
+      "textLength": 6382,
+      "wordCount": 948
+    },
     "205-ru.md": {
       "file": "205-ru.md",
       "wordpressId": 205,
