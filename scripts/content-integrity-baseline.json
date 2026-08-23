@@ -2724,9 +2724,9 @@
       "wordpressId": 17395,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2025/09/10/pavel-michailovich-litvinov/",
-      "textHash": "7d11022ec9436930a18c03ec32e60f7b42c50625f6a4174a2625b59e50abd01e",
-      "textLength": 5470,
-      "wordCount": 830
+      "textHash": "5b68a620864d7b202a3705205ad1eea1ef92b84fa7c4e0de1edcd3a1407c7370",
+      "textLength": 5459,
+      "wordCount": 828
     },
     "17407-ru.md": {
       "file": "17407-ru.md",
@@ -3606,9 +3606,9 @@
       "wordpressId": 18112,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2026/01/11/delone-vadim-nikolaevich-2/",
-      "textHash": "4b5eef19b7bd6c85347c0186ae87a1b059ddad6f69c353f3a87407941b1f5669",
-      "textLength": 5947,
-      "wordCount": 914
+      "textHash": "b2c624623d250b50e18bf2beb60014f1cc0168e1a822b4ce9692eba926f0a3d4",
+      "textLength": 5957,
+      "wordCount": 918
     },
     "18124-ru.md": {
       "file": "18124-ru.md",
@@ -5302,6 +5302,15 @@
       "textLength": 6382,
       "wordCount": 948
     },
+    "20383-ru.md": {
+      "file": "20383-ru.md",
+      "wordpressId": 20383,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/08/22/pimenov-revolt-ivanovich/",
+      "textHash": "056b2e6b058a8c45c355d70972211b6f8a8bb24dc0f2f81d2bc7603bf012629a",
+      "textLength": 6658,
+      "wordCount": 1003
+    },
     "205-ru.md": {
       "file": "205-ru.md",
       "wordpressId": 205,
@@ -5514,9 +5523,9 @@
       "wordpressId": 807,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2023/02/21/bogoraz-larisa-iosifovna/",
-      "textHash": "830fb92a6feb5384b097fe1c6e07810d1055964835995b725e09b08418689ce0",
-      "textLength": 6643,
-      "wordCount": 994
+      "textHash": "831f63114169aefbbe656766331e51ae03d22c61d58edcbe14cc3908b1716eda",
+      "textLength": 6611,
+      "wordCount": 991
     },
     "816-ru.md": {
       "file": "816-ru.md",
