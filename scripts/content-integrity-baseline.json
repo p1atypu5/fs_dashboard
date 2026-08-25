@@ -4811,7 +4811,7 @@
       "file": "20383-ru.md",
       "wordpressId": 20383,
       "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/2026/08/22/pimenov-revolt-ivanovich/",
+      "sourceUrl": "https://posledneeslovo.com/2026/08/22/pimenov-revolt-ivanovich-2/",
       "textHash": "056b2e6b058a8c45c355d70972211b6f8a8bb24dc0f2f81d2bc7603bf012629a",
       "textLength": 6658,
       "wordCount": 1003
@@ -4820,10 +4820,19 @@
       "file": "20394-ru.md",
       "wordpressId": 20394,
       "language": "ru",
-      "sourceUrl": "https://posledneeslovo.com/2026/08/23/lopatin-sergej-aleksandrovich/",
+      "sourceUrl": "https://posledneeslovo.com/2026/08/23/lopatin-sergej-alekseevich/",
       "textHash": "eb137f903d9eaf795a39fec896603384e9f274047c4981a8f2e1916596054937",
       "textLength": 8424,
       "wordCount": 1168
+    },
+    "20414-ru.md": {
+      "file": "20414-ru.md",
+      "wordpressId": 20414,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/08/24/vajl-boris-borisovich/",
+      "textHash": "22593a4ba2637c13c483fc00b5aab1580544369308eb8bdfd4f400a5d1c3da1f",
+      "textLength": 901,
+      "wordCount": 139
     },
     "205-ru.md": {
       "file": "205-ru.md",
