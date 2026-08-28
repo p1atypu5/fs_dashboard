@@ -1,7 +1,7 @@
 {
   "source": "https://posledneeslovo.com/wp-json/wp/v2/posts",
-  "fetchedAt": "2026-08-27T12:54:59.296Z",
+  "fetchedAt": "2026-08-28T14:25:48.787Z",
   "timeZone": "Europe/Istanbul",
-  "posts": 21,
+  "posts": 67,
   "output": "data/wp-export/posts.raw.json"
 }

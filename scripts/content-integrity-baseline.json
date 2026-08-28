@@ -375,9 +375,9 @@
       "wordpressId": 14652,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2024/07/11/petrijchuk-svetlana-aleksandrovna/",
-      "textHash": "c480194ab78049c3bcdf0200c5707b42890ae3a649694bee29a9e03c154feed5",
-      "textLength": 2648,
-      "wordCount": 381
+      "textHash": "5941c7e8a68fc00f546d30f26706e567355ceba3456ecda60c94de184324f6d7",
+      "textLength": 2599,
+      "wordCount": 376
     },
     "14689-ru.md": {
       "file": "14689-ru.md",
@@ -4833,6 +4833,24 @@
       "textHash": "22593a4ba2637c13c483fc00b5aab1580544369308eb8bdfd4f400a5d1c3da1f",
       "textLength": 901,
       "wordCount": 139
+    },
+    "20426-en.md": {
+      "file": "20426-en.md",
+      "wordpressId": 20426,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/08/28/lev-shlosberg/",
+      "textHash": "720d6a746db3533ae7c79dd18bda9190895fb481b849a6c6b102d8665530325f",
+      "textLength": 35433,
+      "wordCount": 5570
+    },
+    "20429-en.md": {
+      "file": "20429-en.md",
+      "wordpressId": 20429,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/08/28/svetlana-kudryashova/",
+      "textHash": "67a872ad55cfaa483340f426e379b090b62b61683d5ced87df8c8a34a64cb5da",
+      "textLength": 3538,
+      "wordCount": 584
     },
     "205-ru.md": {
       "file": "205-ru.md",
