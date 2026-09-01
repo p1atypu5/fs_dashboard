@@ -4002,8 +4002,8 @@
       "wordpressId": 19458,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2026/06/03/dmitrij-konopelko/",
-      "textHash": "079dedb89bb90d3f958ed0e73cc2cc3cc0ae24ca9dc96f800ea0c03c24f971c9",
-      "textLength": 7434,
+      "textHash": "8b4a2c0cff898c31122d9899595b05fee9877bf1b8efdc7c22da441b3a389c5c",
+      "textLength": 7441,
       "wordCount": 1105
     },
     "19481-ru.md": {
@@ -4852,6 +4852,15 @@
       "textLength": 3538,
       "wordCount": 584
     },
+    "20441-ru.md": {
+      "file": "20441-ru.md",
+      "wordpressId": 20441,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/08/31/podrabinek-aleksandr-pinhosovich/",
+      "textHash": "c29c97df34f3ee3136c63b6f47f17de8a1d353b678e5dda5c0bdc3c30a539e85",
+      "textLength": 47100,
+      "wordCount": 6841
+    },
     "205-ru.md": {
       "file": "205-ru.md",
       "wordpressId": 205,
@@ -5082,9 +5091,9 @@
       "wordpressId": 820,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2023/02/21/bukovskij-vladimir-konstantinovich-2/",
-      "textHash": "25e8eb0870da7937e1e66dfd2cca6542a9f3bc33ce9b3f1ffbada27f5347789b",
-      "textLength": 9700,
-      "wordCount": 1396
+      "textHash": "ac9e92d5e267c68639b2dbd5c2e22c0266dd43e59bb558c45fb9dc2615a95519",
+      "textLength": 9714,
+      "wordCount": 1401
     },
     "827-ru.md": {
       "file": "827-ru.md",
