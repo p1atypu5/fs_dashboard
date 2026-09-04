@@ -2490,9 +2490,9 @@
       "wordpressId": 17364,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2025/09/06/kriger-artyom-pavlovich/",
-      "textHash": "15fcfea527d4086470bd9060abfa8d712d0ae6d3d3d3a58f20a2828071d369fd",
-      "textLength": 15484,
-      "wordCount": 2356
+      "textHash": "81b7c63fb929f7167ed2f8a981fa8ef5d02bea596f33dde95a7a64a86b01de8a",
+      "textLength": 15500,
+      "wordCount": 2359
     },
     "17368-ru.md": {
       "file": "17368-ru.md",
@@ -3750,9 +3750,9 @@
       "wordpressId": 19010,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2026/04/17/kozlova-larisa-sergeevna/",
-      "textHash": "383be41d73adc6db8f325990f3f9a140d2ad9b34aa1764e60966d604ac60a7a3",
-      "textLength": 6995,
-      "wordCount": 1004
+      "textHash": "fb9e6f1072bf607cd596969dd35999a3dc8dc2e68d4eb6337524759268733c6e",
+      "textLength": 6967,
+      "wordCount": 1003
     },
     "19018-ru.md": {
       "file": "19018-ru.md",
@@ -4860,6 +4860,15 @@
       "textHash": "c29c97df34f3ee3136c63b6f47f17de8a1d353b678e5dda5c0bdc3c30a539e85",
       "textLength": 47100,
       "wordCount": 6841
+    },
+    "20478-ru.md": {
+      "file": "20478-ru.md",
+      "wordpressId": 20478,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/09/03/bazhkenova-gulnar-mejranovna/",
+      "textHash": "7848325b5c6a9cfd6e4c8db6b4b078b234c09725a7b6c702028ed8d844f7241f",
+      "textLength": 22590,
+      "wordCount": 3700
     },
     "205-ru.md": {
       "file": "205-ru.md",
