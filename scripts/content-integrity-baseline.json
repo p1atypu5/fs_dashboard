@@ -3615,9 +3615,9 @@
       "wordpressId": 18722,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2026/03/28/bagirova-oksana-rafikovna/",
-      "textHash": "777d30a4bdf5515d767a1504332dedcd10e2a37e2f07898fdcb9d0cd22a7ad7a",
-      "textLength": 3527,
-      "wordCount": 535
+      "textHash": "29cd7f5bf227badd8ae765f9b1bda90eb657f2313dedec8f34ea3878d11931c6",
+      "textLength": 3511,
+      "wordCount": 533
     },
     "18749-ru.md": {
       "file": "18749-ru.md",
@@ -4866,9 +4866,27 @@
       "wordpressId": 20478,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2026/09/03/bazhkenova-gulnar-mejranovna/",
-      "textHash": "a0244d3aa88302429754aa614af533a8be754d9e440906ffeea0dc887c0d7261",
-      "textLength": 22592,
-      "wordCount": 3700
+      "textHash": "cbcb50ed0ada5c02e04573c8c418845500db8dc7dd33975c5c710d3dd9daa6e2",
+      "textLength": 22607,
+      "wordCount": 3702
+    },
+    "20488-en.md": {
+      "file": "20488-en.md",
+      "wordpressId": 20488,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/09/07/gulnara-bazhkenova/",
+      "textHash": "6123421c572e940748af1c9b0bf8dc7c529db29e7d0ad1e4ccb03b6437c153b7",
+      "textLength": 25313,
+      "wordCount": 4509
+    },
+    "20492-en.md": {
+      "file": "20492-en.md",
+      "wordpressId": 20492,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/09/08/evgeniy-merkis/",
+      "textHash": "3dc451917f71d10f8f5839ea7e2a9a4b6e9334014109219fcb8284ac362d6a76",
+      "textLength": 5693,
+      "wordCount": 958
     },
     "205-ru.md": {
       "file": "205-ru.md",
