@@ -4119,8 +4119,8 @@
       "wordpressId": 19743,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2026/06/17/marchenko-valeriya-yurevna/",
-      "textHash": "bb9924940e35d1401e795b4c05b4d54f4f0e85be568ae98a37d24c2ff265087a",
-      "textLength": 1036,
+      "textHash": "1053efb11d6d2d8f8304a7f7177aee2ac841bafe249a95f42e67ec3d8f6013ba",
+      "textLength": 1035,
       "wordCount": 163
     },
     "19749-ru.md": {
@@ -4887,6 +4887,24 @@
       "textHash": "b4c1f4943c92ecaae4984b298040f29554cb74acdbfc5e6f48210f56cf94cffc",
       "textLength": 19401,
       "wordCount": 2975
+    },
+    "20550-ru.md": {
+      "file": "20550-ru.md",
+      "wordpressId": 20550,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/09/13/zaslavskij-igor-dmitrievich/",
+      "textHash": "04752f21e8f45a96c90137c7fe343710c4c757c2b27bfdab3d6f1d438835c8d4",
+      "textLength": 4814,
+      "wordCount": 705
+    },
+    "20558-ru.md": {
+      "file": "20558-ru.md",
+      "wordpressId": 20558,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/09/13/verblovskaya-irina-savelevna/",
+      "textHash": "7d7aa8175794c15f4dcb951012403f73355c4d04036c860903f43a994b98cd36",
+      "textLength": 462,
+      "wordCount": 73
     },
     "211-ru.md": {
       "file": "211-ru.md",
