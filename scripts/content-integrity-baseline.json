@@ -2490,7 +2490,7 @@
       "wordpressId": 17364,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2025/09/06/kriger-artyom-pavlovich/",
-      "textHash": "81b7c63fb929f7167ed2f8a981fa8ef5d02bea596f33dde95a7a64a86b01de8a",
+      "textHash": "02d9950e93fa48226a1989ccd571ad3ae6b35f2cc0425a89e530a8561aad69f3",
       "textLength": 15500,
       "wordCount": 2359
     },
@@ -4947,8 +4947,8 @@
       "wordpressId": 20603,
       "language": "en",
       "sourceUrl": "https://posledneeslovo.com/en/2026/09/28/darya-kozyreva/",
-      "textHash": "48b8e48240783e66419f7ca16a60bbc6e27d3466f1aef1fa9818fa3dac1d4f51",
-      "textLength": 14146,
+      "textHash": "58509d3092d19b2fb8315621f2765779cc8c141262acf3c5ecb948387e8caeb7",
+      "textLength": 14141,
       "wordCount": 2390
     },
     "20608-ru.md": {
@@ -4959,6 +4959,15 @@
       "textHash": "b3041c8386d566a0fc0e5b82f72e9acf61438de210842a187320f4e8cdbfb800",
       "textLength": 1455,
       "wordCount": 215
+    },
+    "20616-ru.md": {
+      "file": "20616-ru.md",
+      "wordpressId": 20616,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/10/01/gulyaev-egor-olegovich/",
+      "textHash": "9f85e50dcdada8b9f015b934fb1185d81f27a58997aa5c17d28abd0c3effa7f9",
+      "textLength": 3419,
+      "wordCount": 489
     },
     "211-ru.md": {
       "file": "211-ru.md",
