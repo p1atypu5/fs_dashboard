@@ -4942,6 +4942,15 @@
       "textLength": 4820,
       "wordCount": 779
     },
+    "20596-en.md": {
+      "file": "20596-en.md",
+      "wordpressId": 20596,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/10/10/lev-shlosberg-2/",
+      "textHash": "696f45b0242f45402158b3b1c1036d346f20475a91300bab2188ff511756332c",
+      "textLength": 29257,
+      "wordCount": 4671
+    },
     "20603-en.md": {
       "file": "20603-en.md",
       "wordpressId": 20603,
@@ -4995,6 +5004,60 @@
       "textHash": "f15c419573e24bb221cf770d6bb1e024ce4f55bf35e8ea23a90430c20b6cca3d",
       "textLength": 2939,
       "wordCount": 447
+    },
+    "20691-en.md": {
+      "file": "20691-en.md",
+      "wordpressId": 20691,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/10/10/bobomurod-abdullaev/",
+      "textHash": "3e29a9f9905bba2738b7226eaa59e888f7f09ea62091e34c70c1bd972cb865dc",
+      "textLength": 10126,
+      "wordCount": 1608
+    },
+    "20697-en.md": {
+      "file": "20697-en.md",
+      "wordpressId": 20697,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/10/10/mikhail-afanasyev/",
+      "textHash": "89804d961fdcb7bf3566d1fc899a60041492beba0a2eb434bd0a2e78c2b50442",
+      "textLength": 34036,
+      "wordCount": 5570
+    },
+    "20701-en.md": {
+      "file": "20701-en.md",
+      "wordpressId": 20701,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/10/10/sapar-akunbekov/",
+      "textHash": "707ac8d81dcf95a77c64e5500de07a244cf3c682828ee5ce92a21894e8c7e5d2",
+      "textLength": 2880,
+      "wordCount": 451
+    },
+    "20707-en.md": {
+      "file": "20707-en.md",
+      "wordpressId": 20707,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/10/10/aleksandr-aleksandrov/",
+      "textHash": "95832873c0952716cabe0bb294db3d67df0c988b44d2ec3e26bf04b60dddb9ff",
+      "textLength": 1147,
+      "wordCount": 209
+    },
+    "20713-ru.md": {
+      "file": "20713-ru.md",
+      "wordpressId": 20713,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/10/10/baburin-ilya-nikolaevich/",
+      "textHash": "17ac030dcbdbf7fb30dd12877521e265c5685b88cec36aa2a027b4213f0dbdb8",
+      "textLength": 9699,
+      "wordCount": 1454
+    },
+    "20721-ru.md": {
+      "file": "20721-ru.md",
+      "wordpressId": 20721,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/10/11/balabanov-mikhail-vyacheslavovich/",
+      "textHash": "407362c2f1ec89edba80ceb0061ae22d92efdc501730b6e115c96ac732b75c2f",
+      "textLength": 991,
+      "wordCount": 152
     },
     "211-ru.md": {
       "file": "211-ru.md",
