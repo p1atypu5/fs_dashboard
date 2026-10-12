@@ -5059,6 +5059,24 @@
       "textLength": 991,
       "wordCount": 152
     },
+    "20734-ru.md": {
+      "file": "20734-ru.md",
+      "wordpressId": 20734,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/10/11/ksenzhepolskij-yan-aleksandrovich-2/",
+      "textHash": "b308f95cf48bdf2118583a385a6d0f322b85d13f1041fcf88e5c0d8dc12188cf",
+      "textLength": 3742,
+      "wordCount": 575
+    },
+    "20737-ru.md": {
+      "file": "20737-ru.md",
+      "wordpressId": 20737,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/10/12/neustroev-vasilij-petrovich-2/",
+      "textHash": "0d43911d6dbc9923d79cdcfc46eef9e19e3439a56c8d7172c5ac3fd1481900eb",
+      "textLength": 9793,
+      "wordCount": 1420
+    },
     "211-ru.md": {
       "file": "211-ru.md",
       "wordpressId": 211,
