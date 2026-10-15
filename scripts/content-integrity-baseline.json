@@ -5059,23 +5059,32 @@
       "textLength": 991,
       "wordCount": 152
     },
+    "20731-ru.md": {
+      "file": "20731-ru.md",
+      "wordpressId": 20731,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/10/14/sinelnikov-pavel-nikolaevich-2/",
+      "textHash": "eea01eaaced9228bd090e92df207fe271ba4d5b12df259ceeebbf7222b6d35ca",
+      "textLength": 2357,
+      "wordCount": 356
+    },
     "20734-ru.md": {
       "file": "20734-ru.md",
       "wordpressId": 20734,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2026/10/11/ksenzhepolskij-yan-aleksandrovich-2/",
-      "textHash": "e3fd9d3e1d72499497b40f275b385dcfb92910c377e8075c8d1535f5e4544955",
-      "textLength": 3742,
-      "wordCount": 575
+      "textHash": "2ce653f3b0e4058df342fc722dd061a7ed9f472a02838984a370869e3a14bb27",
+      "textLength": 3985,
+      "wordCount": 611
     },
     "20737-ru.md": {
       "file": "20737-ru.md",
       "wordpressId": 20737,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2026/10/12/neustroev-vasilij-petrovich-2/",
-      "textHash": "6ed895fb4a92d9be9b92cec6a17887fa3b48aea4f507033174ca5556a8912046",
-      "textLength": 9846,
-      "wordCount": 1427
+      "textHash": "f79d8e64209890523a8b17ebf4a32eb921cd5867c41bf65cd167cb5fb0fb9e65",
+      "textLength": 9991,
+      "wordCount": 1447
     },
     "211-ru.md": {
       "file": "211-ru.md",
