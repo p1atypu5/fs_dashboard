@@ -5059,6 +5059,15 @@
       "textLength": 1012,
       "wordCount": 157
     },
+    "20727-en.md": {
+      "file": "20727-en.md",
+      "wordpressId": 20727,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/10/25/evgeniy-zateev/",
+      "textHash": "7e7bf9d735f1707cd61bbee252db1f75b2d2268b9549ba407075302aa3bb9d90",
+      "textLength": 9726,
+      "wordCount": 1665
+    },
     "20731-ru.md": {
       "file": "20731-ru.md",
       "wordpressId": 20731,
@@ -5103,6 +5112,69 @@
       "textHash": "d8345a05bea5d859e01f98714ba413177891a06fe64172c82a6af7e517093024",
       "textLength": 30456,
       "wordCount": 5050
+    },
+    "20805-ru.md": {
+      "file": "20805-ru.md",
+      "wordpressId": 20805,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/10/25/vladislav-sinelnikov-apellyaziya/",
+      "textHash": "3d9daa5347aab74ad603ae624e2c181866605b449dfbcbf7d7f811c601df8409",
+      "textLength": 9098,
+      "wordCount": 1328
+    },
+    "20810-ru.md": {
+      "file": "20810-ru.md",
+      "wordpressId": 20810,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/10/25/sinicza-vladislav-yurevich/",
+      "textHash": "091c6c4646362ff80c6ce92436d94490dff9443966a8d28a22e98437ce314c79",
+      "textLength": 1380,
+      "wordCount": 220
+    },
+    "20817-en.md": {
+      "file": "20817-en.md",
+      "wordpressId": 20817,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/10/25/dauletmurat-tazhimuratov/",
+      "textHash": "96d79b622e82a3dfe5da1d492117862a31c4148d28cb45ae660cae1b5670b920",
+      "textLength": 6782,
+      "wordCount": 1222
+    },
+    "20821-en.md": {
+      "file": "20821-en.md",
+      "wordpressId": 20821,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/10/25/dauletmurat-tazhimuratov-2/",
+      "textHash": "a218532fd77862d7c09bd3bde5bc5e01ff8a4760b4d2da492716f4618940e7cd",
+      "textLength": 6070,
+      "wordCount": 974
+    },
+    "20830-en.md": {
+      "file": "20830-en.md",
+      "wordpressId": 20830,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/10/25/ruslan-suleymanov/",
+      "textHash": "c2abda52f2423ab88a082bb974f6a5500d59bdfe66abe72074b071a8015fa6a1",
+      "textLength": 12073,
+      "wordCount": 2007
+    },
+    "20834-en.md": {
+      "file": "20834-en.md",
+      "wordpressId": 20834,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/10/25/saypidin-sultanaliev/",
+      "textHash": "75d089a98aab5ab9c8b595e70e69a135d70439c673829d9e0fa874127b467040",
+      "textLength": 5339,
+      "wordCount": 961
+    },
+    "20838-en.md": {
+      "file": "20838-en.md",
+      "wordpressId": 20838,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/10/25/remzi-bekirov/",
+      "textHash": "d832cec20a653f2e6c41a68de994c34ed4ca413c6b7b5b5c38121c64abc3d834",
+      "textLength": 32882,
+      "wordCount": 5257
     },
     "211-ru.md": {
       "file": "211-ru.md",
