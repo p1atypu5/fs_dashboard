@@ -591,9 +591,9 @@
       "wordpressId": 15140,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2024/08/24/kazej-kirill-aleksandrovich/",
-      "textHash": "1dbdc33d7c166061c77d56e8b06af51ff6ceee4d9fcaecad4f8fc22af1adce5f",
-      "textLength": 3584,
-      "wordCount": 590
+      "textHash": "44f1a779e752debb77305c13e48966e4310aca50319f2f033658611f62ecc289",
+      "textLength": 3542,
+      "wordCount": 608
     },
     "15143-ru.md": {
       "file": "15143-ru.md",
@@ -5175,6 +5175,15 @@
       "textHash": "d832cec20a653f2e6c41a68de994c34ed4ca413c6b7b5b5c38121c64abc3d834",
       "textLength": 32882,
       "wordCount": 5257
+    },
+    "20873-ru.md": {
+      "file": "20873-ru.md",
+      "wordpressId": 20873,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/10/31/rozenfeld-sofya-borisovna/",
+      "textHash": "559175b070515b9ef0f2976baf83c3deacd0f08f58e302637fb1f42d32cc4b97",
+      "textLength": 719,
+      "wordCount": 111
     },
     "211-ru.md": {
       "file": "211-ru.md",
