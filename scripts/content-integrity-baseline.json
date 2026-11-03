@@ -591,9 +591,9 @@
       "wordpressId": 15140,
       "language": "ru",
       "sourceUrl": "https://posledneeslovo.com/2024/08/24/kazej-kirill-aleksandrovich/",
-      "textHash": "44f1a779e752debb77305c13e48966e4310aca50319f2f033658611f62ecc289",
-      "textLength": 3542,
-      "wordCount": 608
+      "textHash": "e47377f14e81ffcc0f7d52c3ee731a29300248ef08afecdee145f04776606988",
+      "textLength": 3433,
+      "wordCount": 591
     },
     "15143-ru.md": {
       "file": "15143-ru.md",
@@ -914,10 +914,10 @@
       "file": "15758-en.md",
       "wordpressId": 15758,
       "language": "en",
-      "sourceUrl": "https://posledneeslovo.com/en/2024/11/26/alexey-gorinov-eng/",
-      "textHash": "c68f54a548683d56ca824501414b9d2ccc75c66de25e6f42f1a1a83a8a1cdabd",
-      "textLength": 6393,
-      "wordCount": 1117
+      "sourceUrl": "https://posledneeslovo.com/en/2024/11/26/alexei-gorinov-eng/",
+      "textHash": "d9e993d97601b4cc8d33d559fbac0299102db5a3eb0d4129905cadf51f899139",
+      "textLength": 6394,
+      "wordCount": 1116
     },
     "15768-ru.md": {
       "file": "15768-ru.md",
@@ -1032,9 +1032,9 @@
       "wordpressId": 15877,
       "language": "en",
       "sourceUrl": "https://posledneeslovo.com/en/2024/11/29/alexey-gorinov-2-eng/",
-      "textHash": "38ae50ad42ffdba58b7ca5d8b7122ec95e88dddc5c2ea2b4df20d3eeae8769b4",
-      "textLength": 4424,
-      "wordCount": 770
+      "textHash": "1183ab5bff1fd14fbefa8409ffa260525c4de253b7ebf8c28844b922ff2355ba",
+      "textLength": 4430,
+      "wordCount": 773
     },
     "15883-en.md": {
       "file": "15883-en.md",
