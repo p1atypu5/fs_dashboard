@@ -4978,6 +4978,24 @@
       "textLength": 3419,
       "wordCount": 489
     },
+    "20638-ru.md": {
+      "file": "20638-ru.md",
+      "wordpressId": 20638,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/11/07/kamenev-lev-borisovich/",
+      "textHash": "355d9d77601b66e3137a971778dfd46931e28b96dcad0ab50d227f0738045ee8",
+      "textLength": 3248,
+      "wordCount": 456
+    },
+    "20652-ru.md": {
+      "file": "20652-ru.md",
+      "wordpressId": 20652,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/11/07/zinovev-grigorij-evseevich/",
+      "textHash": "a798e09e918d18d06c4e8a2e3204a8cf12dfe06ec1617b33c6aed12dfb1be47e",
+      "textLength": 2857,
+      "wordCount": 403
+    },
     "20656-ru.md": {
       "file": "20656-ru.md",
       "wordpressId": 20656,
@@ -5185,6 +5203,33 @@
       "textLength": 719,
       "wordCount": 111
     },
+    "20883-ru.md": {
+      "file": "20883-ru.md",
+      "wordpressId": 20883,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/11/07/mrachkovskij-sergej-vitelevich/",
+      "textHash": "1f9f57c23e696e2639a428360dde2bb1a260521e6c996851e85976493ba3903b",
+      "textLength": 2046,
+      "wordCount": 337
+    },
+    "20909-ru.md": {
+      "file": "20909-ru.md",
+      "wordpressId": 20909,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/11/07/evdokimov-grigorij-eremeevich/",
+      "textHash": "199aaf260715d97a547d4cfa4d72deabc337fb065d16b3dee0668d7dca3ecb85",
+      "textLength": 3355,
+      "wordCount": 524
+    },
+    "20917-ru.md": {
+      "file": "20917-ru.md",
+      "wordpressId": 20917,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/11/07/olberg-valentin-pavlovich/",
+      "textHash": "7c7c8c21ad3cdaea2ce41f6d3ca724d41fa93a33ba04b650feda567480dc27ee",
+      "textLength": 880,
+      "wordCount": 119
+    },
     "20933-en.md": {
       "file": "20933-en.md",
       "wordpressId": 20933,
@@ -5193,6 +5238,87 @@
       "textHash": "82fddda2d2b5f92f82c6304b802782f6f88fde7d0574a0ccb1c3a45b5bd06781",
       "textLength": 7864,
       "wordCount": 1268
+    },
+    "20946-ru.md": {
+      "file": "20946-ru.md",
+      "wordpressId": 20946,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/11/07/berman-yurin-konon-borisovich/",
+      "textHash": "ee8191c65b5f0033a2ebb8ba741fdddce6e348078b52eedf18dd50646664a322",
+      "textLength": 559,
+      "wordCount": 79
+    },
+    "20950-ru.md": {
+      "file": "20950-ru.md",
+      "wordpressId": 20950,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/11/07/rejngold-isaak-isaevich/",
+      "textHash": "40979271857f8e431f16ff41559f469dbb52da6b42e393aebdd503c0517c26d7",
+      "textLength": 2159,
+      "wordCount": 308
+    },
+    "20965-en.md": {
+      "file": "20965-en.md",
+      "wordpressId": 20965,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/11/06/vyacheslav-chernovol/",
+      "textHash": "9e5fe172f8afbcac754356b4abd72c10d7557294a57a61af1f05f3f75ef3359f",
+      "textLength": 18896,
+      "wordCount": 3112
+    },
+    "20969-en.md": {
+      "file": "20969-en.md",
+      "wordpressId": 20969,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/11/06/nikolay-dedok/",
+      "textHash": "30db6bf2027eef2a6240c70dcd001b7de7a4ee6b201a5f314320f45164107088",
+      "textLength": 1005,
+      "wordCount": 153
+    },
+    "20972-en.md": {
+      "file": "20972-en.md",
+      "wordpressId": 20972,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/11/06/duulatov-zhoomart-2/",
+      "textHash": "64d5d89511b83db054479880959915399699c452e8b2846a000fb15f1692c2ea",
+      "textLength": 833,
+      "wordCount": 151
+    },
+    "20978-en.md": {
+      "file": "20978-en.md",
+      "wordpressId": 20978,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/11/06/aleksandr-mantsevich/",
+      "textHash": "f3618ae31c30e663c6525bf637c85600ce7066c84ad4c9b81530198b04e063a8",
+      "textLength": 50191,
+      "wordCount": 7807
+    },
+    "20980-en.md": {
+      "file": "20980-en.md",
+      "wordpressId": 20980,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/11/06/sergey-mikhailov/",
+      "textHash": "bb130289d06b5f9542662a2ddf41a0c7e3621ea2a7f0c9f184e4053997514905",
+      "textLength": 23955,
+      "wordCount": 3948
+    },
+    "20984-en.md": {
+      "file": "20984-en.md",
+      "wordpressId": 20984,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/11/06/andrey-novashov/",
+      "textHash": "b808a0fae8654103c19398cb9ff9e37ee225918ae70b73e36db5da3a6d460101",
+      "textLength": 17321,
+      "wordCount": 2865
+    },
+    "20988-en.md": {
+      "file": "20988-en.md",
+      "wordpressId": 20988,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/11/06/akyl-orozbekov/",
+      "textHash": "8b78c816d2da8a317add5681b1bbcd830b83d245c0d9ddb33f0e6f8d2579a43c",
+      "textLength": 843,
+      "wordCount": 116
     },
     "211-ru.md": {
       "file": "211-ru.md",
