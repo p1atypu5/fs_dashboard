@@ -5320,6 +5320,42 @@
       "textLength": 843,
       "wordCount": 116
     },
+    "21017-en.md": {
+      "file": "21017-en.md",
+      "wordpressId": 21017,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/11/07/grigoriy-pasko/",
+      "textHash": "f3f9be63f389d13fa20f432afb1188368bb74c63fa810b26767e70b986ee9026",
+      "textLength": 5519,
+      "wordCount": 931
+    },
+    "21022-en.md": {
+      "file": "21022-en.md",
+      "wordpressId": 21022,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/11/07/svetlana-prokopyeva/",
+      "textHash": "db799107409398ca6d3a87baf6d72899a360bdf20bc5ee2fad9114f5a01e8505",
+      "textLength": 8804,
+      "wordCount": 1434
+    },
+    "21026-en.md": {
+      "file": "21026-en.md",
+      "wordpressId": 21026,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/11/07/ludmila-razumova/",
+      "textHash": "2435eecf23831860582b494a5472c4ce56530c7135701208747f3dfa578e16c7",
+      "textLength": 1450,
+      "wordCount": 258
+    },
+    "21030-en.md": {
+      "file": "21030-en.md",
+      "wordpressId": 21030,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/11/07/yusuf-ruzimurodov-2/",
+      "textHash": "c1b803d2c92426d0474c0d9b703ce16f879db8160260f5bd88133f1e19734f0d",
+      "textLength": 18502,
+      "wordCount": 2717
+    },
     "211-ru.md": {
       "file": "211-ru.md",
       "wordpressId": 211,
