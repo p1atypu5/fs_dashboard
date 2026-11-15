@@ -5383,6 +5383,24 @@
       "textLength": 3217,
       "wordCount": 535
     },
+    "21068-en.md": {
+      "file": "21068-en.md",
+      "wordpressId": 21068,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/11/14/seyran-saliev/",
+      "textHash": "567cd986c63a5adfa29c2d263975afbb6d88b6fc377451848a4495f1d4bc0521",
+      "textLength": 8701,
+      "wordCount": 1446
+    },
+    "21073-en.md": {
+      "file": "21073-en.md",
+      "wordpressId": 21073,
+      "language": "en",
+      "sourceUrl": "https://posledneeslovo.com/en/2026/11/14/timur-ibragimov/",
+      "textHash": "3dbc6f875e703965b8b8290412d2cfdd243e9766d2f0cc9a8fc2bda48c7011d1",
+      "textLength": 10811,
+      "wordCount": 1792
+    },
     "211-ru.md": {
       "file": "211-ru.md",
       "wordpressId": 211,
