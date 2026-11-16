@@ -5365,6 +5365,15 @@
       "textLength": 18502,
       "wordCount": 2717
     },
+    "21044-ru.md": {
+      "file": "21044-ru.md",
+      "wordpressId": 21044,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/11/15/baburin-ilya-nikolaevich-2/",
+      "textHash": "23ed0f0477f52aa3c6534e60ec87475ef2e36e2381abd5efc016f762234edf14",
+      "textLength": 3134,
+      "wordCount": 491
+    },
     "21049-ru.md": {
       "file": "21049-ru.md",
       "wordpressId": 21049,
@@ -5382,6 +5391,15 @@
       "textHash": "ec53b206770c887e08455a8e269fedc9b8387bcec5d2fc6e35aca49e2e162b31",
       "textLength": 3217,
       "wordCount": 535
+    },
+    "21065-ru.md": {
+      "file": "21065-ru.md",
+      "wordpressId": 21065,
+      "language": "ru",
+      "sourceUrl": "https://posledneeslovo.com/2026/11/15/shlosberg-lev-markovich-4/",
+      "textHash": "c02dcb6049118116c06ff6aaf18a2d4d85a352d4a2be8dad81d962935c57620c",
+      "textLength": 11361,
+      "wordCount": 1679
     },
     "21068-en.md": {
       "file": "21068-en.md",
